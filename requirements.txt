@@ -1,0 +1,10 @@
+# Local dev: data generation + eval (runs on CPU)
+pandas
+openai
+python-dotenv
+tqdm
+datasets
+huggingface_hub
+
+# Training runs on Colab via Unsloth (see notebooks/). Those deps install in the notebook:
+#   unsloth, torch, transformers, peft, trl, bitsandbytes, accelerate

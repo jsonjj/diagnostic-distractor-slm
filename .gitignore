@@ -1,0 +1,24 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Data: keep raw Kaggle competition CSVs out of git; commit our derived/processed dataset.
+data/raw/*
+!data/raw/.gitkeep
+
+# Model artifacts
+adapters/
+merged/
+outputs/
+*.gguf
+wandb/
+
+# OS
+.DS_Store
