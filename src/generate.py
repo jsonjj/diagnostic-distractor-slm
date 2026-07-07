@@ -9,6 +9,7 @@ Outputs (data/processed/):
 Usage:
   python -m src.generate        # build v1 (unchanged)
   python -m src.generate --v2   # build v2 (fixes the misconception-repetition regression)
+  python -m src.generate --v3   # build v3 (v2's distinct labels + v1's alignment recovery)
 """
 from __future__ import annotations
 
@@ -176,6 +177,65 @@ def build_v2():
     return combined
 
 
+# ---------------- v3: distinct-only real seed (oversampled) + v1-style eval-matching synthetic ----------------
+SEED_V3 = 13
+REAL_REPEAT_V3 = 2  # oversample the 79 distinct-label reals so the real signal isn't diluted (v2 halved it)
+
+
+def build_v3():
+    """Best-of-both: keep v2's distinct-misconception discipline AND recover v1's alignment.
+
+    Every training target still has 3 distinct misconceptions (the v1 collapse never re-enters,
+    because the duplicate-label reals stay out). Two changes vs v2, both aimed at the alignment
+    drop rather than the labels:
+      1. real seed = the 79 distinct-label reals, oversampled x REAL_REPEAT_V3. v2 let the real
+         fraction fall to ~5.5%; v1's was ~10.5%. Oversampling restores the real teacher signal
+         that alignment (an answer-overlap metric) actually depends on.
+      2. synthetic = the v1 (eval-matching) mix, NOT v2's flat per-family rebalance. v2's balancing
+         diluted the families that resemble the eval set, which is the other half of the alignment cost.
+    """
+    DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
+
+    # v1-style synthetic: reuse the on-disk v1 synth if present (identical, eval-matching), else regenerate.
+    synth_path = DATA_PROCESSED / "synth_train.jsonl"
+    synth = load_jsonl(synth_path) if synth_path.exists() else [synth_to_sft(ex) for ex in generate()]
+
+    real, real_total = load_real_distinct()
+    real_up = real * REAL_REPEAT_V3
+
+    combined = real_up + synth
+    random.Random(SEED_V3).shuffle(combined)
+    with open(DATA_PROCESSED / "train_v3.jsonl", "w", encoding="utf-8") as f:
+        for rec in combined:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    # ---------------- report ----------------
+    dropped = real_total - len(real)
+    real_frac = 100 * len(real_up) / len(combined)
+    print("=== v3 build ===")
+    print(f"real seed: {len(real)}/{real_total} distinct-label reals, oversampled x{REAL_REPEAT_V3} "
+          f"-> {len(real_up)} records (dropped {dropped} duplicate-label reals, kept OUT to avoid re-teaching repeats)")
+    print(f"synthetic (v1 eval-matching mix, unique + consistency-verified): {len(synth)}")
+    print(f"\nv3 train dataset: {len(combined)}  ({len(real_up)} real-oversampled + {len(synth)} synthetic; real weight {real_frac:.1f}%)")
+    print("  -> data/processed/train_v3.jsonl")
+
+    # ---------------- verification ----------------
+    n_three = n_dm = n_da = 0
+    for rec in combined:
+        ds = _sft_distractors(rec)
+        miscs = [str(d.get("misconception", "")).strip().lower() for d in ds]
+        answers = [normalize_answer(d.get("answer", "")) for d in ds]
+        n_three += 1 if len(ds) == 3 else 0
+        n_dm += 1 if (len(set(miscs)) == 3 and all(miscs)) else 0
+        n_da += 1 if (len(set(answers)) == 3 and all(answers)) else 0
+    N = len(combined)
+    print("\n=== verification ===")
+    print(f"train_v3 exactly 3 distractors    : {n_three}/{N} ({100 * n_three / N:.1f}%)")
+    print(f"train_v3 3 DISTINCT misconceptions: {n_dm}/{N} ({100 * n_dm / N:.1f}%)  <- must be ~100 (the v1 fix)")
+    print(f"train_v3 3 distinct answers       : {n_da}/{N} ({100 * n_da / N:.1f}%)")
+    return combined
+
+
 def build_v1():
     DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
     exs = generate()
@@ -205,8 +265,15 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--v2", action="store_true",
                     help="build the v2 dataset (distinct-only real seed + expanded/rebalanced synthetic)")
+    ap.add_argument("--v3", action="store_true",
+                    help="build the v3 dataset (distinct-only real seed oversampled + v1-style eval-matching synthetic)")
     args = ap.parse_args()
-    build_v2() if args.v2 else build_v1()
+    if args.v3:
+        build_v3()
+    elif args.v2:
+        build_v2()
+    else:
+        build_v1()
 
 
 if __name__ == "__main__":
