@@ -1,13 +1,14 @@
 """Eval harness: alignment@K + structural/spec checks + consistency, base-vs-tuned.
 
 Consumes prediction files (JSONL rows: {"id", "distractors":[{"misconception","answer"}]}) produced
-by base and tuned model inference. All metrics here are LOCAL and free except the optional judge
-(Claude Sonnet 5 via TrueFoundry), which is only called with --judge.
+by base and tuned model inference. All metrics here are LOCAL and free except the optional judges
+(Claude Sonnet 5 via TrueFoundry), which are only called with --judge or --rubric.
 
 Usage:
-  python -m src.eval                      # local self-validation (no API)
-  python -m src.eval preds.jsonl          # score a predictions file vs the real hold-out
-  python -m src.eval preds.jsonl --judge  # also run the API judge (costs money)
+  python -m src.eval                       # local self-validation (no API)
+  python -m src.eval preds.jsonl           # score a predictions file vs the real hold-out
+  python -m src.eval preds.jsonl --judge   # also run the API YES/NO consistency judge (costs money)
+  python -m src.eval preds.jsonl --rubric  # also run the Appendix-A LLM-judge rubric (0-2 x4, API cost)
 """
 from __future__ import annotations
 
@@ -101,6 +102,106 @@ def judge_consistency(question, misconception, answer, correct) -> bool:
     return out.strip().upper().startswith("Y")
 
 
+# ---------------- LLM-as-judge rubric (Appendix A; gated; TrueFoundry API) ----------------
+RUBRIC_DIMS = ("spec_adherence", "robustness", "task_quality", "consistency")
+
+_RUBRIC_SYSTEM = (
+    "You are a strict evaluator of AI-generated diagnostic distractors for middle-school "
+    '"Number" multiple-choice math questions. You score one item at a time on four dimensions '
+    "using an integer 0-2 scale and reply with ONLY compact JSON (no prose, no code fences)."
+)
+
+# Behavior spec the generator is contracted to satisfy (mirrors src.prompts.SYSTEM_PROMPT).
+_RUBRIC_SPEC = (
+    "BEHAVIOR SPEC (a correct output must satisfy ALL of these):\n"
+    "- Exactly 3 distractors (wrong answers).\n"
+    "- Each distractor is tagged to a specific, named student misconception or procedural error.\n"
+    "- Each distractor's value is exactly what a student making that stated misconception would "
+    "compute for THIS question (numerically consistent with the misconception).\n"
+    "- No distractor equals the correct answer.\n"
+    "- The 3 distractor answers are all distinct from one another."
+)
+
+
+def _extract_json_obj(text):
+    """Best-effort: pull the first {...} object out of a model reply. Returns dict or None."""
+    text = (text or "").strip()
+    try:
+        start = text.index("{")
+        end = text.rindex("}")
+        return json.loads(text[start : end + 1])
+    except Exception:
+        return None
+
+
+def judge_rubric(question, correct, distractors):
+    """Score one item on the four Appendix-A dimensions via the frontier judge.
+
+    Returns {dim: int in 0..2 for dim in RUBRIC_DIMS} or None if the reply can't be parsed.
+
+    NOTE: "robustness" is only meaningful to the extent the input set stresses the model. Scored
+    here on the clean hold-out it mostly reflects "are these plausible, non-arbitrary wrong options"
+    rather than true adversarial robustness; a real robustness number needs a dedicated adversarial /
+    perturbed input set (stretch goal), not this clean eval.
+    """
+    from .tfy_client import chat
+
+    payload = json.dumps(
+        [{"misconception": d.get("misconception", ""), "answer": d.get("answer", "")} for d in distractors],
+        ensure_ascii=False,
+    )
+    usr = (
+        f"{_RUBRIC_SPEC}\n\n"
+        "SCORING DIMENSIONS (each an integer 0, 1, or 2 -- 2 = fully meets, 1 = partial, 0 = fails):\n"
+        "- spec_adherence: structural conformance to the spec (exactly 3, 3 distinct answers, none "
+        "equals the correct answer, each has a named misconception).\n"
+        "- robustness: are these plausible, non-trivial wrong options a real student could pick, rather "
+        "than arbitrary/careless numbers, duplicates, or obvious giveaways.\n"
+        "- task_quality: pedagogical quality -- are the tagged misconceptions realistic and diagnostic "
+        "for THIS specific question, and are the answers the kind of mistakes real students actually make.\n"
+        "- consistency: does each answer numerically match the misconception it is tagged with, given "
+        "this question and correct answer.\n\n"
+        f"QUESTION: {question}\n"
+        f"CORRECT ANSWER: {correct}\n"
+        f"DISTRACTORS (JSON): {payload}\n\n"
+        'Return ONLY compact JSON exactly like: {"spec_adherence":0,"robustness":0,"task_quality":0,"consistency":0}'
+    )
+    out = chat(
+        [{"role": "system", "content": _RUBRIC_SYSTEM}, {"role": "user", "content": usr}],
+        max_tokens=200,
+    )
+    obj = _extract_json_obj(out)
+    if obj is None:
+        return None
+    scores = {}
+    for dim in RUBRIC_DIMS:
+        try:
+            v = int(round(float(obj[dim])))
+        except (KeyError, TypeError, ValueError):
+            return None
+        scores[dim] = max(0, min(2, v))
+    return scores
+
+
+def rubric_scores(gold, preds):
+    """Mean 0-2 rubric score per dimension over the items the judge scored successfully.
+
+    Returns (means: {dim: float 0..2}, n_scored: int). Items whose reply can't be parsed are
+    skipped (not counted), so means reflect only successfully-judged items.
+    """
+    sums = {d: 0.0 for d in RUBRIC_DIMS}
+    n = 0
+    for r, p in zip(gold, preds):
+        s = judge_rubric(r["question"], r["correct"], p)
+        if s is None:
+            continue
+        for d in RUBRIC_DIMS:
+            sums[d] += s[d]
+        n += 1
+    means = {d: (sums[d] / n if n else 0.0) for d in RUBRIC_DIMS}
+    return means, n
+
+
 # ---------------- reports ----------------
 def _self_validate(gold):
     golds = [[d["answer"] for d in r["distractors"]] for r in gold]
@@ -139,7 +240,7 @@ def _self_validate(gold):
     print(f"CONSISTENCY (one distractor perturbed, expect item~0): {programmatic_consistency(bad)}")
 
 
-def report_predictions(gold, pred_path, use_judge=False):
+def report_predictions(gold, pred_path, use_judge=False, use_rubric=False):
     preds_raw = load_jsonl(pred_path)
     pmap = {str(r["id"]): r.get("distractors", []) for r in preds_raw}
     golds, corrects, preds = [], [], []
@@ -157,18 +258,25 @@ def report_predictions(gold, pred_path, use_judge=False):
                 n += 1
                 ok += 1 if judge_consistency(r["question"], d.get("misconception", ""), d.get("answer", ""), r["correct"]) else 0
         print(f"JUDGE CONSISTENCY (API): {100 * ok / n if n else 0:.1f}%  ({ok}/{n} pairs)")
+    if use_rubric:
+        means, n = rubric_scores(gold, preds)
+        print(f"JUDGE RUBRIC (API, Appendix A, mean 0-2 over {n}/{len(gold)} items):")
+        print("   ", {k: round(v, 3) for k, v in means.items()})
+        # Reminder: on this clean hold-out "robustness" is a plausibility proxy, not a true
+        # adversarial-robustness measurement (that needs a dedicated perturbed input set -- stretch).
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("predictions", nargs="?", help="predictions JSONL vs the real hold-out")
-    ap.add_argument("--judge", action="store_true", help="also run the TrueFoundry judge (API cost)")
+    ap.add_argument("--judge", action="store_true", help="also run the TrueFoundry YES/NO consistency judge (API cost)")
+    ap.add_argument("--rubric", action="store_true", help="also run the Appendix-A LLM-judge rubric, 0-2 x4 dims (API cost)")
     args = ap.parse_args()
     gold = load_jsonl(DATA_PROCESSED / "eval_heldout.jsonl")
     if not args.predictions:
         _self_validate(gold)
     else:
-        report_predictions(gold, args.predictions, use_judge=args.judge)
+        report_predictions(gold, args.predictions, use_judge=args.judge, use_rubric=args.rubric)
 
 
 if __name__ == "__main__":
