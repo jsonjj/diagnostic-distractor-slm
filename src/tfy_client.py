@@ -18,16 +18,18 @@ def get_client():
 
         if not TFY_API_KEY:
             raise RuntimeError("TFY_API_KEY is not set (add it to .env or your environment).")
-        _client = OpenAI(api_key=TFY_API_KEY, base_url=TFY_BASE_URL)
+        _client = OpenAI(api_key=TFY_API_KEY, base_url=TFY_BASE_URL, timeout=45, max_retries=2)
     return _client
 
 
-def chat(messages: List[Dict], model: Optional[str] = None, temperature: float = 0.0, max_tokens: int = 1024) -> str:
-    resp = get_client().chat.completions.create(
+def chat(messages: List[Dict], model: Optional[str] = None, temperature: Optional[float] = None, max_tokens: int = 1024) -> str:
+    kwargs = dict(
         model=model or TFY_MODEL,
         messages=messages,
-        temperature=temperature,
         max_tokens=max_tokens,
         extra_headers=TFY_EXTRA_HEADERS,
     )
+    if temperature is not None:  # some gateway models (e.g. claude-sonnet-5) reject `temperature`
+        kwargs["temperature"] = temperature
+    resp = get_client().chat.completions.create(**kwargs)
     return resp.choices[0].message.content or ""

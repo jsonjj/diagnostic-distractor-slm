@@ -18,7 +18,7 @@ DATA_PROCESSED = ROOT / "data" / "processed"
 
 # --- TrueFoundry AI Gateway (OpenAI-compatible): teacher + judge + frontier baseline ---
 TFY_BASE_URL = os.getenv("TFY_BASE_URL", "https://tfy-eu.promptlens.trilogy.com")
-TFY_MODEL = os.getenv("TFY_MODEL", "anthropic-primary/claude-sonnet-5")
+TFY_MODEL = os.getenv("TFY_MODEL", "claude-sonnet-5")
 TFY_API_KEY = os.getenv("TFY_API_KEY", "")
 TFY_EXTRA_HEADERS = {
     "X-TFY-METADATA": "{}",
