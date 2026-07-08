@@ -18,7 +18,7 @@ import json
 import random
 
 from .config import DATA_PROCESSED
-from .consistency import is_consistent
+from .consistency import computation_consistent, is_consistent
 from .text_utils import normalize_answer
 
 
@@ -84,6 +84,39 @@ def programmatic_consistency(items):
     return {
         "item_consistency": 100 * ok / n if n else 0,
         "pair_consistency": 100 * cons / total if total else 0,
+    }
+
+
+# ---------------- consistency: computation (free; works on ANY computation-bearing output) ----------------
+def computation_consistency(preds):
+    """Free (no-API) consistency signal for computation-bearing predictions (v4 targets).
+
+    For each predicted distractor, parse its `computation`, evaluate the left-hand side, and
+    check it equals normalize_answer(answer). Backward-compatible: predictions WITHOUT a
+    `computation` (old prediction files) score as not-consistent (0) and never crash.
+
+    Returns item% (all 3 in an item consistent), pair% (per-distractor), and how many pairs
+    actually carried a parseable computation (so a 0% from an old file is legible, not silent).
+    """
+    n = len(preds)
+    item_ok = pair_ok = pairs = with_comp = 0
+    for p in preds:
+        all_ok = bool(p)
+        for d in p:
+            pairs += 1
+            res = computation_consistent(d.get("computation", ""), d.get("answer", ""))
+            if res is not None:
+                with_comp += 1
+            if res is True:
+                pair_ok += 1
+            else:
+                all_ok = False
+        item_ok += 1 if all_ok else 0
+    return {
+        "item_consistency": 100 * item_ok / n if n else 0,
+        "pair_consistency": 100 * pair_ok / pairs if pairs else 0,
+        "pairs_with_computation": with_comp,
+        "pairs_total": pairs,
     }
 
 
@@ -230,7 +263,10 @@ def _self_validate(gold):
                 {
                     "family": ex["family"],
                     "operands": ex["operands"],
-                    "distractors": [{"misconception_id": d["misconception_id"], "answer": d["answer"]} for d in ex["distractors"]],
+                    "distractors": [
+                        {"misconception_id": d["misconception_id"], "computation": d.get("computation", ""), "answer": d["answer"]}
+                        for d in ex["distractors"]
+                    ],
                 }
             )
     print(f"CONSISTENCY (synthetic consistent, expect 100): {programmatic_consistency(items)}")
@@ -238,6 +274,18 @@ def _self_validate(gold):
     for it in bad:
         it["distractors"][0]["answer"] = "999999"
     print(f"CONSISTENCY (one distractor perturbed, expect item~0): {programmatic_consistency(bad)}")
+
+    # computation-consistency (free, no API): same items scored via their show-the-work strings
+    comp_preds = [it["distractors"] for it in items]
+    cc = computation_consistency(comp_preds)
+    print(f"COMPUTATION-CONSISTENCY (synthetic, expect item~100): "
+          f"item {cc['item_consistency']:.1f}% | pair {cc['pair_consistency']:.1f}%")
+    bad_c = copy.deepcopy(comp_preds)
+    for p in bad_c:
+        p[0]["computation"] = "0 + 0 = 0"  # LHS no longer equals the answer
+    ccb = computation_consistency(bad_c)
+    print(f"COMPUTATION-CONSISTENCY (one computation broken, expect item~0): "
+          f"item {ccb['item_consistency']:.1f}% | pair {ccb['pair_consistency']:.1f}%")
 
 
 def report_predictions(gold, pred_path, use_judge=False, use_rubric=False):
@@ -251,6 +299,9 @@ def report_predictions(gold, pred_path, use_judge=False, use_rubric=False):
         preds.append(pmap.get(gid, []))
     print("ALIGNMENT:", {k: round(v, 1) for k, v in alignment_metrics(golds, [[d.get("answer", "") for d in p] for p in preds]).items()})
     print("STRUCTURAL:", {k: round(v, 1) for k, v in structural_scores(preds, corrects).items()})
+    cc = computation_consistency(preds)
+    print(f"COMPUTATION CONSISTENCY (free, no API): item {cc['item_consistency']:.1f}% | pair {cc['pair_consistency']:.1f}%  "
+          f"({cc['pairs_with_computation']}/{cc['pairs_total']} predicted distractors carried a parseable computation)")
     if use_judge:
         n = ok = 0
         for r, p in zip(gold, preds):

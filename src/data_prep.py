@@ -12,7 +12,10 @@ import json
 import random
 
 from .config import DATA_PROCESSED, DATA_RAW, NUMBER_SUBJECTS
-from .prompts import SYSTEM_PROMPT, build_assistant, build_user
+# The real seed is the legacy {misconception, answer} schema; v4's show-the-work
+# computations are added later (src.real_computations), so keep the legacy prompt here
+# to reproduce real_train_seed.jsonl byte-for-byte.
+from .prompts import SYSTEM_PROMPT_LEGACY, build_assistant, build_user
 from .text_utils import normalize_answer
 
 SEED = 42
@@ -65,7 +68,7 @@ def build_record(r, mapping) -> dict:
 
 def to_sft(rec) -> dict:
     return {
-        "system": SYSTEM_PROMPT,
+        "system": SYSTEM_PROMPT_LEGACY,
         "user": build_user(rec["question"], rec["correct"], rec["topic"]),
         "assistant": build_assistant(rec["distractors"]),
         "meta": {"id": rec["id"], "topic": rec["topic"], "source": "eedi_real"},

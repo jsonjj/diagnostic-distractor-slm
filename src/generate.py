@@ -10,6 +10,7 @@ Usage:
   python -m src.generate        # build v1 (unchanged)
   python -m src.generate --v2   # build v2 (fixes the misconception-repetition regression)
   python -m src.generate --v3   # build v3 (v2's distinct labels + v1's alignment recovery)
+  python -m src.generate --v4   # build v4 (v3's composition + a show-the-work `computation` per distractor)
 """
 from __future__ import annotations
 
@@ -20,8 +21,8 @@ from collections import Counter
 
 from .buggy_procedures import FAMILIES, generate_example
 from .config import DATA_PROCESSED
-from .consistency import check_synthetic_example
-from .prompts import build_assistant, build_user, SYSTEM_PROMPT
+from .consistency import check_synthetic_example, computation_consistent
+from .prompts import build_assistant, build_user, SYSTEM_PROMPT, SYSTEM_PROMPT_LEGACY
 from .text_utils import normalize_answer
 
 SEED = 7
@@ -32,14 +33,31 @@ SEED_V2 = 11
 PER_FAMILY_CAP = 220  # cap large families so none dominates (v1 ranged fraction_mul=350 ... square=7)
 
 
-def synth_to_sft(ex: dict) -> dict:
+def synth_to_sft(ex: dict, with_computation: bool = False) -> dict:
+    """Synthetic example -> SFT chat record.
+
+    with_computation=False (v1/v2/v3): legacy {misconception, answer} target under the
+    legacy system prompt -- byte-for-byte identical to the original output.
+    with_computation=True (v4): show-the-work {misconception, computation, answer} target
+    under the v4 system prompt.
+    """
     correct = normalize_answer(ex["correct"])
-    distractors = [
-        {"misconception": d["misconception"], "answer": normalize_answer(d["answer"])}
-        for d in ex["distractors"]
-    ]
+    if with_computation:
+        distractors = [
+            {
+                "misconception": d["misconception"],
+                "computation": d.get("computation", ""),
+                "answer": normalize_answer(d["answer"]),
+            }
+            for d in ex["distractors"]
+        ]
+    else:
+        distractors = [
+            {"misconception": d["misconception"], "answer": normalize_answer(d["answer"])}
+            for d in ex["distractors"]
+        ]
     return {
-        "system": SYSTEM_PROMPT,
+        "system": SYSTEM_PROMPT if with_computation else SYSTEM_PROMPT_LEGACY,
         "user": build_user(ex["question"], correct, ex["topic"]),
         "assistant": build_assistant(distractors),
         "meta": {"family": ex["family"], "topic": ex["topic"], "source": "synthetic"},
@@ -236,6 +254,114 @@ def build_v3():
     return combined
 
 
+# ---------------- v4: v3's composition + a show-the-work `computation` in EVERY target ----------------
+SEED_V4 = 17
+REAL_REPEAT_V4 = 3  # x3 restores ~10.3% real weight (46 verified reals -> 138); x2 fell to 7.1% vs v3's 11.6%
+
+
+def _no_empty_fields(rec: dict) -> bool:
+    ds = _sft_distractors(rec)
+    return bool(ds) and all(
+        str(d.get("misconception", "")).strip()
+        and str(d.get("computation", "")).strip()
+        and str(d.get("answer", "")).strip()
+        for d in ds
+    )
+
+
+def _computation_stats(records):
+    """(item_ok, n_items, pair_ok, n_pairs): does each distractor's computation LHS == its answer."""
+    item_ok = pair_ok = pairs = 0
+    for rec in records:
+        ds = _sft_distractors(rec)
+        all_ok = bool(ds)
+        for d in ds:
+            pairs += 1
+            if computation_consistent(d.get("computation", ""), d.get("answer", "")) is True:
+                pair_ok += 1
+            else:
+                all_ok = False
+        item_ok += 1 if all_ok else 0
+    return item_ok, len(records), pair_ok, pairs
+
+
+def build_v4():
+    """v4 = v3's composition, but every distractor target also SHOWS THE WORK.
+
+    Same shape as v3 -- the distinct-misconception reals (oversampled x REAL_REPEAT_V4) plus the
+    1,200 v1-style eval-matching synthetic examples -- except each distractor now carries a
+    `computation` string (e.g. "0.4 \u00f7 0.2 = 2"). Synthetic computations come from the buggy-
+    procedure engine (guaranteed to evaluate to the answer). Real computations are teacher-generated
+    and kept only if they verify programmatically (src.real_computations), which also filters out the
+    inconsistent reals -- so the real seed here is the verified subset of the 79.
+    """
+    DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
+    from .real_computations import ensure_real_v4  # lazy: only v4 needs the (cached) teacher output
+
+    # synthetic WITH computation: identical questions to the v1/v3 mix (same seed/filter), + computation
+    exs = generate()
+    synth = [synth_to_sft(ex, with_computation=True) for ex in exs]
+    with open(DATA_PROCESSED / "synth_train_v4.jsonl", "w", encoding="utf-8") as f:
+        for rec in synth:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    # real WITH computation: verified survivors of the 79 distinct-misconception reals (teacher-generated)
+    real = ensure_real_v4()
+    real_up = real * REAL_REPEAT_V4
+
+    combined = real_up + synth
+    random.Random(SEED_V4).shuffle(combined)
+    with open(DATA_PROCESSED / "train_v4.jsonl", "w", encoding="utf-8") as f:
+        for rec in combined:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    # ---------------- report ----------------
+    real_frac = 100 * len(real_up) / len(combined)
+    print("=== v4 build ===")
+    print(f"real seed: {len(real)}/79 distinct-misconception reals survived teacher+verify, "
+          f"oversampled x{REAL_REPEAT_V4} -> {len(real_up)} records "
+          f"(dropped {79 - len(real)} = {100 * (79 - len(real)) / 79:.1f}% whose computation couldn't be verified)")
+    print(f"synthetic (v1 eval-matching mix, unique + consistency-verified, WITH computation): {len(synth)}")
+    print(f"\nv4 train dataset: {len(combined)}  ({len(real_up)} real-oversampled + {len(synth)} synthetic; "
+          f"real weight {real_frac:.1f}%)")
+    print("  -> data/processed/train_v4.jsonl  (+ synth_train_v4.jsonl, real_train_seed_v4.jsonl)")
+
+    # ---------------- verification ----------------
+    n_three = n_dm = n_da = n_ne = n_json = 0
+    for rec in combined:
+        try:
+            json.loads(rec["assistant"])
+            n_json += 1
+        except Exception:
+            pass
+        ds = _sft_distractors(rec)
+        miscs = [str(d.get("misconception", "")).strip().lower() for d in ds]
+        answers = [normalize_answer(d.get("answer", "")) for d in ds]
+        n_three += 1 if len(ds) == 3 else 0
+        n_dm += 1 if (len(set(miscs)) == 3 and all(miscs)) else 0
+        n_da += 1 if (len(set(answers)) == 3 and all(answers)) else 0
+        n_ne += 1 if _no_empty_fields(rec) else 0
+    N = len(combined)
+
+    s_item, s_n, s_pair, s_pairs = _computation_stats(synth)
+    r_item, r_n, r_pair, r_pairs = _computation_stats(real_up)
+
+    def pct(a, b):
+        return 100 * a / b if b else 0.0
+
+    print("\n=== verification ===")
+    print(f"valid JSON                        : {n_json}/{N} ({pct(n_json, N):.1f}%)")
+    print(f"exactly 3 distractors             : {n_three}/{N} ({pct(n_three, N):.1f}%)")
+    print(f"3 DISTINCT misconceptions         : {n_dm}/{N} ({pct(n_dm, N):.1f}%)")
+    print(f"3 distinct answers                : {n_da}/{N} ({pct(n_da, N):.1f}%)")
+    print(f"no empty fields (misc/comp/answer): {n_ne}/{N} ({pct(n_ne, N):.1f}%)")
+    print(f"SYNTHETIC computation-consistency : item {pct(s_item, s_n):.1f}% ({s_item}/{s_n}) | "
+          f"pair {pct(s_pair, s_pairs):.1f}% ({s_pair}/{s_pairs})   <- must be 100 (engine guarantee)")
+    print(f"REAL     computation-consistency  : item {pct(r_item, r_n):.1f}% ({r_item}/{r_n}) | "
+          f"pair {pct(r_pair, r_pairs):.1f}% ({r_pair}/{r_pairs})   <- must be 100 (verify filter guarantee)")
+    return combined
+
+
 def build_v1():
     DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
     exs = generate()
@@ -267,8 +393,12 @@ def main():
                     help="build the v2 dataset (distinct-only real seed + expanded/rebalanced synthetic)")
     ap.add_argument("--v3", action="store_true",
                     help="build the v3 dataset (distinct-only real seed oversampled + v1-style eval-matching synthetic)")
+    ap.add_argument("--v4", action="store_true",
+                    help="build the v4 dataset (v3's composition + a show-the-work `computation` in every distractor)")
     args = ap.parse_args()
-    if args.v3:
+    if args.v4:
+        build_v4()
+    elif args.v3:
         build_v3()
     elif args.v2:
         build_v2()

@@ -1,0 +1,3 @@
+ALIGNMENT: {'Exact@3': 12.1, 'Partial@3': 56.4, 'Proportional@3': 31.9}
+STRUCTURAL: {'exactly_3': 100.0, 'distinct_misconceptions': 30.7, 'none_equals_key': 90.0, 'distinct_answers': 87.9, 'spec_pass': 81.4}
+JUDGE CONSISTENCY (API): 49.8%  (209/420 pairs)

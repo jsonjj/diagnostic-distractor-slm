@@ -1,0 +1,4 @@
+ALIGNMENT: {'Exact@3': 0.0, 'Partial@3': 35.0, 'Proportional@3': 12.4}
+STRUCTURAL: {'exactly_3': 97.1, 'distinct_misconceptions': 91.4, 'none_equals_key': 62.1, 'distinct_answers': 70.7, 'spec_pass': 43.6}
+JUDGE RUBRIC (API, Appendix A, mean 0-2 over 133/140 items):
+    {'spec_adherence': 0.496, 'robustness': 0.353, 'task_quality': 0.308, 'consistency': 0.226}
