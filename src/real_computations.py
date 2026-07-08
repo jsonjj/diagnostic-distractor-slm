@@ -32,7 +32,9 @@ from .consistency import computation_consistent, eval_computation, to_value
 from .prompts import SYSTEM_PROMPT, build_assistant, build_user
 
 REAL_V4_PATH = DATA_PROCESSED / "real_train_seed_v4.jsonl"
-MAX_RETRIES = 2  # attempts = 1 + MAX_RETRIES; keeps total calls <= ~3x #records
+REAL_V5_PATH = DATA_PROCESSED / "real_train_seed_v5.jsonl"
+MAX_RETRIES = 2      # v4: attempts = 1 + MAX_RETRIES; keeps total calls <= ~3x #records
+MAX_RETRIES_V5 = 4   # v5: more retries to raise yield past v4's 46 survivors
 
 _TEACHER_SYSTEM = (
     "You are a mathematics teacher who models student misconceptions precisely. For a "
@@ -83,27 +85,33 @@ def _prompt(question, correct, topic, distractors, retry_note=""):
     )
 
 
-def _verify(computations, distractors):
-    """Return list of clean 'lhs = answer' strings if all 3 verify, else None."""
+def _verify(computations, distractors, question=None):
+    """Return list of clean 'lhs = answer' strings if all 3 verify, else None.
+
+    When `question` is given (v5), each computation must pass the HARDENED check
+    (operator-bearing + operands grounded in the question) -- the same bar eval applies to
+    model predictions -- so verified reals can't teach the degenerate/fabricated patterns
+    that game the free metric.
+    """
     if not isinstance(computations, list) or len(computations) != len(distractors):
         return None
     out = []
     for comp, d in zip(computations, distractors):
-        if computation_consistent(comp, d["answer"]) is not True:
+        if computation_consistent(comp, d["answer"], question) is not True:
             return None
         lhs = str(comp).split("=", 1)[0].strip()
         out.append(f"{lhs} = {d['answer']}")
     return out
 
 
-def _process(rec, chat):
+def _process(rec, chat, max_retries=MAX_RETRIES, harden=False):
     """Generate + verify computations for one real record. Returns (sft_or_None, n_calls, detail)."""
     question, correct, topic = _parse_user(rec["user"])
     distractors = json.loads(rec["assistant"]).get("distractors", [])
     calls = 0
     verified = None
     retry_note = ""
-    for _ in range(1 + MAX_RETRIES):
+    for _ in range(1 + max_retries):
         usr = _prompt(question, correct, topic, distractors, retry_note)
         calls += 1
         try:
@@ -117,7 +125,7 @@ def _process(rec, chat):
             continue
         obj = _extract_json_obj(out)
         comps = obj.get("computations") if isinstance(obj, dict) else None
-        verified = _verify(comps, distractors)
+        verified = _verify(comps, distractors, question if harden else None)
         if verified is not None:
             break
         # nudge the retry with the exact targets it must hit
@@ -197,32 +205,97 @@ def ensure_real_v4(regenerate: bool = False):
     return kept
 
 
+def generate_real_v5(limit: int = 0, workers: int = 8, verbose: bool = True):
+    """v5 real-computation generation: same candidate pool (79 distinct-misconception reals),
+    but MORE retries and HARDENED verification (operator-bearing + question-grounded), so the
+    surviving reals meet the exact bar eval applies to model predictions.
+
+    Returns (survivors: list[sft], stats: dict). Requires TFY_API_KEY (imported lazily).
+    """
+    from .generate import load_real_distinct
+    from .tfy_client import chat
+
+    reals, _total = load_real_distinct()
+    if limit:
+        reals = reals[:limit]
+
+    survivors = [None] * len(reals)
+    total_calls = 0
+    lock = threading.Lock()
+    done = 0
+
+    def work(i_rec):
+        i, rec = i_rec
+        sft, calls, detail = _process(rec, chat, max_retries=MAX_RETRIES_V5, harden=True)
+        return i, sft, calls, detail
+
+    if verbose:
+        print(f"[v5] Teacher-generating HARDENED computations for {len(reals)} reals "
+              f"({workers} workers, <= ~{len(reals) * (1 + MAX_RETRIES_V5)} calls max)...", flush=True)
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        for i, sft, calls, detail in ex.map(work, list(enumerate(reals))):
+            survivors[i] = sft
+            with lock:
+                total_calls += calls
+                done += 1
+            if verbose and done % 20 == 0:
+                print(f"  {done}/{len(reals)} processed", flush=True)
+
+    kept = [s for s in survivors if s is not None]
+    stats = {
+        "candidates": len(reals),
+        "survivors": len(kept),
+        "dropped": len(reals) - len(kept),
+        "api_calls": total_calls,
+    }
+    return kept, stats
+
+
+def ensure_real_v5(regenerate: bool = False):
+    """Return the surviving v5 real-with-computation SFT records, generating + caching if needed."""
+    if REAL_V5_PATH.exists() and not regenerate:
+        return _load_jsonl(REAL_V5_PATH)
+    kept, stats = generate_real_v5()
+    DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
+    with open(REAL_V5_PATH, "w", encoding="utf-8") as f:
+        for rec in kept:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    print(f"real v5: kept {stats['survivors']}/{stats['candidates']} "
+          f"(dropped {stats['dropped']}; {stats['api_calls']} API calls) -> {REAL_V5_PATH.name}")
+    return kept
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--force", action="store_true", help="regenerate even if the cache exists")
     ap.add_argument("--limit", type=int, default=0, help="only process the first N records (smoke)")
     ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--v5", action="store_true", help="v5 path: more retries + hardened (grounded) verify")
     args = ap.parse_args()
 
-    if REAL_V4_PATH.exists() and not args.force and not args.limit:
-        recs = _load_jsonl(REAL_V4_PATH)
-        print(f"{REAL_V4_PATH} already exists with {len(recs)} records. Use --force to regenerate.")
+    path = REAL_V5_PATH if args.v5 else REAL_V4_PATH
+    gen = generate_real_v5 if args.v5 else generate_real_v4
+
+    if path.exists() and not args.force and not args.limit:
+        recs = _load_jsonl(path)
+        print(f"{path} already exists with {len(recs)} records. Use --force to regenerate.")
         return
 
-    kept, stats = generate_real_v4(limit=args.limit, workers=args.workers)
+    kept, stats = gen(limit=args.limit, workers=args.workers)
     if not args.limit:
         DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
-        with open(REAL_V4_PATH, "w", encoding="utf-8") as f:
+        with open(path, "w", encoding="utf-8") as f:
             for rec in kept:
                 f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    print("\n=== real computations (teacher + verify) ===")
+    label = "v5, hardened" if args.v5 else "v4"
+    print(f"\n=== real computations (teacher + verify, {label}) ===")
     print(f"candidates (distinct-misconception reals): {stats['candidates']}")
     print(f"survivors (all 3 computations verified)  : {stats['survivors']} "
           f"({100 * stats['survivors'] / stats['candidates']:.1f}%)")
     print(f"dropped (>=1 unverifiable computation)    : {stats['dropped']}")
     print(f"total API calls                          : {stats['api_calls']}")
     if not args.limit:
-        print(f"  -> {REAL_V4_PATH}")
+        print(f"  -> {path}")
 
 
 if __name__ == "__main__":

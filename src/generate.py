@@ -19,7 +19,7 @@ import json
 import random
 from collections import Counter
 
-from .buggy_procedures import FAMILIES, generate_example
+from .buggy_procedures import FAMILIES, LEGACY_FAMILIES, generate_example
 from .config import DATA_PROCESSED
 from .consistency import check_synthetic_example, computation_consistent
 from .prompts import build_assistant, build_user, SYSTEM_PROMPT, SYSTEM_PROMPT_LEGACY
@@ -69,7 +69,7 @@ def generate(n: int = N_SYNTH, seed: int = SEED):
     seen, out, tries = set(), [], 0
     while len(out) < n and tries < n * 80:
         tries += 1
-        ex = generate_example(r)
+        ex = generate_example(r, families=LEGACY_FAMILIES)  # pinned to 8 for v1-v4 byte-identity
         if not ex or not check_synthetic_example(ex):  # hard filter: consistency guaranteed
             continue
         if ex["question"] in seen:
@@ -121,20 +121,26 @@ def load_real_distinct():
     return [r for r in recs if three_distinct_ok(r)], len(recs)
 
 
-def generate_balanced(per_family_cap: int = PER_FAMILY_CAP, seed: int = SEED_V2):
+def generate_balanced(per_family_cap: int = PER_FAMILY_CAP, seed: int = SEED_V2,
+                      families=None, harden: bool = False):
     """Unique, consistency-verified synthetic examples, sampled evenly across families.
 
     Each family is grown to `per_family_cap` unique questions or its natural ceiling,
     whichever is smaller, so no single family dominates (the v1 skew). generate_example
     already guarantees each example has 3 distinct misconceptions and 3 distinct answers.
+
+    `families` defaults to LEGACY_FAMILIES (the 8 original) so v2's build stays byte-identical
+    after v5 added families to FAMILIES; v5 passes the full 16-family list. `harden=True` (v5)
+    additionally requires each computation to be operator-bearing + question-grounded.
     """
+    fams = families if families is not None else LEGACY_FAMILIES
     r = random.Random(seed)
     out, per_family = [], {}
-    for fam in FAMILIES:
+    for fam in fams:
         seen, kept, stale = set(), [], 0
         while len(kept) < per_family_cap and stale < 6000:
             ex = generate_example(r, family=fam)
-            if not ex or not check_synthetic_example(ex) or ex["question"] in seen:
+            if not ex or not check_synthetic_example(ex, harden=harden) or ex["question"] in seen:
                 stale += 1
                 continue
             seen.add(ex["question"])
@@ -362,6 +368,107 @@ def build_v4():
     return combined
 
 
+# ---------------- v5: broad-coverage engine (de-skewed) + show-the-work + grown real set ----------------
+SEED_V5 = 19
+REAL_REPEAT_V5 = 3        # oversample verified reals to ~10-12% weight (tuned after real yield known)
+PER_FAMILY_CAP_V5 = 90    # 15 families capped at 90 -> ~1150 synth; ratio driven only by legacy `square`
+# v5 family list: all engine families EXCEPT the legacy `square` (n=2..20 -> only 18 questions, which
+# would force the whole set to <=54 for a 3:1 ratio). `square`/Squares-Cubes coverage is retained via
+# the v1-v4 lineage; eval has only 5 square items. Everything else reaches >=63, so <=90 stays ~<=1.4:1.
+V5_FAMILIES = [f for f in FAMILIES if f != "square"]
+
+
+def build_v5():
+    """v5 = attack the consistency gap via COVERAGE.
+
+    Two changes vs v4: (1) the engine now spans 16 families covering the eval's high-count
+    topics (Place Value, Rounding, Indices, Factors/HCF, decimal add/sub, conversions, mental
+    arithmetic) instead of 8 -- so the model learns to COMPUTE the misconceptions it is tested
+    on, rather than fabricating arithmetic that games the free metric; (2) synthetic is sampled
+    BALANCED (de-skewed to <=3:1) WITH show-the-work computations. Real seed = the grown,
+    hardened-verified survivors (src.real_computations.ensure_real_v5), oversampled x REAL_REPEAT_V5.
+    Every synthetic example passes the HARDENED (operator-bearing + question-grounded) self-check.
+    """
+    DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
+    from .real_computations import ensure_real_v5  # lazy: only v5 needs the (cached) teacher output
+
+    # synthetic WITH computation, balanced across the v5 family set, hardened self-check
+    exs, per_family = generate_balanced(per_family_cap=PER_FAMILY_CAP_V5, seed=SEED_V5,
+                                        families=V5_FAMILIES, harden=True)
+    synth = [synth_to_sft(ex, with_computation=True) for ex in exs]
+    with open(DATA_PROCESSED / "synth_train_v5.jsonl", "w", encoding="utf-8") as f:
+        for rec in synth:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    # real WITH computation: grown + hardened-verified survivors, oversampled
+    real = ensure_real_v5()
+    real_up = real * REAL_REPEAT_V5
+
+    combined = real_up + synth
+    random.Random(SEED_V5).shuffle(combined)
+    with open(DATA_PROCESSED / "train_v5.jsonl", "w", encoding="utf-8") as f:
+        for rec in combined:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    # ---------------- report ----------------
+    real_frac = 100 * len(real_up) / len(combined) if combined else 0
+    print("=== v5 build ===")
+    print(f"real seed: {len(real)} hardened-verified reals, oversampled x{REAL_REPEAT_V5} -> {len(real_up)} records")
+    print(f"synthetic (16-family balanced, WITH computation): {len(synth)}")
+    for fam, c in sorted(per_family.items(), key=lambda kv: -kv[1]):
+        print(f"  {c:4d}  {fam}")
+    print(f"\nv5 train dataset: {len(combined)}  ({len(real_up)} real-oversampled + {len(synth)} synthetic; "
+          f"real weight {real_frac:.1f}%)")
+    print("  -> data/processed/train_v5.jsonl  (+ synth_train_v5.jsonl, real_train_seed_v5.jsonl)")
+
+    # ---------------- verification ----------------
+    n_three = n_dm = n_da = n_ne = n_json = n_nek = 0
+    for rec in combined:
+        try:
+            json.loads(rec["assistant"])
+            n_json += 1
+        except Exception:
+            pass
+        ds = _sft_distractors(rec)
+        miscs = [str(d.get("misconception", "")).strip().lower() for d in ds]
+        answers = [normalize_answer(d.get("answer", "")) for d in ds]
+        n_three += 1 if len(ds) == 3 else 0
+        n_dm += 1 if (len(set(miscs)) == 3 and all(miscs)) else 0
+        n_da += 1 if (len(set(answers)) == 3 and all(answers)) else 0
+        n_ne += 1 if _no_empty_fields(rec) else 0
+
+    # synthetic computation-consistency under the HARDENED (grounded) check
+    s_item = s_pair = s_pairs = 0
+    for ex in exs:
+        all_ok = True
+        for d in ex["distractors"]:
+            s_pairs += 1
+            if computation_consistent(d.get("computation", ""), d["answer"], ex["question"]) is True:
+                s_pair += 1
+            else:
+                all_ok = False
+        s_item += 1 if all_ok else 0
+    r_item, r_n, r_pair, r_pairs = _computation_stats(real_up)
+    N = len(combined)
+    fam_dist = Counter(ex["family"] for ex in exs)
+    hi = max(fam_dist.values()); lo = min(fam_dist.values())
+
+    def pct(a, b):
+        return 100 * a / b if b else 0.0
+
+    print("\n=== verification ===")
+    print(f"valid JSON                        : {n_json}/{N} ({pct(n_json, N):.1f}%)")
+    print(f"exactly 3 distractors             : {n_three}/{N} ({pct(n_three, N):.1f}%)")
+    print(f"3 DISTINCT misconceptions         : {n_dm}/{N} ({pct(n_dm, N):.1f}%)")
+    print(f"3 distinct answers                : {n_da}/{N} ({pct(n_da, N):.1f}%)")
+    print(f"no empty fields                   : {n_ne}/{N} ({pct(n_ne, N):.1f}%)")
+    print(f"SYNTHETIC computation-consistency (HARDENED/grounded): item {pct(s_item, len(exs)):.1f}% | "
+          f"pair {pct(s_pair, s_pairs):.1f}%   <- must be 100")
+    print(f"REAL     computation-consistency  : item {pct(r_item, r_n):.1f}% | pair {pct(r_pair, r_pairs):.1f}%")
+    print(f"synthetic family balance          : max {hi} / min {lo} = {hi / lo:.1f}x  (target <=3.0x; v4 ~50x)")
+    return combined
+
+
 def build_v1():
     DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
     exs = generate()
@@ -395,8 +502,12 @@ def main():
                     help="build the v3 dataset (distinct-only real seed oversampled + v1-style eval-matching synthetic)")
     ap.add_argument("--v4", action="store_true",
                     help="build the v4 dataset (v3's composition + a show-the-work `computation` in every distractor)")
+    ap.add_argument("--v5", action="store_true",
+                    help="build the v5 dataset (16-family de-skewed coverage + show-the-work + grown verified reals)")
     args = ap.parse_args()
-    if args.v4:
+    if args.v5:
+        build_v5()
+    elif args.v4:
         build_v4()
     elif args.v3:
         build_v3()

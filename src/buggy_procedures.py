@@ -102,6 +102,59 @@ def _q_percent_of(r):
     }
 
 
+# ---- v5 families: cover the eval's high-count uncovered topics (Place Value, Rounding,
+# decimal/percentage conversion, decimal add/sub, indices, factors/HCF, mental arithmetic).
+# Every misconception below pairs apply() (exact value) with comp() (arithmetic string) whose
+# numeric leaves are digits taken from the question or whitelisted constants (0,1,2,10,100,1000),
+# so the hardened consistency check (operator-present + question-grounded) passes.
+
+def _q_place_value(r):
+    # value of the (non-zero) hundreds digit of a 4-digit number
+    while True:
+        N = r.randint(1000, 9999)
+        d = (N // 100) % 10
+        if d != 0:
+            return {"N": N, "d": d}
+
+
+def _q_round_dp(r):
+    # round whole.d1 d2 to 1 decimal place (d1<=8 so rounding never carries into the whole part)
+    return {"whole": r.randint(1, 9), "d1": r.randint(1, 8), "d2": r.randint(1, 9)}
+
+
+def _q_convert_dec_pct(r):
+    return {"a": r.randint(1, 9), "b": r.randint(1, 9)}  # convert 0.ab to a percentage
+
+
+def _q_dec_addsub(r):
+    return {"a": r.randint(1, 9), "b": r.randint(1, 9)}  # 0.a + 0.0b
+
+
+def _q_indices(r):
+    m = r.randint(2, 5)
+    n = r.randint(2, 5)
+    while n == m:
+        n = r.randint(2, 5)
+    return {"a": r.randint(2, 9), "m": m, "n": n}
+
+
+def _q_hcf(r):
+    g = r.choice([2, 3, 4, 5, 6, 7, 8, 9])
+    x, y = r.choice([(2, 5), (3, 5), (2, 7), (3, 7), (4, 7), (2, 9), (4, 9), (5, 7),
+                     (5, 8), (3, 8), (3, 4), (2, 3), (4, 5), (5, 6), (6, 7), (7, 8), (7, 9)])
+    return {"g": g, "a": g * x, "b": g * y}
+
+
+def _q_mental_add(r):
+    a = r.randint(25, 89)
+    b = r.randint(15, a - 1)  # a > b so the "subtract instead" bug stays positive
+    return {"a": a, "b": b}
+
+
+def _q_mental_mult(r):
+    return {"a": r.randint(11, 19), "b": r.randint(3, 9)}
+
+
 FAMILIES = {
     "fraction_add": {
         "topic": "Adding and Subtracting Fractions",
@@ -150,6 +203,54 @@ FAMILIES = {
         "gen": _q_percent_of,
         "text": lambda o: f"What is {o['p']}% of {o['A']}?",
         "correct": lambda o: F(o["A"] * o["p"], 100),
+    },
+    "place_value": {
+        "topic": "Place Value",
+        "gen": _q_place_value,
+        "text": lambda o: f"What is the value of the digit {o['d']} in {o['N']}?",
+        "correct": lambda o: F(o["d"] * 100),
+    },
+    "round_dp": {
+        "topic": "Rounding to Decimal Places",
+        "gen": _q_round_dp,
+        "text": lambda o: f"What is {o['whole']}.{o['d1']}{o['d2']} rounded to 1 decimal place?",
+        "correct": lambda o: F(o["whole"] * 10 + o["d1"] + (1 if o["d2"] >= 5 else 0), 10),
+    },
+    "convert_dec_pct": {
+        "topic": "Converting between Decimals and Percentages",
+        "gen": _q_convert_dec_pct,
+        "text": lambda o: f"Convert 0.{o['a']}{o['b']} to a percentage. What is the percentage value?",
+        "correct": lambda o: F(o["a"] * 10 + o["b"]),
+    },
+    "dec_addsub": {
+        "topic": "Adding and Subtracting with Decimals",
+        "gen": _q_dec_addsub,
+        "text": lambda o: f"What is 0.{o['a']} + 0.0{o['b']}?",
+        "correct": lambda o: F(o["a"] * 10 + o["b"], 100),
+    },
+    "indices": {
+        "topic": "Laws of Indices",
+        "gen": _q_indices,
+        "text": lambda o: f"What is {o['a']}^{o['m']} × {o['a']}^{o['n']}? Give the value.",
+        "correct": lambda o: F(o["a"] ** (o["m"] + o["n"])),
+    },
+    "hcf": {
+        "topic": "Factors and Highest Common Factor",
+        "gen": _q_hcf,
+        "text": lambda o: f"What is the highest common factor of {o['a']} and {o['b']}?",
+        "correct": lambda o: F(o["g"]),
+    },
+    "mental_add": {
+        "topic": "Mental Addition and Subtraction",
+        "gen": _q_mental_add,
+        "text": lambda o: f"What is {o['a']} + {o['b']}?",
+        "correct": lambda o: F(o["a"] + o["b"]),
+    },
+    "mental_mult": {
+        "topic": "Mental Multiplication and Division",
+        "gen": _q_mental_mult,
+        "text": lambda o: f"What is {o['a']} × {o['b']}?",
+        "correct": lambda o: F(o["a"] * o["b"]),
     },
 }
 
@@ -244,7 +345,7 @@ _reg("neg_subtract_wrong_sign", "Subtracts the numbers but gives the wrong sign"
      lambda o: f"{o['a']} - {o['b']}")
 _reg("neg_ignore_second", "Ignores the number being added and just negates the first", "neg_add",
      lambda o: F(-o["a"]),
-     lambda o: f"-{o['a']}")
+     lambda o: f"-{o['a']}")  # operator-free: fine for legacy (v4); v5's hardened filter drops it
 
 # decimal_mul: 0.p x 0.q  (correct = pq/100)
 _reg("dec_one_place", "Uses one decimal place instead of counting both", "decimal_mul",
@@ -275,7 +376,7 @@ _reg("sq_add_two", "Adds 2 instead of squaring", "square",
      lambda o: f"{o['n']} + 2")
 _reg("sq_times_next", "Multiplies by the next number instead of by itself", "square",
      lambda o: F(o["n"] * (o["n"] + 1)),
-     lambda o: f"{o['n']} \u00d7 {o['n'] + 1}")
+     lambda o: f"{o['n']} \u00d7 {o['n'] + 1}")  # legacy form (n+1 folded); v5 hardening drops if ungrounded
 _reg("sq_cube", "Cubes the number instead of squaring it", "square",
      lambda o: F(o["n"] ** 3),
      lambda o: f"{o['n']} \u00d7 {o['n']} \u00d7 {o['n']}")
@@ -297,6 +398,111 @@ _reg("pct_add", "Adds the percentage number to the amount", "percent_of",
      lambda o: F(o["A"] + o["p"]),
      lambda o: f"{o['A']} + {o['p']}")
 
+# place_value: value of the hundreds digit d in N  (correct = d*100)
+_reg("pv_face_value", "Gives the digit's face value, ignoring its place value", "place_value",
+     lambda o: F(o["d"]),
+     lambda o: f"{o['d']} × 1")
+_reg("pv_one_place_low", "Reads the digit one place value too low (tens instead of hundreds)", "place_value",
+     lambda o: F(o["d"] * 10),
+     lambda o: f"{o['d']} × 10")
+_reg("pv_one_place_high", "Reads the digit one place value too high (thousands instead of hundreds)", "place_value",
+     lambda o: F(o["d"] * 1000),
+     lambda o: f"{o['d']} × 1000")
+_reg("pv_reads_whole", "States the whole number instead of the digit's place value", "place_value",
+     lambda o: F(o["N"]),
+     lambda o: f"{o['N']} × 1")
+
+# round_dp: round whole.d1 d2 to 1 dp  (correct = round-half-up)
+_reg("rd_truncate", "Truncates the extra digit instead of rounding", "round_dp",
+     lambda o: F(o["whole"] * 10 + o["d1"], 10),
+     lambda o: f"({o['whole']} × 10 + {o['d1']})/10")
+_reg("rd_round_up_always", "Always rounds the last digit up regardless of its value", "round_dp",
+     lambda o: F(o["whole"] * 10 + o["d1"] + 1, 10),
+     lambda o: f"({o['whole']} × 10 + {o['d1']} + 1)/10")
+_reg("rd_drops_to_whole", "Drops the decimal part entirely, giving the whole number", "round_dp",
+     lambda o: F(o["whole"]),
+     lambda o: f"{o['whole']} × 1")
+_reg("rd_keeps_all_digits", "Does not round and keeps all the decimal digits", "round_dp",
+     lambda o: F(o["whole"] * 100 + o["d1"] * 10 + o["d2"], 100),
+     lambda o: f"({o['whole']} × 100 + {o['d1']} × 10 + {o['d2']})/100")
+
+# convert_dec_pct: 0.ab -> percentage  (correct = 10a+b)
+_reg("cp_move_one_place", "Moves the decimal one place instead of two", "convert_dec_pct",
+     lambda o: F(o["a"] * 10 + o["b"], 10),
+     lambda o: f"({o['a']} × 10 + {o['b']})/10")
+_reg("cp_move_three_places", "Moves the decimal three places instead of two", "convert_dec_pct",
+     lambda o: F((o["a"] * 10 + o["b"]) * 10),
+     lambda o: f"({o['a']} × 10 + {o['b']}) × 10")
+_reg("cp_first_digit_only", "Only scales the first decimal digit", "convert_dec_pct",
+     lambda o: F(o["a"] * 10),
+     lambda o: f"{o['a']} × 10")
+_reg("cp_divide_instead", "Divides by 100 instead of multiplying", "convert_dec_pct",
+     lambda o: F(o["a"] * 10 + o["b"], 1000),
+     lambda o: f"({o['a']} × 10 + {o['b']})/1000")
+
+# dec_addsub: 0.a + 0.0b  (correct = (10a+b)/100)
+_reg("da_align_wrong", "Does not align place values and adds both as tenths", "dec_addsub",
+     lambda o: F(o["a"] + o["b"], 10),
+     lambda o: f"({o['a']} + {o['b']})/10")
+_reg("da_ignore_point", "Ignores the decimal points and adds as whole numbers", "dec_addsub",
+     lambda o: F(o["a"] + o["b"]),
+     lambda o: f"{o['a']} + {o['b']}")
+_reg("da_subtract_instead", "Subtracts instead of adding", "dec_addsub",
+     lambda o: F(o["a"] * 10 - o["b"], 100),
+     lambda o: f"({o['a']} × 10 - {o['b']})/100")
+
+# indices: a^m × a^n  (correct = a^(m+n))
+_reg("idx_mul_exponents", "Multiplies the exponents instead of adding them", "indices",
+     lambda o: F(o["a"] ** (o["m"] * o["n"])),
+     lambda o: f"{o['a']}^({o['m']} × {o['n']})")
+_reg("idx_add_all", "Adds the base and both exponents", "indices",
+     lambda o: F(o["a"] + o["m"] + o["n"]),
+     lambda o: f"{o['a']} + {o['m']} + {o['n']}")
+_reg("idx_base_times_sum", "Multiplies the base by the sum of the exponents", "indices",
+     lambda o: F(o["a"] * (o["m"] + o["n"])),
+     lambda o: f"{o['a']} × ({o['m']} + {o['n']})")
+
+# hcf: highest common factor of a, b  (correct = g)
+_reg("hcf_product", "Multiplies the two numbers instead of finding the common factor", "hcf",
+     lambda o: F(o["a"] * o["b"]),
+     lambda o: f"{o['a']} × {o['b']}")
+_reg("hcf_sum", "Adds the two numbers", "hcf",
+     lambda o: F(o["a"] + o["b"]),
+     lambda o: f"{o['a']} + {o['b']}")
+_reg("hcf_difference", "Gives the difference of the two numbers", "hcf",
+     lambda o: F(abs(o["a"] - o["b"])),
+     lambda o: f"{max(o['a'], o['b'])} - {min(o['a'], o['b'])}")
+
+# mental_add: a + b, a>b, b!=5  (correct = a+b)
+_reg("ma_subtract_instead", "Subtracts the second number instead of adding it", "mental_add",
+     lambda o: F(o["a"] - o["b"]),
+     lambda o: f"{o['a']} - {o['b']}")
+_reg("ma_forgets_ten", "Forgets to carry a ten", "mental_add",
+     lambda o: F(o["a"] + o["b"] - 10),
+     lambda o: f"{o['a']} + {o['b']} - 10")
+_reg("ma_adds_extra_ten", "Carries an extra ten by mistake", "mental_add",
+     lambda o: F(o["a"] + o["b"] + 10),
+     lambda o: f"{o['a']} + {o['b']} + 10")
+
+# mental_mult: a × b, a in 11..19  (correct = a*b)
+_reg("mm_add_instead", "Adds the numbers instead of multiplying", "mental_mult",
+     lambda o: F(o["a"] + o["b"]),
+     lambda o: f"{o['a']} + {o['b']}")
+_reg("mm_ignore_tens", "Multiplies only the units digit, ignoring the tens", "mental_mult",
+     lambda o: F((o["a"] - 10) * o["b"]),
+     lambda o: f"({o['a']} - 10) × {o['b']}")
+_reg("mm_off_by_one_factor", "Multiplies by one less than the second number", "mental_mult",
+     lambda o: F(o["a"] * (o["b"] - 1)),
+     lambda o: f"{o['a']} × ({o['b']} - 1)")
+
+
+# The original 8 families (v1-v4). generate() is pinned to these so legacy dataset builds
+# stay byte-identical after v5 added 8 more families to FAMILIES. v5 uses all of FAMILIES.
+LEGACY_FAMILIES = [
+    "fraction_add", "fraction_mul", "fraction_div_int", "order_of_ops",
+    "neg_add", "decimal_mul", "square", "percent_of",
+]
+
 
 def _mcs_for(family: str) -> List[Misconception]:
     return [m for m in REGISTRY.values() if m.family == family]
@@ -308,8 +514,15 @@ def make_question(family: str, r: random.Random) -> Question:
     return Question(family, o, spec["correct"](o), spec["text"](o), spec["topic"])
 
 
-def generate_example(r: random.Random, family: Optional[str] = None, tries: int = 40) -> Optional[dict]:
-    fams = list(FAMILIES) if family is None else [family]
+def generate_example(r: random.Random, family: Optional[str] = None, tries: int = 40,
+                     families: Optional[List[str]] = None) -> Optional[dict]:
+    # `family` (single) takes priority; else `families` (list); else ALL families.
+    if family is not None:
+        fams = [family]
+    elif families is not None:
+        fams = families
+    else:
+        fams = list(FAMILIES)
     for _ in range(tries):
         fam = r.choice(fams)
         q = make_question(fam, r)

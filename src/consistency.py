@@ -201,12 +201,76 @@ def eval_computation(computation) -> Optional[Fraction]:
     return _eval_tokens(toks)
 
 
-def computation_consistent(computation, answer) -> Optional[bool]:
+# ---- v5 hardening: reject computations that game the free metric ----
+# The pre-v5 check only verified LHS == answer, so a model could satisfy it with a
+# degenerate tautology ("6 = 6") or self-consistent arithmetic unrelated to the question
+# ("2÷4 = 0.5" for "0.2 ÷ 0.4"). Two gates fix this:
+#   B1 (always on): the LHS must contain at least one BINARY operator, else it is not a
+#      real computation -> return None. Kills "6 = 6" / bare-number LHS.
+#   B2 (opt-in via question=...): every numeric leaf in the LHS must be grounded in the
+#      question's digits, or be a whitelisted structural constant. Catches fabricated
+#      operands. Bounded (digit-reuse can still slip through) — the LLM judge is the backstop.
+_GROUND_WHITELIST = {Fraction(0), Fraction(1), Fraction(2), Fraction(10), Fraction(100), Fraction(1000)}
+
+
+def _has_binary_operator(computation) -> bool:
+    """True if the LHS has a binary + - * / ^ (a leading unary sign does not count)."""
+    s = str(computation)
+    if "=" in s:
+        s = s.split("=", 1)[0]
+    toks = _tokenize(_preprocess_expr(s))
+    if not toks:
+        return False
+    for i, t in enumerate(toks):
+        if t in ("+", "-", "*", "/", "^") and i > 0:
+            prev = toks[i - 1]
+            if prev == ")" or re.fullmatch(r"[0-9.]+", prev):
+                return True
+    return False
+
+
+def _numeric_leaves(computation) -> List[str]:
+    s = str(computation)
+    if "=" in s:
+        s = s.split("=", 1)[0]
+    toks = _tokenize(_preprocess_expr(s)) or []
+    return [t for t in toks if re.fullmatch(r"[0-9.]+", t)]
+
+
+def _leaves_grounded(computation, question) -> bool:
+    """Anchor check: at least one numeric leaf must appear in the question's digits.
+
+    A fabricated computation (operands wholly unrelated to the question, e.g. "100 × 5 = 500"
+    for "0.2 ÷ 0.4") has NO leaf in the question -> rejected. A legitimate error-computation
+    starts from the question's numbers and may introduce derived offsets (e.g.
+    "875599 + 24401 = 900000") -> the anchor (875599) is present -> accepted. This is a
+    deliberately loose screen; digit-reuse can still slip through (the LLM judge is the true
+    backstop). We require an anchor rather than all-leaves-grounded so real, correct
+    computations that introduce derived constants are not falsely rejected.
+    """
+    leaves = _numeric_leaves(computation)
+    if not leaves:
+        return False
+    digit_content = "".join(re.findall(r"\d+", str(question)))
+    for leaf in leaves:
+        digits = leaf.replace(".", "")
+        if digits and digits in digit_content:
+            return True  # found an anchor operand from the question
+    return False
+
+
+def computation_consistent(computation, answer, question=None) -> Optional[bool]:
     """True/False if the computation's LHS evaluates to `answer`; None if unparseable.
 
     Used by (a) the real-data verifier (quality filter) and (b) the eval harness'
     free `computation_consistency` metric. Compares by exact numeric value, so
     "1/2" and "0.5" are treated as equal.
+
+    Backward-compatible: with `question=None` this is the pre-v5 check (LHS == answer only),
+    so legacy dataset builds (v1-v4) are byte-identical. When `question` is provided (v5/eval),
+    two HARDENING gates apply so the metric can't be gamed:
+      B1: the LHS must contain a binary operator (rejects degenerate "6 = 6" -> None).
+      B2: every numeric leaf must be grounded in the question's digits (else False).
     """
     lhs = eval_computation(computation)
     if lhs is None:
@@ -214,24 +278,38 @@ def computation_consistent(computation, answer) -> Optional[bool]:
     ans = to_value(answer)
     if ans is None:
         return None
-    return lhs == ans
+    if question is None:
+        return lhs == ans  # pre-v5 behavior, preserved for legacy callers
+    # --- v5 hardened path ---
+    if not _has_binary_operator(computation):
+        return None  # B1: not a real computation (e.g. "6 = 6")
+    if lhs != ans:
+        return False
+    if not _leaves_grounded(computation, question):
+        return False  # B2: operands not grounded in the question
+    return True
 
 
-def check_synthetic_example(ex: dict) -> bool:
+def check_synthetic_example(ex: dict, harden: bool = False) -> bool:
     """Every distractor equals its misconception's computed value and none == correct.
 
     When a distractor also carries a `computation` (v4), that string's LHS must
-    evaluate to the distractor's answer too.
+    evaluate to the distractor's answer too. With harden=True (v5), the computation is
+    also required to be operator-bearing and grounded in the question.
     """
     fam, ops = ex["family"], ex["operands"]
     correct = to_value(ex["correct"])
+    # v5 opt-in: when harden=True, computations are checked WITH the question (operator-bearing
+    # + grounded) -- the same bar eval applies to predictions. Default False keeps the pre-v5
+    # behavior so legacy builds (v1-v4) are byte-identical.
+    question = ex.get("question") if harden else None
     for d in ex["distractors"]:
         if is_consistent(fam, ops, d["misconception_id"], d["answer"]) is not True:
             return False
         if to_value(d["answer"]) == correct:
             return False
         comp = d.get("computation")
-        if comp and computation_consistent(comp, d["answer"]) is not True:
+        if comp and computation_consistent(comp, d["answer"], question) is not True:
             return False
     return True
 

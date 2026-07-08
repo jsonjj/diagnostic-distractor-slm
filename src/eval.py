@@ -16,6 +16,7 @@ import argparse
 import copy
 import json
 import random
+from typing import Optional
 
 from .config import DATA_PROCESSED
 from .consistency import computation_consistent, is_consistent
@@ -88,23 +89,29 @@ def programmatic_consistency(items):
 
 
 # ---------------- consistency: computation (free; works on ANY computation-bearing output) ----------------
-def computation_consistency(preds):
-    """Free (no-API) consistency signal for computation-bearing predictions (v4 targets).
+def computation_consistency(preds, questions=None):
+    """Free (no-API) consistency signal for computation-bearing predictions (v4/v5 targets).
 
     For each predicted distractor, parse its `computation`, evaluate the left-hand side, and
     check it equals normalize_answer(answer). Backward-compatible: predictions WITHOUT a
     `computation` (old prediction files) score as not-consistent (0) and never crash.
+
+    v5 hardening: when `questions` (a per-item list aligned with `preds`) is provided, the
+    check also requires each computation to be operator-bearing AND grounded in its question's
+    digits — so degenerate ("6 = 6") and fabricated-operand computations no longer inflate the
+    number. Without `questions`, only the operator gate applies (still rejects "6 = 6").
 
     Returns item% (all 3 in an item consistent), pair% (per-distractor), and how many pairs
     actually carried a parseable computation (so a 0% from an old file is legible, not silent).
     """
     n = len(preds)
     item_ok = pair_ok = pairs = with_comp = 0
-    for p in preds:
+    for i, p in enumerate(preds):
+        q = questions[i] if questions is not None and i < len(questions) else None
         all_ok = bool(p)
         for d in p:
             pairs += 1
-            res = computation_consistent(d.get("computation", ""), d.get("answer", ""))
+            res = computation_consistent(d.get("computation", ""), d.get("answer", ""), q)
             if res is not None:
                 with_comp += 1
             if res is True:
@@ -133,6 +140,80 @@ def judge_consistency(question, misconception, answer, correct) -> bool:
     )
     out = chat([{"role": "system", "content": sys}, {"role": "user", "content": usr}], max_tokens=5)
     return out.strip().upper().startswith("Y")
+
+
+# ---------------- consistency: solve-first / error-injection judge (v5; gated; API) ----------------
+# Upgrades the one-shot YES/NO grader: the judge must reconstruct the correct solution, inject the
+# stated misconception at the specific step it corrupts, compute the resulting value, and only then
+# rule VALID iff that value equals the student's answer. Grading an OBJECTIVE property (does the
+# answer follow from the misconception) with a strong LLM is fair and does not conflict with the
+# thesis (which is about GENERATION, not grading). Adapts the teacher-student bidirectional-reasoning
+# idea (Qiu et al., ACL 2025) to consistency verification.
+_JUDGE2_SYSTEM = (
+    "You are a Cognitive Task Analyst validating one distractor of a math multiple-choice "
+    "question. You reason step by step, then reply with ONLY a compact JSON object."
+)
+
+
+def judge_consistency_cot(question, misconception, answer, correct) -> Optional[bool]:
+    """Solve-first consistency judge. Returns True (VALID), False (INVALID), or None on parse fail."""
+    from .tfy_client import chat
+
+    usr = (
+        f"Question: {question}\nCorrect answer: {correct}\n"
+        f"Claimed student misconception: {misconception}\nStudent's answer: {answer}\n\n"
+        "Task, step by step (think silently, do not show working):\n"
+        "1. Work out the correct solution path for this question.\n"
+        "2. Find the single step where the claimed misconception would change what the student does.\n"
+        "3. Apply that specific error and compute the value it produces for THIS question.\n"
+        "4. Decide: does that value EXACTLY equal the student's answer?\n\n"
+        'Reply with ONLY: {"error_value": "<the value the misconception computes>", '
+        '"valid": true|false}  '
+        "where valid is true iff error_value equals the student's answer."
+    )
+    out = chat(
+        [{"role": "system", "content": _JUDGE2_SYSTEM}, {"role": "user", "content": usr}],
+        max_tokens=120,
+    )
+    obj = _extract_json_obj(out)
+    if not obj or "valid" not in obj:
+        return None
+    return bool(obj["valid"])
+
+
+# ---------------- plausibility: struggling-student persona (v5; gated; API; PROXY only) ----------------
+# WARNING: this is a PROXY, not ground truth. The project's own thesis holds that LLMs are
+# unreliable at predicting which wrong answer a real student would actually pick; true
+# plausibility needs Eedi's private option-selection data (see PROJECT docs, future work).
+# Reported for triangulation alongside alignment, explicitly caveated.
+_PERSONA_SYSTEM = (
+    "You role-play a middle-school student with a weak grasp of the topic who rushes and makes "
+    "common slips. You never see which option is correct. Reply with ONLY compact JSON."
+)
+
+
+def judge_plausibility_persona(question, distractor_answer, correct) -> Optional[bool]:
+    """Would a confused student find this option tempting? True/False, or None on parse fail. PROXY."""
+    from .tfy_client import chat
+    import random as _r
+
+    # Present the two options in a stable but non-trivial order (avoid always-first-correct bias).
+    opts = [("A", distractor_answer), ("B", correct)]
+    usr = (
+        f"Question: {question}\n\n"
+        f"Option A: {opts[0][1]}\nOption B: {opts[1][1]}\n\n"
+        "Without knowing which is correct: if you made a common mistake on this question, is "
+        "Option A a tempting, believable answer you might confidently choose? "
+        'Reply with ONLY: {"tempting": true|false}.'
+    )
+    out = chat(
+        [{"role": "system", "content": _PERSONA_SYSTEM}, {"role": "user", "content": usr}],
+        max_tokens=30,
+    )
+    obj = _extract_json_obj(out)
+    if not obj or "tempting" not in obj:
+        return None
+    return bool(obj["tempting"])
 
 
 # ---------------- LLM-as-judge rubric (Appendix A; gated; TrueFoundry API) ----------------
@@ -287,28 +368,73 @@ def _self_validate(gold):
     print(f"COMPUTATION-CONSISTENCY (one computation broken, expect item~0): "
           f"item {ccb['item_consistency']:.1f}% | pair {ccb['pair_consistency']:.1f}%")
 
+    # v5 hardening assertions: with a question, the free metric must reject gaming.
+    from .consistency import computation_consistent as _cc
+    q = "What is 0.2 ÷ 0.4?"
+    checks = [
+        ("degenerate '6 = 6' -> None", _cc("6 = 6", "6", q) is None),
+        ("bare number '7' -> None", _cc("7", "7", q) is None),
+        ("ungrounded operands -> False", _cc("100 × 5 = 500", "500", q) is False),
+        ("genuine grounded comp -> True", _cc("0.4 ÷ 0.2 = 2", "2", q) is True),
+        ("legacy (no question) unchanged -> True", _cc("6 = 6", "6") is True),
+    ]
+    allok = all(ok for _, ok in checks)
+    print(f"HARDENING (expect all PASS): {'ALL PASS' if allok else 'FAILURES!'}")
+    for name, ok in checks:
+        if not ok:
+            print(f"    FAIL: {name}")
 
-def report_predictions(gold, pred_path, use_judge=False, use_rubric=False):
+
+def report_predictions(gold, pred_path, use_judge=False, use_rubric=False, use_judge2=False, use_persona=False):
     preds_raw = load_jsonl(pred_path)
     pmap = {str(r["id"]): r.get("distractors", []) for r in preds_raw}
-    golds, corrects, preds = [], [], []
+    golds, corrects, preds, questions = [], [], [], []
     for r in gold:
         gid = str(r["id"])
         golds.append([d["answer"] for d in r["distractors"]])
         corrects.append(r["correct"])
         preds.append(pmap.get(gid, []))
+        questions.append(r["question"])
     print("ALIGNMENT:", {k: round(v, 1) for k, v in alignment_metrics(golds, [[d.get("answer", "") for d in p] for p in preds]).items()})
     print("STRUCTURAL:", {k: round(v, 1) for k, v in structural_scores(preds, corrects).items()})
-    cc = computation_consistency(preds)
-    print(f"COMPUTATION CONSISTENCY (free, no API): item {cc['item_consistency']:.1f}% | pair {cc['pair_consistency']:.1f}%  "
+    # v5: hardened (question-grounded) free consistency is the honest headline; also show the
+    # un-grounded number so the gap (gaming removed) is legible.
+    cc = computation_consistency(preds, questions)
+    cc_raw = computation_consistency(preds)
+    print(f"COMPUTATION CONSISTENCY (free, no API, HARDENED/grounded): item {cc['item_consistency']:.1f}% | pair {cc['pair_consistency']:.1f}%  "
           f"({cc['pairs_with_computation']}/{cc['pairs_total']} predicted distractors carried a parseable computation)")
+    print(f"COMPUTATION CONSISTENCY (free, un-grounded, for reference): pair {cc_raw['pair_consistency']:.1f}%")
     if use_judge:
         n = ok = 0
         for r, p in zip(gold, preds):
             for d in p:
                 n += 1
                 ok += 1 if judge_consistency(r["question"], d.get("misconception", ""), d.get("answer", ""), r["correct"]) else 0
-        print(f"JUDGE CONSISTENCY (API): {100 * ok / n if n else 0:.1f}%  ({ok}/{n} pairs)")
+        print(f"JUDGE CONSISTENCY (API, one-shot YES/NO): {100 * ok / n if n else 0:.1f}%  ({ok}/{n} pairs)")
+    if use_judge2:
+        n = ok = skipped = 0
+        for r, p in zip(gold, preds):
+            for d in p:
+                res = judge_consistency_cot(r["question"], d.get("misconception", ""), d.get("answer", ""), r["correct"])
+                if res is None:
+                    skipped += 1
+                    continue
+                n += 1
+                ok += 1 if res else 0
+        note = f" ({skipped} unparseable, skipped)" if skipped else ""
+        print(f"JUDGE CONSISTENCY (API, solve-first/CoT): {100 * ok / n if n else 0:.1f}%  ({ok}/{n} pairs){note}")
+    if use_persona:
+        n = ok = skipped = 0
+        for r, p in zip(gold, preds):
+            for d in p:
+                res = judge_plausibility_persona(r["question"], d.get("answer", ""), r["correct"])
+                if res is None:
+                    skipped += 1
+                    continue
+                n += 1
+                ok += 1 if res else 0
+        note = f" ({skipped} unparseable, skipped)" if skipped else ""
+        print(f"PLAUSIBILITY (API, student-persona PROXY -- not ground truth): {100 * ok / n if n else 0:.1f}%  ({ok}/{n} pairs){note}")
     if use_rubric:
         means, n = rubric_scores(gold, preds)
         print(f"JUDGE RUBRIC (API, Appendix A, mean 0-2 over {n}/{len(gold)} items):")
@@ -321,13 +447,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("predictions", nargs="?", help="predictions JSONL vs the real hold-out")
     ap.add_argument("--judge", action="store_true", help="also run the TrueFoundry YES/NO consistency judge (API cost)")
+    ap.add_argument("--judge2", action="store_true", help="also run the solve-first/CoT consistency judge, v5 (API cost)")
+    ap.add_argument("--persona", action="store_true", help="also run the student-persona plausibility PROXY, v5 (API cost)")
     ap.add_argument("--rubric", action="store_true", help="also run the Appendix-A LLM-judge rubric, 0-2 x4 dims (API cost)")
     args = ap.parse_args()
     gold = load_jsonl(DATA_PROCESSED / "eval_heldout.jsonl")
     if not args.predictions:
         _self_validate(gold)
     else:
-        report_predictions(gold, args.predictions, use_judge=args.judge, use_rubric=args.rubric)
+        report_predictions(gold, args.predictions, use_judge=args.judge, use_rubric=args.rubric,
+                           use_judge2=args.judge2, use_persona=args.persona)
 
 
 if __name__ == "__main__":
