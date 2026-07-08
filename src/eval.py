@@ -385,6 +385,36 @@ def _self_validate(gold):
             print(f"    FAIL: {name}")
 
 
+def _run_judge_concurrent(tasks, fn, label, workers=6):
+    """Run judge `fn` over `tasks` concurrently with live progress printing.
+
+    tasks: list of arg-tuples passed to fn(*task). fn returns bool|None.
+    Prints '<label>: i/N ...' as results land, so long API runs aren't a black box.
+    Concurrency also hides per-call backoff sleeps (API overloads) behind other calls.
+    Returns list of results aligned to tasks (order preserved).
+    """
+    from concurrent.futures import ThreadPoolExecutor
+    import sys
+
+    n = len(tasks)
+    results = [None] * n
+    done = 0
+    print(f"{label}: 0/{n} ...", flush=True)
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = {ex.submit(fn, *t): i for i, t in enumerate(tasks)}
+        from concurrent.futures import as_completed
+        for fut in as_completed(futs):
+            i = futs[fut]
+            try:
+                results[i] = fut.result()
+            except Exception:  # noqa: BLE001 — a dead call counts as None, run continues
+                results[i] = None
+            done += 1
+            if done % 20 == 0 or done == n:
+                print(f"{label}: {done}/{n} ...", flush=True)
+    return results
+
+
 def report_predictions(gold, pred_path, use_judge=False, use_rubric=False, use_judge2=False, use_persona=False):
     preds_raw = load_jsonl(pred_path)
     pmap = {str(r["id"]): r.get("distractors", []) for r in preds_raw}
@@ -404,35 +434,25 @@ def report_predictions(gold, pred_path, use_judge=False, use_rubric=False, use_j
     print(f"COMPUTATION CONSISTENCY (free, no API, HARDENED/grounded): item {cc['item_consistency']:.1f}% | pair {cc['pair_consistency']:.1f}%  "
           f"({cc['pairs_with_computation']}/{cc['pairs_total']} predicted distractors carried a parseable computation)")
     print(f"COMPUTATION CONSISTENCY (free, un-grounded, for reference): pair {cc_raw['pair_consistency']:.1f}%")
+    # Flatten (gold-row, distractor) pairs once; all API judges iterate the same list.
+    pair_tasks = [(r, d) for r, p in zip(gold, preds) for d in p]
     if use_judge:
-        n = ok = 0
-        for r, p in zip(gold, preds):
-            for d in p:
-                n += 1
-                ok += 1 if judge_consistency(r["question"], d.get("misconception", ""), d.get("answer", ""), r["correct"]) else 0
+        tasks = [(r["question"], d.get("misconception", ""), d.get("answer", ""), r["correct"]) for r, d in pair_tasks]
+        res = _run_judge_concurrent(tasks, judge_consistency, "one-shot judge")
+        n = len(res); ok = sum(1 for x in res if x)
         print(f"JUDGE CONSISTENCY (API, one-shot YES/NO): {100 * ok / n if n else 0:.1f}%  ({ok}/{n} pairs)")
     if use_judge2:
-        n = ok = skipped = 0
-        for r, p in zip(gold, preds):
-            for d in p:
-                res = judge_consistency_cot(r["question"], d.get("misconception", ""), d.get("answer", ""), r["correct"])
-                if res is None:
-                    skipped += 1
-                    continue
-                n += 1
-                ok += 1 if res else 0
+        tasks = [(r["question"], d.get("misconception", ""), d.get("answer", ""), r["correct"]) for r, d in pair_tasks]
+        res = _run_judge_concurrent(tasks, judge_consistency_cot, "solve-first judge")
+        graded = [x for x in res if x is not None]
+        n = len(graded); ok = sum(1 for x in graded if x); skipped = len(res) - n
         note = f" ({skipped} unparseable, skipped)" if skipped else ""
         print(f"JUDGE CONSISTENCY (API, solve-first/CoT): {100 * ok / n if n else 0:.1f}%  ({ok}/{n} pairs){note}")
     if use_persona:
-        n = ok = skipped = 0
-        for r, p in zip(gold, preds):
-            for d in p:
-                res = judge_plausibility_persona(r["question"], d.get("answer", ""), r["correct"])
-                if res is None:
-                    skipped += 1
-                    continue
-                n += 1
-                ok += 1 if res else 0
+        tasks = [(r["question"], d.get("answer", ""), r["correct"]) for r, d in pair_tasks]
+        res = _run_judge_concurrent(tasks, judge_plausibility_persona, "persona plausibility")
+        graded = [x for x in res if x is not None]
+        n = len(graded); ok = sum(1 for x in graded if x); skipped = len(res) - n
         note = f" ({skipped} unparseable, skipped)" if skipped else ""
         print(f"PLAUSIBILITY (API, student-persona PROXY -- not ground truth): {100 * ok / n if n else 0:.1f}%  ({ok}/{n} pairs){note}")
     if use_rubric:
