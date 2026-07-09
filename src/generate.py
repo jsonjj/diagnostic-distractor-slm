@@ -510,11 +510,14 @@ def build_v7():
         for rec in synth:
             f.write(json.dumps(rec, ensure_ascii=False) + "\n")
 
-    # reals: v5's verified set + the grown teacher-distilled set (dedup by user string)
+    # reals: v5's verified set + the grown teacher-distilled set (dedup by user string).
+    # DISTINCT-LABEL ONLY: duplicate-misconception reals teach label-repetition (they crashed
+    # distinct_misconceptions 99->72 in the first v7 run). Filtering restores the above-Sonnet win
+    # without touching the format-augmentation that lifted consistency.
     reals = {r["user"]: r for r in ensure_real_v5()}
     for rec in ensure_real_v7():
         reals[rec["user"]] = rec
-    real = list(reals.values())
+    real = [r for r in reals.values() if three_distinct_ok(r)]
     real_up = real * REAL_REPEAT_V7
 
     combined = real_up + synth
