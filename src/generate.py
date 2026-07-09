@@ -469,6 +469,92 @@ def build_v5():
     return combined
 
 
+# ---------------- v7: real-FORMAT synthetic + grown distilled reals (for a 4B base) ----------------
+SEED_V7 = 29
+REAL_REPEAT_V7 = 3
+PER_FAMILY_CAP_V7 = 110  # more per family: 4B can absorb more, and format variety adds effective diversity
+
+
+def build_v7():
+    """v7 = attack the synthetic->real TRANSFER gap (the likely consistency ceiling), for a 4B base.
+
+    Same guaranteed-consistent engine as v5, but each synthetic question is STYLIZED into real
+    Eedi format (LaTeX, varied stems) so the model trains on the format it is tested on -- the
+    plain-text->LaTeX gap is a prime suspect for why in-distribution consistency didn't transfer.
+    Real seed = v5's hardened-verified reals PLUS the grown teacher-distilled reals
+    (ensure_real_v7). Stylization is guarded: if a stylized question breaks the hardened check for
+    any distractor, we keep the plain question for that example, so consistency stays 100%.
+    TRAINING-ONLY: the stylizer/engine never ship; only the trained model does.
+    """
+    DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
+    from .format_augment import stylize
+    from .real_computations import ensure_real_v5, ensure_real_v7
+
+    exs, per_family = generate_balanced(per_family_cap=PER_FAMILY_CAP_V7, seed=SEED_V7,
+                                        families=V5_FAMILIES, harden=True)
+    # stylize each question into real Eedi format, with a consistency guard (fall back to plain)
+    r = random.Random(SEED_V7)
+    n_styl = 0
+    for ex in exs:
+        plain = ex["question"]
+        styled = stylize(plain, r)
+        if styled != plain and all(
+            computation_consistent(d.get("computation", ""), d["answer"], styled) is True
+            for d in ex["distractors"] if d.get("computation")
+        ):
+            ex["question"] = styled
+            n_styl += 1
+        # else: keep plain (guard) -- guarantees the hardened check still passes
+    synth = [synth_to_sft(ex, with_computation=True) for ex in exs]
+    with open(DATA_PROCESSED / "synth_train_v7.jsonl", "w", encoding="utf-8") as f:
+        for rec in synth:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    # reals: v5's verified set + the grown teacher-distilled set (dedup by user string)
+    reals = {r["user"]: r for r in ensure_real_v5()}
+    for rec in ensure_real_v7():
+        reals[rec["user"]] = rec
+    real = list(reals.values())
+    real_up = real * REAL_REPEAT_V7
+
+    combined = real_up + synth
+    random.Random(SEED_V7).shuffle(combined)
+    with open(DATA_PROCESSED / "train_v7.jsonl", "w", encoding="utf-8") as f:
+        for rec in combined:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
+    # ---------------- report + verification ----------------
+    real_frac = 100 * len(real_up) / len(combined) if combined else 0
+    print("=== v7 build (for Qwen3-4B) ===")
+    print(f"real seed: {len(real)} unique verified reals (v5 {len(ensure_real_v5())} + distilled), x{REAL_REPEAT_V7} -> {len(real_up)}")
+    print(f"synthetic: {len(synth)} (real-format stylized: {n_styl}/{len(exs)} = {100*n_styl/len(exs):.0f}%)")
+    print(f"v7 train dataset: {len(combined)}  (real weight {real_frac:.1f}%)")
+
+    n_three = n_dm = n_da = 0
+    s_pair = s_pairs = 0
+    for ex in exs:
+        for d in ex["distractors"]:
+            if d.get("computation"):
+                s_pairs += 1
+                if computation_consistent(d["computation"], d["answer"], ex["question"]) is True:
+                    s_pair += 1
+    for rec in combined:
+        ds = _sft_distractors(rec)
+        miscs = [str(d.get("misconception", "")).strip().lower() for d in ds]
+        answers = [normalize_answer(d.get("answer", "")) for d in ds]
+        n_three += 1 if len(ds) == 3 else 0
+        n_dm += 1 if (len(set(miscs)) == 3 and all(miscs)) else 0
+        n_da += 1 if (len(set(answers)) == 3 and all(answers)) else 0
+    N = len(combined)
+    fam = Counter(ex["family"] for ex in exs)
+    hi, lo = max(fam.values()), min(fam.values())
+    print("\n=== verification ===")
+    print(f"exactly 3 / distinct misc / distinct ans : {100*n_three/N:.0f}% / {100*n_dm/N:.0f}% / {100*n_da/N:.0f}%")
+    print(f"SYNTHETIC computation-consistency (hardened, on STYLIZED q): {100*s_pair/s_pairs:.1f}%  <- must be 100")
+    print(f"family balance: {hi}/{lo} = {hi/lo:.1f}x")
+    return combined
+
+
 def build_v1():
     DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
     exs = generate()
@@ -504,8 +590,12 @@ def main():
                     help="build the v4 dataset (v3's composition + a show-the-work `computation` in every distractor)")
     ap.add_argument("--v5", action="store_true",
                     help="build the v5 dataset (16-family de-skewed coverage + show-the-work + grown verified reals)")
+    ap.add_argument("--v7", action="store_true",
+                    help="build the v7 dataset (real-FORMAT stylized synthetic + distilled reals, for a 4B base)")
     args = ap.parse_args()
-    if args.v5:
+    if args.v7:
+        build_v7()
+    elif args.v5:
         build_v5()
     elif args.v4:
         build_v4()

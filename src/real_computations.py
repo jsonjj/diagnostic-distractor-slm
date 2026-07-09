@@ -265,16 +265,75 @@ def ensure_real_v5(regenerate: bool = False):
     return kept
 
 
+REAL_V7_PATH = DATA_PROCESSED / "real_train_seed_v7.jsonl"
+
+
+def generate_real_v7(limit: int = 0, workers: int = 8, verbose: bool = True):
+    """v7 distillation: teacher-generate + HARDENED-verify computations for ALL usable real
+    training questions (the ~141, not just the 79 distinct-label ones v5 used), to maximize
+    real-question transfer fuel. Records with duplicate misconception labels are still kept here
+    (v7 relies on the abundant format-augmented synthetic for label-distinctness), but each
+    computation must pass the hardened (grounded) check -- so only numerically-consistent reals
+    survive. Returns (survivors, stats)."""
+    from .tfy_client import chat
+
+    reals = _load_jsonl(DATA_PROCESSED / "real_train_seed.jsonl")  # all 141
+    if limit:
+        reals = reals[:limit]
+    survivors = [None] * len(reals)
+    total_calls = 0
+    lock = threading.Lock()
+    done = 0
+
+    def work(i_rec):
+        i, rec = i_rec
+        sft, calls, _ = _process(rec, chat, max_retries=MAX_RETRIES_V5, harden=True)
+        return i, sft, calls
+
+    if verbose:
+        print(f"[v7] Distilling computations for {len(reals)} real questions ({workers} workers)...", flush=True)
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        for i, sft, calls in ex.map(work, list(enumerate(reals))):
+            survivors[i] = sft
+            with lock:
+                total_calls += calls; done += 1
+            if verbose and done % 20 == 0:
+                print(f"  {done}/{len(reals)} processed", flush=True)
+
+    kept = [s for s in survivors if s is not None]
+    return kept, {"candidates": len(reals), "survivors": len(kept),
+                  "dropped": len(reals) - len(kept), "api_calls": total_calls}
+
+
+def ensure_real_v7(regenerate: bool = False):
+    """Cached v7 distilled reals (all usable real questions, hardened-verified)."""
+    if REAL_V7_PATH.exists() and not regenerate:
+        return _load_jsonl(REAL_V7_PATH)
+    kept, stats = generate_real_v7()
+    DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
+    with open(REAL_V7_PATH, "w", encoding="utf-8") as f:
+        for rec in kept:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    print(f"real v7: kept {stats['survivors']}/{stats['candidates']} "
+          f"(dropped {stats['dropped']}; {stats['api_calls']} API calls) -> {REAL_V7_PATH.name}")
+    return kept
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--force", action="store_true", help="regenerate even if the cache exists")
     ap.add_argument("--limit", type=int, default=0, help="only process the first N records (smoke)")
     ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--v7", action="store_true", help="v7 distillation path (all 141 reals, hardened)")
     ap.add_argument("--v5", action="store_true", help="v5 path: more retries + hardened (grounded) verify")
     args = ap.parse_args()
 
-    path = REAL_V5_PATH if args.v5 else REAL_V4_PATH
-    gen = generate_real_v5 if args.v5 else generate_real_v4
+    if args.v7:
+        path, gen = REAL_V7_PATH, generate_real_v7
+    elif args.v5:
+        path, gen = REAL_V5_PATH, generate_real_v5
+    else:
+        path, gen = REAL_V4_PATH, generate_real_v4
 
     if path.exists() and not args.force and not args.limit:
         recs = _load_jsonl(path)
