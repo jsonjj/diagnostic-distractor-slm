@@ -17,6 +17,21 @@ _140-item held-out eval. Consistency = one-shot judge (calibrated: 90% reliable 
 | 🥈 Proportional@3 | 12.4 | 31.9 | 15.0 | **16.4** | 39.3 | 42% |
 | 🥈 Partial@3 | 35.0 | 56.4 | 31.4 | **37.1** | 72.9 | 51% |
 
+## Appendix-A LLM-judge rubric (mean 0–2) — base vs tuned (the graded win)
+
+The assignment's bar: *"a tuned model that beats the base on Spec adherence and Robustness is a win."*
+v7.1 beats the base on **all four** dimensions (roughly 2–3× each):
+
+| Dimension | Base (litmus) | **v7.1 (final)** | Δ |
+|---|---|---|---|
+| Spec adherence | 0.50 | **1.07** | +0.57 ✅ |
+| Robustness | 0.35 | **0.77** | +0.42 ✅ |
+| Task quality | 0.31 | **0.74** | +0.43 ✅ |
+| Consistency | 0.23 | **0.71** | +0.48 ✅ |
+
+_(Sonnet 5 rubric, for reference: ~1.8 consistency — the frontier ceiling. Full logs in
+`eval_out/rubric_v7.log` and `eval_out/rubric_base.log`.)_
+
 ## MATTERS (must hit ≥75% of Sonnet; keep a couple above) — where v7.1 lands
 
 | Metric | % of Sonnet | Why it matters | ≥75%? |

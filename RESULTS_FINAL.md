@@ -1,3 +1,12 @@
+# Results Through v6 (historical) — see TABLE.md for the FINAL model (v7.1)
+
+> ⚠️ **This file documents the v1–v6 lineage (1.7B).** The final shipped model is **v7.1
+> (Qwen3-4B)** — its results, the base-vs-tuned Appendix-A rubric, and the verdict live in
+> **`TABLE.md`**. Keep this file as the record of how the 1.7B iterations progressed and why the
+> project moved to a 4B base.
+
+---
+
 # Final Results — Base vs v1 vs v5 vs v6 vs Sonnet
 
 _140-item held-out eval. Consistency = one-shot judge (calibrated: 90% reliable on numeric, 50%

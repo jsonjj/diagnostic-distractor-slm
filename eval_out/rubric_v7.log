@@ -1,0 +1,9 @@
+JUDGE RUBRIC (API, Appendix A, mean 0-2 over 123/140 items) — v7.1 (Qwen3-4B, final):
+    {'spec_adherence': 1.065, 'robustness': 0.772, 'task_quality': 0.74, 'consistency': 0.707}
+
+Base litmus (for comparison, from rubric_base.log):
+    {'spec_adherence': 0.496, 'robustness': 0.353, 'task_quality': 0.308, 'consistency': 0.226}
+
+Delta (v7.1 - base): spec +0.57, robustness +0.42, task_quality +0.43, consistency +0.48
+Verdict: tuned beats base on ALL four dimensions (assignment bar: beat base on spec_adherence
++ robustness = a win). Cleared decisively.
