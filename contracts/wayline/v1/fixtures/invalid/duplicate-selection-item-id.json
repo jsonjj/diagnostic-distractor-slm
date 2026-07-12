@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "wayline.v1",
+  "requestId": "request-001",
+  "batchId": "batch-001",
+  "itemCount": 3,
+  "selections": [
+    {"itemId": "item-001", "optionId": "opt-001-a", "confidence": "certain"},
+    {"itemId": "item-001", "optionId": "opt-001-b", "confidence": "leaning"},
+    {"itemId": "item-003", "optionId": "opt-003-c", "confidence": "guessing"}
+  ]
+}

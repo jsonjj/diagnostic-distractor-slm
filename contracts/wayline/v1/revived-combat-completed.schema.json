@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/revived-combat-completed.schema.json",
+  "title": "Wayline Revived Combat Completion Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "secondWindId", "combatAttemptId", "combatWon", "battleCompleted", "secondWindClosed"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "secondWindId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "combatAttemptId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "combatWon": {"type": "boolean"},
+    "battleCompleted": {"type": "boolean"},
+    "secondWindClosed": {"const": true}
+  }
+}

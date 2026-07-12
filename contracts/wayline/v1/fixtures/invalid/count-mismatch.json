@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "wayline.v1",
+  "batchId": "batch-001",
+  "itemCount": 4,
+  "items": [
+    {
+      "itemId": "item-001",
+      "prompt": "Question one",
+      "options": [
+        {"optionId": "opt-001-a", "displayText": "1"},
+        {"optionId": "opt-001-b", "displayText": "2"},
+        {"optionId": "opt-001-c", "displayText": "3"},
+        {"optionId": "opt-001-d", "displayText": "4"}
+      ]
+    },
+    {
+      "itemId": "item-002",
+      "prompt": "Question two",
+      "options": [
+        {"optionId": "opt-002-a", "displayText": "5"},
+        {"optionId": "opt-002-b", "displayText": "6"},
+        {"optionId": "opt-002-c", "displayText": "7"},
+        {"optionId": "opt-002-d", "displayText": "8"}
+      ]
+    },
+    {
+      "itemId": "item-003",
+      "prompt": "Question three",
+      "options": [
+        {"optionId": "opt-003-a", "displayText": "9"},
+        {"optionId": "opt-003-b", "displayText": "10"},
+        {"optionId": "opt-003-c", "displayText": "11"},
+        {"optionId": "opt-003-d", "displayText": "12"}
+      ]
+    }
+  ]
+}

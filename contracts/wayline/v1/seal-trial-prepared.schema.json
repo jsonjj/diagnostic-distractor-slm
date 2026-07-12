@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/seal-trial-prepared.schema.json",
+  "title": "Wayline Prepared Seal Trial",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "requestId",
+    "worldId",
+    "attemptNumber",
+    "battleId",
+    "batch"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "worldId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "attemptNumber": {"type": "integer", "minimum": 1},
+    "battleId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "batch": {"$ref": "public-quiz-batch.schema.json"}
+  }
+}

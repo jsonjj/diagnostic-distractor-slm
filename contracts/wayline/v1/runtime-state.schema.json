@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/runtime-state.schema.json",
+  "title": "Wayline Runtime State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "profileId",
+    "sessionId",
+    "activeWorldId",
+    "campaignOrdinal",
+    "resumableBatchId",
+    "campaignCatalogSha256"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "profileId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "activeWorldId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "campaignOrdinal": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "resumableBatchId": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 96,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+        },
+        {"type": "null"}
+      ]
+    },
+    "campaignCatalogSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

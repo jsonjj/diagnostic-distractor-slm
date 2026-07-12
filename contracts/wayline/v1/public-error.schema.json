@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/public-error.schema.json",
+  "title": "Wayline Public Error",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "code"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.error.v1"},
+    "code": {
+      "type": "string",
+      "enum": [
+        "authorization_required",
+        "batch_unavailable",
+        "body_too_large",
+        "boss_gate_locked",
+        "catalog_conflict",
+        "content_type_unsupported",
+        "contract_invalid",
+        "evidence_sync_unavailable",
+        "idempotency_conflict",
+        "integrity_failure",
+        "invalid_submission",
+        "method_not_allowed",
+        "origin_forbidden",
+        "profile_not_found",
+        "quiz_in_progress",
+        "quiz_state_conflict",
+        "request_malformed",
+        "route_not_found",
+        "runtime_state_unavailable",
+        "safe_content_unavailable",
+        "session_not_current",
+        "snapshot_not_ready",
+        "snapshot_unavailable",
+        "storage_busy"
+      ]
+    }
+  }
+}

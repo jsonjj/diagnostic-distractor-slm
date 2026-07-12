@@ -5,7 +5,7 @@ Run on a GPU box (Colab/Kaggle) or any CUDA machine. On CPU it works but is slow
 Usage:
   python -m src.prompt_model                                   # interactive: type questions
   python -m src.prompt_model --q "What is 0.2 + 0.15?" --a 0.35 --topic "Adding and Subtracting with Decimals"
-  python -m src.prompt_model --adapter j2ampn/qwen3-1.7b-distractor-lora
+  python -m src.prompt_model --adapter j2ampn/qwen3-4b-distractor-lora-v7
 
 Each answer is scored live with the hardened consistency checker so you see which distractors
 actually check out.
@@ -18,8 +18,8 @@ import json
 from .prompts import SYSTEM_PROMPT, build_user, parse_distractors
 from .consistency import computation_consistent
 
-BASE = "unsloth/Qwen3-1.7B-bnb-4bit"
-ADAPTER = "j2ampn/qwen3-1.7b-distractor-lora"
+BASE = "unsloth/Qwen3-4B-bnb-4bit"
+ADAPTER = "j2ampn/qwen3-4b-distractor-lora-v7"
 
 
 def load(adapter=ADAPTER):

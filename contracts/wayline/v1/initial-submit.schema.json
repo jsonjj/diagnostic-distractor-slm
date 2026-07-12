@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/initial-submit.schema.json",
+  "title": "Wayline Initial Submission",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "batchId", "itemCount", "selections"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "batchId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "itemCount": {"type": "integer", "minimum": 3, "maximum": 10},
+    "selections": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["itemId", "optionId", "confidence"],
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 96,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+          },
+          "optionId": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 96,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+          },
+          "confidence": {"type": "string", "enum": ["certain", "leaning", "guessing"]}
+        }
+      }
+    }
+  }
+}

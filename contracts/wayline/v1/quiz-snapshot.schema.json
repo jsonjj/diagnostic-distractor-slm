@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/quiz-snapshot.schema.json",
+  "title": "Wayline Quiz Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "batchId",
+    "quizState",
+    "stateVersion",
+    "publicBatch",
+    "initialSubmission",
+    "initialResult",
+    "revisionSubmission",
+    "finalResult"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "batchId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "quizState": {
+      "type": "string",
+      "enum": ["ready", "initial_locked", "revision_open", "revealed", "closed"]
+    },
+    "stateVersion": {"type": "integer", "minimum": 1, "maximum": 5},
+    "publicBatch": {"$ref": "public-quiz-batch.schema.json"},
+    "initialSubmission": {
+      "anyOf": [
+        {"$ref": "initial-submit.schema.json"},
+        {"type": "null"}
+      ]
+    },
+    "initialResult": {
+      "anyOf": [
+        {"$ref": "initial-submission-result.schema.json"},
+        {"type": "null"}
+      ]
+    },
+    "revisionSubmission": {
+      "anyOf": [
+        {"$ref": "revision-submit.schema.json"},
+        {"type": "null"}
+      ]
+    },
+    "finalResult": {
+      "anyOf": [
+        {"$ref": "final-quiz-result.schema.json"},
+        {"type": "null"}
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"quizState": {"const": "ready"}}},
+      "then": {
+        "properties": {
+          "stateVersion": {"const": 1},
+          "initialSubmission": {"type": "null"},
+          "initialResult": {"type": "null"},
+          "revisionSubmission": {"type": "null"},
+          "finalResult": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"quizState": {"const": "initial_locked"}}},
+      "then": {
+        "properties": {
+          "stateVersion": {"const": 2},
+          "initialSubmission": {"$ref": "initial-submit.schema.json"},
+          "initialResult": {"type": "null"},
+          "revisionSubmission": {"type": "null"},
+          "finalResult": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"quizState": {"const": "revision_open"}}},
+      "then": {
+        "properties": {
+          "stateVersion": {"const": 3},
+          "initialSubmission": {"$ref": "initial-submit.schema.json"},
+          "initialResult": {
+            "allOf": [
+              {"$ref": "initial-submission-result.schema.json"},
+              {
+                "properties": {
+                  "wrongCount": {"minimum": 1},
+                  "revisionRequired": {"const": true},
+                  "finalResult": {"type": "null"}
+                }
+              }
+            ]
+          },
+          "revisionSubmission": {"type": "null"},
+          "finalResult": {"type": "null"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"quizState": {"const": "revealed"}}},
+      "then": {
+        "oneOf": [
+          {
+            "properties": {
+              "stateVersion": {"const": 3},
+              "initialSubmission": {"$ref": "initial-submit.schema.json"},
+              "initialResult": {
+                "allOf": [
+                  {"$ref": "initial-submission-result.schema.json"},
+                  {
+                    "properties": {
+                      "wrongCount": {"const": 0},
+                      "revisionRequired": {"const": false},
+                      "finalResult": {"$ref": "final-quiz-result.schema.json"}
+                    }
+                  }
+                ]
+              },
+              "revisionSubmission": {"type": "null"},
+              "finalResult": {"$ref": "final-quiz-result.schema.json"}
+            }
+          },
+          {
+            "properties": {
+              "stateVersion": {"const": 4},
+              "initialSubmission": {"$ref": "initial-submit.schema.json"},
+              "initialResult": {
+                "allOf": [
+                  {"$ref": "initial-submission-result.schema.json"},
+                  {
+                    "properties": {
+                      "wrongCount": {"minimum": 1},
+                      "revisionRequired": {"const": true},
+                      "finalResult": {"type": "null"}
+                    }
+                  }
+                ]
+              },
+              "revisionSubmission": {"$ref": "revision-submit.schema.json"},
+              "finalResult": {"$ref": "final-quiz-result.schema.json"}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {"properties": {"quizState": {"const": "closed"}}},
+      "then": {
+        "oneOf": [
+          {
+            "properties": {
+              "stateVersion": {"const": 4},
+              "initialSubmission": {"$ref": "initial-submit.schema.json"},
+              "initialResult": {
+                "allOf": [
+                  {"$ref": "initial-submission-result.schema.json"},
+                  {
+                    "properties": {
+                      "wrongCount": {"const": 0},
+                      "revisionRequired": {"const": false},
+                      "finalResult": {"$ref": "final-quiz-result.schema.json"}
+                    }
+                  }
+                ]
+              },
+              "revisionSubmission": {"type": "null"},
+              "finalResult": {"$ref": "final-quiz-result.schema.json"}
+            }
+          },
+          {
+            "properties": {
+              "stateVersion": {"const": 5},
+              "initialSubmission": {"$ref": "initial-submit.schema.json"},
+              "initialResult": {
+                "allOf": [
+                  {"$ref": "initial-submission-result.schema.json"},
+                  {
+                    "properties": {
+                      "wrongCount": {"minimum": 1},
+                      "revisionRequired": {"const": true},
+                      "finalResult": {"type": "null"}
+                    }
+                  }
+                ]
+              },
+              "revisionSubmission": {"$ref": "revision-submit.schema.json"},
+              "finalResult": {"$ref": "final-quiz-result.schema.json"}
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

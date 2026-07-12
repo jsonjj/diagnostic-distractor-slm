@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/profile-export.schema.json",
+  "title": "Wayline Local Profile Export",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "profileId",
+    "createdAtUtc",
+    "campaignCatalogSha256",
+    "activeWorldId",
+    "campaignOrdinal",
+    "sessions",
+    "events",
+    "terminalEventChainSha256"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "wayline.profile-export.v1"},
+    "profileId": {"$ref": "#/$defs/identifier"},
+    "createdAtUtc": {"$ref": "#/$defs/canonicalUtcTimestamp"},
+    "campaignCatalogSha256": {
+      "const": "5509097676eccc6c3848bfb64295ac931c73621a1120b9431af0ccc8e793d513"
+    },
+    "activeWorldId": {
+      "anyOf": [
+        {"$ref": "#/$defs/identifier"},
+        {"type": "null"}
+      ]
+    },
+    "campaignOrdinal": {
+      "anyOf": [
+        {"type": "integer", "minimum": 1, "maximum": 9},
+        {"type": "null"}
+      ]
+    },
+    "sessions": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {"$ref": "#/$defs/ProfileExportSessionV1"}
+    },
+    "events": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {"$ref": "#/$defs/ProfileExportEventV1"}
+    },
+    "terminalEventChainSha256": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "canonicalUtcTimestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])T(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d{6})?Z$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "ProfileExportSessionV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sessionId",
+        "clientBuild",
+        "openedAtUtc",
+        "closedAtUtc"
+      ],
+      "properties": {
+        "sessionId": {"$ref": "#/$defs/identifier"},
+        "clientBuild": {"$ref": "#/$defs/identifier"},
+        "openedAtUtc": {"$ref": "#/$defs/canonicalUtcTimestamp"},
+        "closedAtUtc": {
+          "anyOf": [
+            {"$ref": "#/$defs/canonicalUtcTimestamp"},
+            {"type": "null"}
+          ]
+        }
+      }
+    },
+    "ProfileExportEventV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ordinal",
+        "canonicalEventJson",
+        "eventSha256"
+      ],
+      "properties": {
+        "ordinal": {"type": "integer", "minimum": 1},
+        "canonicalEventJson": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 32768
+        },
+        "eventSha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

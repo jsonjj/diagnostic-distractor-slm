@@ -20,6 +20,26 @@ outputs/
 *.gguf
 wandb/
 
+# Wayline packaged runtime and local learner state
+/.venv-live/
+/services/wayline_forge/build/
+/services/wayline_forge/dist/
+/services/wayline_forge/runtime/logs/
+/services/wayline_forge/runtime/profiles/
+*.sqlite-wal
+*.sqlite-shm
+
+# Wayline local llama.cpp toolchain/build (arm64 llama-server; large, reproducible)
+/.wayline-build/
+
+# Wayline Unity generated state and local builds
+/unity/Wayline/Library/
+/unity/Wayline/Temp/
+/unity/Wayline/Logs/
+/unity/Wayline/obj/
+/unity/Wayline/UserSettings/
+/unity/Wayline/Builds/
+
 # Eval artifacts. Canonical, version-tagged predictions (predictions_<role>_<version>.jsonl
 # and predictions_frontier*.jsonl) ARE committed so every reported eval number is reproducible.
 # Only the notebook's transient, un-versioned run outputs + smoke files stay out of git.
@@ -27,6 +47,12 @@ wandb/
 /predictions_base.jsonl
 /predictions_tuned.jsonl
 /*_smoke.jsonl
+
+# Glitch Rally offline-generation transfer artifacts (reviewed sanitized packs only).
+/glitch_rally_colab_bundle.zip
+/glitch_rally_raw_candidates_v1.jsonl
+/glitch_rally_generation_run_v1.json
+/data/game/work/
 
 # OS
 .DS_Store

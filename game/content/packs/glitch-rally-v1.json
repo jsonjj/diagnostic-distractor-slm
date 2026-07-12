@@ -1,0 +1,713 @@
+{
+  "contentHash": "pack:v1:940fa8804c1376bd1bfe792348f2195d49b94ffe1ac3e7dd26b67ad4f1e532cb",
+  "contentOrigin": "offline-slm-generated-owner-reviewed",
+  "createdAt": "2026-07-11T15:13:47Z",
+  "encounterCount": 6,
+  "encounterIds": [
+    "GR-NUM-010",
+    "GR-NUM-018",
+    "GR-NUM-024",
+    "GR-NUM-036",
+    "GR-NUM-037",
+    "GR-NUM-055"
+  ],
+  "encounters": [
+    {
+      "contentStatus": "approved",
+      "correctAnswerId": "GR-NUM-010-answer-correct",
+      "counterfeits": [
+        {
+          "answer": "47",
+          "answerId": "GR-NUM-010-counterfeit-1-answer",
+          "computation": "47 × 1 = 47",
+          "glitchFamilyId": "rounding_rascal",
+          "glitchName": "Rounding Rascal",
+          "id": "GR-NUM-010-counterfeit-1",
+          "misconception": "Drops the decimal part entirely, giving the whole number",
+          "repairExplanation": "Dropping every decimal digit changes the target place. Keep 47.38, then use the next digit 6 to round to 47.39.",
+          "repairId": "GR-NUM-010-repair-1"
+        },
+        {
+          "answer": "47.386",
+          "answerId": "GR-NUM-010-counterfeit-2-answer",
+          "computation": "(47 × 1000 + 3 × 100 + 8 × 10 + 6)/1000 = 47.386",
+          "glitchFamilyId": "rounding_rascal",
+          "glitchName": "Rounding Rascal",
+          "id": "GR-NUM-010-counterfeit-2",
+          "misconception": "Does not round and keeps all the decimal digits",
+          "repairExplanation": "47.386 still has a thousandths digit. The 6 increases the hundredths digit from 8 to 9, giving 47.39.",
+          "repairId": "GR-NUM-010-repair-2"
+        },
+        {
+          "answer": "47.38",
+          "answerId": "GR-NUM-010-counterfeit-3-answer",
+          "computation": "(47 × 100 + 3 × 10 + 8)/100 = 47.38",
+          "glitchFamilyId": "rounding_rascal",
+          "glitchName": "Rounding Rascal",
+          "id": "GR-NUM-010-counterfeit-3",
+          "misconception": "Truncates the extra digit instead of rounding",
+          "repairExplanation": "Because the thousandths digit is 6, the hundredths digit rounds up. Simply truncating produces 47.38.",
+          "repairId": "GR-NUM-010-repair-3"
+        }
+      ],
+      "difficulty": "medium",
+      "district": "Decimal Docks",
+      "featuredCounterfeitId": "GR-NUM-010-counterfeit-2",
+      "grade": 6,
+      "id": "GR-NUM-010",
+      "provenance": {
+        "adapterId": "j2ampn/qwen3-4b-distractor-lora-v7",
+        "adapterRevision": "dd30dcea2755b7a2659faa908714e31335349408",
+        "approvedAt": "2026-07-11T15:10:13Z",
+        "backendSourceSha256": "b2f4ac3a3dcf47b847f05ae2082408f898d037f94a00adb2d06e51c2835718d9",
+        "candidateHash": "candidate:v1:b89c5dfa4ae0594183abba7ae5ede19e3dc0721f255f68ce9ba6185514fcbe04",
+        "contentLicense": "original-game-content",
+        "excludedFromEvaluationHoldout": true,
+        "generatedAt": "2026-07-11T13:50:57.833542Z",
+        "generationParameters": {
+          "do_sample": false,
+          "enable_thinking": false,
+          "max_new_tokens": 512
+        },
+        "generationRunId": "glitch-rally-v1-owner-review-01",
+        "generatorSourceSha256": "18296e6331bd96121f89877660b79012a881b7b14330f6d651b693cff085ac5d",
+        "generatorVersion": "glitch-rally-generator-v1",
+        "modelId": "unsloth/Qwen3-4B-bnb-4bit",
+        "modelRevision": "cad0bedfdd862093a12af478cb974ab2addd0e0a",
+        "promptSha256": "4a31939227d7963e456985d8ba369e6a63e26a4e5775cdcd6338ddf1d3644b57",
+        "questionFingerprint": "question:v1:791f98a38caa0aeeae9d5290af287acc77e24542a267abee2c08a379b71cd2d3",
+        "rawResponseSha256": "264ed3fc570b2fac0b7320581bc35a757f3a7f7f5e4a117423331f15145d4c73",
+        "reviewPayloadHash": "review-payload:v1:a63cd8a092199add650a56c702ac72e090244eae6ebe8f94a7d7302b57d782e1",
+        "reviewRevision": "review:v1:95978d1ad161fbf259e8df6555e644837b0bf4665d8e23a4fbe3e07641f3ab13",
+        "sourceCollection": "original-game-v1",
+        "sourceQuestionId": "GR-NUM-010",
+        "sourceType": "slm-generated",
+        "systemPromptSha256": "9b75f692fc7d7595c0d855fc89020dff97966f8b28538057e32afd497dcfa871",
+        "userPromptSha256": "2a4fa9f7648691caa00cfcd16c9f05bfb5f3587688fcf087494abeb4172c4572",
+        "validationReportHash": "validation:v1:7160ae2f345c781b5063e315709bc9a34b11a431a613c0da345f3b851a22c6b4",
+        "validatorVersion": "glitch-rally-validator-v1"
+      },
+      "question": {
+        "correctAnswer": "47.39",
+        "prompt": "A speed sensor records 47.386 kilometers per hour. Round this speed to the nearest hundredth.",
+        "roadEquation": "Round 47.386 to 2 decimal place(s)",
+        "topic": "Rounding to Decimal Places",
+        "trustedSteps": [
+          "Locate the hundredths digit, 8.",
+          "The thousandths digit is 6, so round the hundredths digit up.",
+          "47.386 rounds to 47.39."
+        ]
+      },
+      "questionHash": "question:v1:791f98a38caa0aeeae9d5290af287acc77e24542a267abee2c08a379b71cd2d3",
+      "repairChoices": [
+        {
+          "detail": "Dropping every decimal digit changes the target place. Keep 47.38, then use the next digit 6 to round to 47.39.",
+          "id": "GR-NUM-010-repair-1",
+          "label": "Round to hundredths, not to ones."
+        },
+        {
+          "detail": "47.386 still has a thousandths digit. The 6 increases the hundredths digit from 8 to 9, giving 47.39.",
+          "id": "GR-NUM-010-repair-2",
+          "label": "Finish the rounding instead of copying every digit."
+        },
+        {
+          "detail": "Because the thousandths digit is 6, the hundredths digit rounds up. Simply truncating produces 47.38.",
+          "id": "GR-NUM-010-repair-3",
+          "label": "Use the 6 to round up; do not just cut it off."
+        }
+      ],
+      "reviewStatus": "approved",
+      "roomLabel": "Checkpoint 1 of 6",
+      "sourceSplit": "original-game-v1",
+      "visualTool": "place_value_rounding_line"
+    },
+    {
+      "contentStatus": "approved",
+      "correctAnswerId": "GR-NUM-018-answer-correct",
+      "counterfeits": [
+        {
+          "answer": "20",
+          "answerId": "GR-NUM-018-counterfeit-1-answer",
+          "computation": "8 + 12 = 20",
+          "glitchFamilyId": "factor_faker",
+          "glitchName": "Factor Faker",
+          "id": "GR-NUM-018-counterfeit-1",
+          "misconception": "Adds the two times",
+          "repairExplanation": "Adding 8 and 12 does not find when both cycles meet. The first shared multiple is 24.",
+          "repairId": "GR-NUM-018-repair-1"
+        },
+        {
+          "answer": "4",
+          "answerId": "GR-NUM-018-counterfeit-2-answer",
+          "computation": "12 - 8 = 4",
+          "glitchFamilyId": "factor_faker",
+          "glitchName": "Factor Faker",
+          "id": "GR-NUM-018-counterfeit-2",
+          "misconception": "Gives the difference of the two times",
+          "repairExplanation": "The difference, 4, is not a multiple of either flash time, so both lights cannot meet then.",
+          "repairId": "GR-NUM-018-repair-2"
+        },
+        {
+          "answer": "96",
+          "answerId": "GR-NUM-018-counterfeit-3-answer",
+          "computation": "8 × 12 = 96",
+          "glitchFamilyId": "factor_faker",
+          "glitchName": "Factor Faker",
+          "id": "GR-NUM-018-counterfeit-3",
+          "misconception": "Multiplies the two times",
+          "repairExplanation": "96 is a common multiple, but it is not the least one. Both lights already meet at 24 seconds.",
+          "repairId": "GR-NUM-018-repair-3"
+        }
+      ],
+      "difficulty": "medium",
+      "district": "Factor Forest",
+      "featuredCounterfeitId": "GR-NUM-018-counterfeit-3",
+      "grade": 6,
+      "id": "GR-NUM-018",
+      "provenance": {
+        "adapterId": "j2ampn/qwen3-4b-distractor-lora-v7",
+        "adapterRevision": "dd30dcea2755b7a2659faa908714e31335349408",
+        "approvedAt": "2026-07-11T15:10:13Z",
+        "backendSourceSha256": "b2f4ac3a3dcf47b847f05ae2082408f898d037f94a00adb2d06e51c2835718d9",
+        "candidateHash": "candidate:v1:2b38d7b2133c3059cc7e3a48af5845a1d62a101fb54eb626264f70d4f7392713",
+        "contentLicense": "original-game-content",
+        "excludedFromEvaluationHoldout": true,
+        "generatedAt": "2026-07-11T13:52:24.120312Z",
+        "generationParameters": {
+          "do_sample": false,
+          "enable_thinking": false,
+          "max_new_tokens": 512
+        },
+        "generationRunId": "glitch-rally-v1-owner-review-01",
+        "generatorSourceSha256": "18296e6331bd96121f89877660b79012a881b7b14330f6d651b693cff085ac5d",
+        "generatorVersion": "glitch-rally-generator-v1",
+        "modelId": "unsloth/Qwen3-4B-bnb-4bit",
+        "modelRevision": "cad0bedfdd862093a12af478cb974ab2addd0e0a",
+        "promptSha256": "e035131af2662a698379e72a157486a547ab3ad270968f16a14acd2501cd4200",
+        "questionFingerprint": "question:v1:de8e4414d1f60e65bec6c8045eec1994277b874d504606b735af7843e9109312",
+        "rawResponseSha256": "cb7a80ddb4f8233743890be7be6831d9270f3a361c69d0c478fbaf7a5f64dea1",
+        "reviewPayloadHash": "review-payload:v1:1b3b3c591a0fc5147c574e2e1ae5065a16717597c208ce465fd2bf6859210b0b",
+        "reviewRevision": "review:v1:9cc82f063c2b525d1475479a51c9867fe8f458de4ea59423f9434655bd2e21a2",
+        "sourceCollection": "original-game-v1",
+        "sourceQuestionId": "GR-NUM-018",
+        "sourceType": "slm-generated",
+        "systemPromptSha256": "9b75f692fc7d7595c0d855fc89020dff97966f8b28538057e32afd497dcfa871",
+        "userPromptSha256": "19ea319daf4c1baec9f51911728f9539a68ed72527a753c3db405cd96e660147",
+        "validationReportHash": "validation:v1:662508385eae8154b38a17989220cb6c9f0f8e5adf4fd1317663674af0f50192",
+        "validatorVersion": "glitch-rally-validator-v1"
+      },
+      "question": {
+        "correctAnswer": "24",
+        "prompt": "A blue warning light flashes every 8 seconds, and a gold warning light flashes every 12 seconds. They flash together now. After how many seconds will they next flash together?",
+        "roadEquation": "LCM(8, 12) = ?",
+        "topic": "Multiples and Lowest Common Multiple",
+        "trustedSteps": [
+          "Multiples of 8 include 8, 16, and 24.",
+          "Multiples of 12 include 12 and 24.",
+          "The least common multiple is 24."
+        ]
+      },
+      "questionHash": "question:v1:de8e4414d1f60e65bec6c8045eec1994277b874d504606b735af7843e9109312",
+      "repairChoices": [
+        {
+          "detail": "Adding 8 and 12 does not find when both cycles meet. The first shared multiple is 24.",
+          "id": "GR-NUM-018-repair-1",
+          "label": "List multiples instead of adding the flash times."
+        },
+        {
+          "detail": "The difference, 4, is not a multiple of either flash time, so both lights cannot meet then.",
+          "id": "GR-NUM-018-repair-2",
+          "label": "Check that the time is a multiple of both 8 and 12."
+        },
+        {
+          "detail": "96 is a common multiple, but it is not the least one. Both lights already meet at 24 seconds.",
+          "id": "GR-NUM-018-repair-3",
+          "label": "Choose the first shared multiple, not just any shared multiple."
+        }
+      ],
+      "reviewStatus": "approved",
+      "roomLabel": "Checkpoint 2 of 6",
+      "sourceSplit": "original-game-v1",
+      "visualTool": "multiple_timeline"
+    },
+    {
+      "contentStatus": "approved",
+      "correctAnswerId": "GR-NUM-024-answer-correct",
+      "counterfeits": [
+        {
+          "answer": "5/147",
+          "answerId": "GR-NUM-024-counterfeit-1-answer",
+          "computation": "(3 + 2)/(7 × 21) = 5/147",
+          "glitchFamilyId": "fraction_forger",
+          "glitchName": "Fraction Forger",
+          "id": "GR-NUM-024-counterfeit-1",
+          "misconception": "Adds numerators but multiplies the denominators",
+          "repairExplanation": "Multiplying only the denominators changes the piece sizes. First rewrite 3/7 as 9/21.",
+          "repairId": "GR-NUM-024-repair-1"
+        },
+        {
+          "answer": "5/28",
+          "answerId": "GR-NUM-024-counterfeit-2-answer",
+          "computation": "(3 + 2)/(7 + 21) = 5/28",
+          "glitchFamilyId": "fraction_forger",
+          "glitchName": "Fraction Forger",
+          "id": "GR-NUM-024-counterfeit-2",
+          "misconception": "Adds the numerators and the denominators",
+          "repairExplanation": "Once the pieces are twenty-firsts, add 9 and 2 while keeping the denominator 21.",
+          "repairId": "GR-NUM-024-repair-2"
+        },
+        {
+          "answer": "2/49",
+          "answerId": "GR-NUM-024-counterfeit-3-answer",
+          "computation": "3/7 × 2/21 = 2/49",
+          "glitchFamilyId": "operation_swapper",
+          "glitchName": "Operation Swapper",
+          "id": "GR-NUM-024-counterfeit-3",
+          "misconception": "Multiplies the fractions instead of adding them",
+          "repairExplanation": "Multiplication finds part of a part. This problem combines two covered parts, so they must be added.",
+          "repairId": "GR-NUM-024-repair-3"
+        }
+      ],
+      "difficulty": "medium",
+      "district": "Fraction Foundry",
+      "featuredCounterfeitId": "GR-NUM-024-counterfeit-3",
+      "grade": 6,
+      "id": "GR-NUM-024",
+      "provenance": {
+        "adapterId": "j2ampn/qwen3-4b-distractor-lora-v7",
+        "adapterRevision": "dd30dcea2755b7a2659faa908714e31335349408",
+        "approvedAt": "2026-07-11T15:10:13Z",
+        "backendSourceSha256": "b2f4ac3a3dcf47b847f05ae2082408f898d037f94a00adb2d06e51c2835718d9",
+        "candidateHash": "candidate:v1:c4b0f5441289ee8e60c8c1a2a03c936f1accab2da96c72191d001daec1b77bbc",
+        "contentLicense": "original-game-content",
+        "excludedFromEvaluationHoldout": true,
+        "generatedAt": "2026-07-11T13:53:33.813191Z",
+        "generationParameters": {
+          "do_sample": false,
+          "enable_thinking": false,
+          "max_new_tokens": 512
+        },
+        "generationRunId": "glitch-rally-v1-owner-review-01",
+        "generatorSourceSha256": "18296e6331bd96121f89877660b79012a881b7b14330f6d651b693cff085ac5d",
+        "generatorVersion": "glitch-rally-generator-v1",
+        "modelId": "unsloth/Qwen3-4B-bnb-4bit",
+        "modelRevision": "cad0bedfdd862093a12af478cb974ab2addd0e0a",
+        "promptSha256": "2008c1af2aad1ce534be397af97a0e7c740ce72b00c1da63a53aeaeecaceb2fb",
+        "questionFingerprint": "question:v1:80e20ca29f1f0c266c29eff4caa147dacadcf9b33b05a020dfa804dcec3dbfcb",
+        "rawResponseSha256": "c5e6038357338361fa0718bbc52594193868b645bbebdf1333fbe880e62a099a",
+        "reviewPayloadHash": "review-payload:v1:65e0876db998e552229c73453c437a799e940201ef411c9c92e06e9ec3426bcf",
+        "reviewRevision": "review:v1:6a02e2f304376fa38e8dc5e06c2702084fa108f5b89ff3bb420e6fa0c813beeb",
+        "sourceCollection": "original-game-v1",
+        "sourceQuestionId": "GR-NUM-024",
+        "sourceType": "slm-generated",
+        "systemPromptSha256": "9b75f692fc7d7595c0d855fc89020dff97966f8b28538057e32afd497dcfa871",
+        "userPromptSha256": "6f1236b00026c788be63277cc8d27fc54f5d4acff705ebcb9d62531732bd60b9",
+        "validationReportHash": "validation:v1:9ca449d2450731fd57ac4022f0a068c2efcf1c94ab5d9e4b0dba09cceb25d75e",
+        "validatorVersion": "glitch-rally-validator-v1"
+      },
+      "question": {
+        "correctAnswer": "11/21",
+        "prompt": "One shortcut covers 3/7 of a stage and a second shortcut covers 2/21 of the stage. What fraction of the stage do they cover in total?",
+        "roadEquation": "3÷7 + 2÷21 = ?",
+        "topic": "Adding and Subtracting Fractions",
+        "trustedSteps": [
+          "Rewrite 3/7 as 9/21.",
+          "Add 9/21 + 2/21 = 11/21."
+        ]
+      },
+      "questionHash": "question:v1:80e20ca29f1f0c266c29eff4caa147dacadcf9b33b05a020dfa804dcec3dbfcb",
+      "repairChoices": [
+        {
+          "detail": "Multiplying only the denominators changes the piece sizes. First rewrite 3/7 as 9/21.",
+          "id": "GR-NUM-024-repair-1",
+          "label": "Rename 3/7 in twenty-firsts before combining."
+        },
+        {
+          "detail": "Once the pieces are twenty-firsts, add 9 and 2 while keeping the denominator 21.",
+          "id": "GR-NUM-024-repair-2",
+          "label": "Keep one shared denominator and add only the numerators."
+        },
+        {
+          "detail": "Multiplication finds part of a part. This problem combines two covered parts, so they must be added.",
+          "id": "GR-NUM-024-repair-3",
+          "label": "Use addition for the words “in total.”"
+        }
+      ],
+      "reviewStatus": "approved",
+      "roomLabel": "Checkpoint 3 of 6",
+      "sourceSplit": "original-game-v1",
+      "visualTool": "fraction_route_map"
+    },
+    {
+      "contentStatus": "approved",
+      "correctAnswerId": "GR-NUM-036-answer-correct",
+      "counterfeits": [
+        {
+          "answer": "588",
+          "answerId": "GR-NUM-036-counterfeit-1-answer",
+          "computation": "84 × 7 = 588",
+          "glitchFamilyId": "fraction_forger",
+          "glitchName": "Fraction Forger",
+          "id": "GR-NUM-036-counterfeit-1",
+          "misconception": "Multiplies by the numerator instead of dividing",
+          "repairExplanation": "Multiplying by 7 makes seven whole copies. Seven twelfths means divide by 12 first, then take 7 groups.",
+          "repairId": "GR-NUM-036-repair-1"
+        },
+        {
+          "answer": "7",
+          "answerId": "GR-NUM-036-counterfeit-2-answer",
+          "computation": "84 ÷ 12 = 7",
+          "glitchFamilyId": "fraction_forger",
+          "glitchName": "Fraction Forger",
+          "id": "GR-NUM-036-counterfeit-2",
+          "misconception": "Divides by the denominator instead of multiplying",
+          "repairExplanation": "84 ÷ 12 = 7 finds only one twelfth. Seven twelfths requires seven groups of 7.",
+          "repairId": "GR-NUM-036-repair-2"
+        },
+        {
+          "answer": "91",
+          "answerId": "GR-NUM-036-counterfeit-3-answer",
+          "computation": "84 + 7 = 91",
+          "glitchFamilyId": "operation_swapper",
+          "glitchName": "Operation Swapper",
+          "id": "GR-NUM-036-counterfeit-3",
+          "misconception": "Adds the numerator to the amount",
+          "repairExplanation": "Adding 7 ignores the denominator 12. Find one twelfth, then take seven of those parts.",
+          "repairId": "GR-NUM-036-repair-3"
+        }
+      ],
+      "difficulty": "medium",
+      "district": "Fraction Foundry",
+      "featuredCounterfeitId": "GR-NUM-036-counterfeit-2",
+      "grade": 6,
+      "id": "GR-NUM-036",
+      "provenance": {
+        "adapterId": "j2ampn/qwen3-4b-distractor-lora-v7",
+        "adapterRevision": "dd30dcea2755b7a2659faa908714e31335349408",
+        "approvedAt": "2026-07-11T15:10:13Z",
+        "backendSourceSha256": "b2f4ac3a3dcf47b847f05ae2082408f898d037f94a00adb2d06e51c2835718d9",
+        "candidateHash": "candidate:v1:cc95638fb4ff981b52eec8d0683302596b23df7368ebd76ce77446fd91408630",
+        "contentLicense": "original-game-content",
+        "excludedFromEvaluationHoldout": true,
+        "generatedAt": "2026-07-11T13:55:49.667445Z",
+        "generationParameters": {
+          "do_sample": false,
+          "enable_thinking": false,
+          "max_new_tokens": 512
+        },
+        "generationRunId": "glitch-rally-v1-owner-review-01",
+        "generatorSourceSha256": "18296e6331bd96121f89877660b79012a881b7b14330f6d651b693cff085ac5d",
+        "generatorVersion": "glitch-rally-generator-v1",
+        "modelId": "unsloth/Qwen3-4B-bnb-4bit",
+        "modelRevision": "cad0bedfdd862093a12af478cb974ab2addd0e0a",
+        "promptSha256": "0c371f37fb6864830ef7ba7b365f713f7245da28fcab98628649d6238ca24e65",
+        "questionFingerprint": "question:v1:b690c0660d2c73bb9eb589257163dc1875a80eb8be14ed325199ac690b1e385e",
+        "rawResponseSha256": "0f8562ebe0160a2fcb7c5dba41cf21304df14d5edf3deb3868ef5d01ee6915c0",
+        "reviewPayloadHash": "review-payload:v1:41077ad07fe9bb3d2596372b6f90762550c798968bbcd83b4836886a18f0a6e5",
+        "reviewRevision": "review:v1:76c863016e6f747260263994520afdc140772095e3b15441c5b6865988ae12f5",
+        "sourceCollection": "original-game-v1",
+        "sourceQuestionId": "GR-NUM-036",
+        "sourceType": "slm-generated",
+        "systemPromptSha256": "9b75f692fc7d7595c0d855fc89020dff97966f8b28538057e32afd497dcfa871",
+        "userPromptSha256": "49dff65c112f4b7b681e998727a96cc6cf84608f8067f9ae579105f0234fcfb1",
+        "validationReportHash": "validation:v1:4e9cdb07921326f2c41965170bb2d66efdd420708804b40e9303ff2c45213b28",
+        "validatorVersion": "glitch-rally-validator-v1"
+      },
+      "question": {
+        "correctAnswer": "49",
+        "prompt": "Seven twelfths of 84 checkpoint badges have been scanned. How many badges have been scanned?",
+        "roadEquation": "84 ÷ 12 × 7 = ?",
+        "topic": "Fractions of an Amount",
+        "trustedSteps": [
+          "Divide 84 by 12 to get 7.",
+          "Multiply 7 × 7 = 49."
+        ]
+      },
+      "questionHash": "question:v1:b690c0660d2c73bb9eb589257163dc1875a80eb8be14ed325199ac690b1e385e",
+      "repairChoices": [
+        {
+          "detail": "Multiplying by 7 makes seven whole copies. Seven twelfths means divide by 12 first, then take 7 groups.",
+          "id": "GR-NUM-036-repair-1",
+          "label": "Split 84 into 12 equal groups before taking seven."
+        },
+        {
+          "detail": "84 ÷ 12 = 7 finds only one twelfth. Seven twelfths requires seven groups of 7.",
+          "id": "GR-NUM-036-repair-2",
+          "label": "After finding one twelfth, take seven of those parts."
+        },
+        {
+          "detail": "Adding 7 ignores the denominator 12. Find one twelfth, then take seven of those parts.",
+          "id": "GR-NUM-036-repair-3",
+          "label": "Read “seven twelfths of” as multiplication by 7/12."
+        }
+      ],
+      "reviewStatus": "approved",
+      "roomLabel": "Checkpoint 4 of 6",
+      "sourceSplit": "original-game-v1",
+      "visualTool": "badge_fraction_array"
+    },
+    {
+      "contentStatus": "approved",
+      "correctAnswerId": "GR-NUM-037-answer-correct",
+      "counterfeits": [
+        {
+          "answer": "2.33",
+          "answerId": "GR-NUM-037-counterfeit-1-answer",
+          "computation": "5.8 - 3.47 = 2.33",
+          "glitchFamilyId": "operation_swapper",
+          "glitchName": "Operation Swapper",
+          "id": "GR-NUM-037-counterfeit-1",
+          "misconception": "Subtracts instead of adding",
+          "repairExplanation": "Subtraction finds the difference. The problem combines boosts from both sections.",
+          "repairId": "GR-NUM-037-repair-1"
+        },
+        {
+          "answer": "40.5",
+          "answerId": "GR-NUM-037-counterfeit-2-answer",
+          "computation": "(347 + 58)/10 = 40.5",
+          "glitchFamilyId": "decimal_drifter",
+          "glitchName": "Decimal Drifter",
+          "id": "GR-NUM-037-counterfeit-2",
+          "misconception": "Does not align place values and adds both as tenths",
+          "repairExplanation": "3.47 is not 347 tenths. Write 5.8 as 5.80 so ones, tenths, and hundredths stay aligned.",
+          "repairId": "GR-NUM-037-repair-2"
+        },
+        {
+          "answer": "405",
+          "answerId": "GR-NUM-037-counterfeit-3-answer",
+          "computation": "347 + 58 = 405",
+          "glitchFamilyId": "place_value_phantom",
+          "glitchName": "Place-Value Phantom",
+          "id": "GR-NUM-037-counterfeit-3",
+          "misconception": "Ignores the decimal points and adds as whole numbers",
+          "repairExplanation": "Removing the decimal points changes 3.47 and 5.8 into 347 and 58. Keep every digit in its correct place-value column.",
+          "repairId": "GR-NUM-037-repair-3"
+        }
+      ],
+      "difficulty": "easy",
+      "district": "Decimal Docks",
+      "featuredCounterfeitId": "GR-NUM-037-counterfeit-1",
+      "grade": 6,
+      "id": "GR-NUM-037",
+      "provenance": {
+        "adapterId": "j2ampn/qwen3-4b-distractor-lora-v7",
+        "adapterRevision": "dd30dcea2755b7a2659faa908714e31335349408",
+        "approvedAt": "2026-07-11T15:10:13Z",
+        "backendSourceSha256": "b2f4ac3a3dcf47b847f05ae2082408f898d037f94a00adb2d06e51c2835718d9",
+        "candidateHash": "candidate:v1:de5fd5c5a84543000ef27c960e938601c6d822c56b2433de80aeae970d1d44d0",
+        "contentLicense": "original-game-content",
+        "excludedFromEvaluationHoldout": true,
+        "generatedAt": "2026-07-11T13:56:01.190272Z",
+        "generationParameters": {
+          "do_sample": false,
+          "enable_thinking": false,
+          "max_new_tokens": 512
+        },
+        "generationRunId": "glitch-rally-v1-owner-review-01",
+        "generatorSourceSha256": "18296e6331bd96121f89877660b79012a881b7b14330f6d651b693cff085ac5d",
+        "generatorVersion": "glitch-rally-generator-v1",
+        "modelId": "unsloth/Qwen3-4B-bnb-4bit",
+        "modelRevision": "cad0bedfdd862093a12af478cb974ab2addd0e0a",
+        "promptSha256": "990ae077cec3e3f4c1836ac17850933be4e885ee82c79c7f4e5bf813bd37f63e",
+        "questionFingerprint": "question:v1:b9e57b97b3baeb57199bae0e78b3d6dc0d6359bc92427aa2a28f2d1b19524d95",
+        "rawResponseSha256": "62774926b3184ae24dab4a078e97e88513826ecdca7fc14f7a66a8a7b11c4790",
+        "reviewPayloadHash": "review-payload:v1:7340616b340150ff4254c83f559832c18515c28815025501c75b339c04e78d50",
+        "reviewRevision": "review:v1:52955f805d0b3ea94c9eac13c2aba5c876fbec1de0acb9857beff98d64d906cd",
+        "sourceCollection": "original-game-v1",
+        "sourceQuestionId": "GR-NUM-037",
+        "sourceType": "slm-generated",
+        "systemPromptSha256": "9b75f692fc7d7595c0d855fc89020dff97966f8b28538057e32afd497dcfa871",
+        "userPromptSha256": "350e158ee802c508740ea2621c330f79ca8d16df03493bdfa352eb5988ecb955",
+        "validationReportHash": "validation:v1:4d718dc12af02391d6f154c95de14b433162d2c7a6ef388ae9750fe7c47058b5",
+        "validatorVersion": "glitch-rally-validator-v1"
+      },
+      "question": {
+        "correctAnswer": "9.27",
+        "prompt": "A car collects 3.47 boost units on one section and 5.8 boost units on the next. How many boost units does it collect altogether?",
+        "roadEquation": "3.47 + 5.8 = ?",
+        "topic": "Adding and Subtracting with Decimals",
+        "trustedSteps": [
+          "Write 5.8 as 5.80 and align decimal points.",
+          "Add 3.47 + 5.80 = 9.27."
+        ]
+      },
+      "questionHash": "question:v1:b9e57b97b3baeb57199bae0e78b3d6dc0d6359bc92427aa2a28f2d1b19524d95",
+      "repairChoices": [
+        {
+          "detail": "Subtraction finds the difference. The problem combines boosts from both sections.",
+          "id": "GR-NUM-037-repair-1",
+          "label": "Use “altogether” to choose addition."
+        },
+        {
+          "detail": "3.47 is not 347 tenths. Write 5.8 as 5.80 so ones, tenths, and hundredths stay aligned.",
+          "id": "GR-NUM-037-repair-2",
+          "label": "Line up the decimal points before adding."
+        },
+        {
+          "detail": "Removing the decimal points changes 3.47 and 5.8 into 347 and 58. Keep every digit in its correct place-value column.",
+          "id": "GR-NUM-037-repair-3",
+          "label": "Name each digit’s place-value unit before adding."
+        }
+      ],
+      "reviewStatus": "approved",
+      "roomLabel": "Checkpoint 5 of 6",
+      "sourceSplit": "original-game-v1",
+      "visualTool": "place_value_grid"
+    },
+    {
+      "contentStatus": "approved",
+      "correctAnswerId": "GR-NUM-055-answer-correct",
+      "counterfeits": [
+        {
+          "answer": "19",
+          "answerId": "GR-NUM-055-counterfeit-1-answer",
+          "computation": "12 + 7 = 19",
+          "glitchFamilyId": "sign_flipper",
+          "glitchName": "Sign Flipper",
+          "id": "GR-NUM-055-counterfeit-1",
+          "misconception": "Ignores the negative sign and adds the magnitudes",
+          "repairExplanation": "The car starts at -12; moving up 7 heads toward zero and reaches -5.",
+          "repairId": "GR-NUM-055-repair-1"
+        },
+        {
+          "answer": "-19",
+          "answerId": "GR-NUM-055-counterfeit-2-answer",
+          "computation": "-12 - 7 = -19",
+          "glitchFamilyId": "sign_flipper",
+          "glitchName": "Sign Flipper",
+          "id": "GR-NUM-055-counterfeit-2",
+          "misconception": "Treats both numbers as negative",
+          "repairExplanation": "Subtracting 7 moves farther down; upward movement means add positive 7.",
+          "repairId": "GR-NUM-055-repair-2"
+        },
+        {
+          "answer": "5",
+          "answerId": "GR-NUM-055-counterfeit-3-answer",
+          "computation": "12 - 7 = 5",
+          "glitchFamilyId": "sign_flipper",
+          "glitchName": "Sign Flipper",
+          "id": "GR-NUM-055-counterfeit-3",
+          "misconception": "Subtracts the numbers but gives the wrong sign",
+          "repairExplanation": "Moving up 7 from -12 still leaves the car 5 meters below zero, at -5.",
+          "repairId": "GR-NUM-055-repair-3"
+        }
+      ],
+      "difficulty": "easy",
+      "district": "Integer Iceway",
+      "featuredCounterfeitId": "GR-NUM-055-counterfeit-3",
+      "grade": 6,
+      "id": "GR-NUM-055",
+      "provenance": {
+        "adapterId": "j2ampn/qwen3-4b-distractor-lora-v7",
+        "adapterRevision": "dd30dcea2755b7a2659faa908714e31335349408",
+        "approvedAt": "2026-07-11T15:10:13Z",
+        "backendSourceSha256": "b2f4ac3a3dcf47b847f05ae2082408f898d037f94a00adb2d06e51c2835718d9",
+        "candidateHash": "candidate:v1:ec9e5404fa0ba1cd78e660ea396a40f5e954ef4e05f6f8b92569fdaa56e4729a",
+        "contentLicense": "original-game-content",
+        "excludedFromEvaluationHoldout": true,
+        "generatedAt": "2026-07-11T14:00:11.580104Z",
+        "generationParameters": {
+          "do_sample": false,
+          "enable_thinking": false,
+          "max_new_tokens": 512
+        },
+        "generationRunId": "glitch-rally-v1-owner-review-01",
+        "generatorSourceSha256": "18296e6331bd96121f89877660b79012a881b7b14330f6d651b693cff085ac5d",
+        "generatorVersion": "glitch-rally-generator-v1",
+        "modelId": "unsloth/Qwen3-4B-bnb-4bit",
+        "modelRevision": "cad0bedfdd862093a12af478cb974ab2addd0e0a",
+        "promptSha256": "3b98922a86ade8d81079576f983231c7fe0b8d58265ef9d8f3fc4cc5acfb5398",
+        "questionFingerprint": "question:v1:bbe20f8e9b7c84b777c188a9f48ca580183398b8e18dabf03961ef5d0d39566a",
+        "rawResponseSha256": "34b283ff1aa21a776a70ab47231677eb1f1e9663b3377571ffc702a9de8c93cd",
+        "reviewPayloadHash": "review-payload:v1:4d4988c8f4388b56fb87d7d95e146fcde9e45b86bdb31b0d725114cee8fe5fda",
+        "reviewRevision": "review:v1:86a8e16337abd409e7057e0cab28bc45b2fec3eee1e50d9ad3d6d290a30b44ea",
+        "sourceCollection": "original-game-v1",
+        "sourceQuestionId": "GR-NUM-055",
+        "sourceType": "slm-generated",
+        "systemPromptSha256": "9b75f692fc7d7595c0d855fc89020dff97966f8b28538057e32afd497dcfa871",
+        "userPromptSha256": "4b1a124f08725754416f11af5430e863874bfcf16692ef3fb282cecef6c50e0e",
+        "validationReportHash": "validation:v1:d321f67d98f0e6e270a91dfa468c607fa6e1c4c2a7dce8c1c247148074c85c45",
+        "validatorVersion": "glitch-rally-validator-v1"
+      },
+      "question": {
+        "correctAnswer": "-5",
+        "prompt": "A cave checkpoint is at -12 meters relative to the start. A lift carries the car 7 meters upward. What is its new position?",
+        "roadEquation": "-12 + 7 = ?",
+        "topic": "Adding and Subtracting Negative Numbers",
+        "trustedSteps": [
+          "Moving upward represents adding 7.",
+          "Calculate -12 + 7 = -5."
+        ]
+      },
+      "questionHash": "question:v1:bbe20f8e9b7c84b777c188a9f48ca580183398b8e18dabf03961ef5d0d39566a",
+      "repairChoices": [
+        {
+          "detail": "The car starts at -12; moving up 7 heads toward zero and reaches -5.",
+          "id": "GR-NUM-055-repair-1",
+          "label": "Keep the starting position negative."
+        },
+        {
+          "detail": "Subtracting 7 moves farther down; upward movement means add positive 7.",
+          "id": "GR-NUM-055-repair-2",
+          "label": "Translate “up 7” as +7."
+        },
+        {
+          "detail": "Moving up 7 from -12 still leaves the car 5 meters below zero, at -5.",
+          "id": "GR-NUM-055-repair-3",
+          "label": "Check which side of zero the car reaches."
+        }
+      ],
+      "reviewStatus": "approved",
+      "roomLabel": "Checkpoint 6 of 6",
+      "sourceSplit": "original-game-v1",
+      "visualTool": "integer_elevation_line"
+    }
+  ],
+  "glitchFamilies": {
+    "decimal_drifter": {
+      "name": "Decimal Drifter",
+      "personality": "slides digits into the wrong place-value lane"
+    },
+    "factor_faker": {
+      "name": "Factor Faker",
+      "personality": "mixes up factors, multiples, GCF, and LCM"
+    },
+    "fraction_forger": {
+      "name": "Fraction Forger",
+      "personality": "counterfeits fraction pieces and denominators"
+    },
+    "operation_swapper": {
+      "name": "Operation Swapper",
+      "personality": "secretly replaces the operation the problem asks for"
+    },
+    "order_hacker": {
+      "name": "Order Hacker",
+      "personality": "scrambles parentheses, powers, and operation order"
+    },
+    "place_value_phantom": {
+      "name": "Place-Value Phantom",
+      "personality": "haunts digit positions, conversions, and regrouping"
+    },
+    "reciprocal_rogue": {
+      "name": "Reciprocal Rogue",
+      "personality": "flips the wrong fraction during division"
+    },
+    "rounding_rascal": {
+      "name": "Rounding Rascal",
+      "personality": "checks the wrong digit before rounding"
+    },
+    "sign_flipper": {
+      "name": "Sign Flipper",
+      "personality": "reverses positive and negative rules"
+    }
+  },
+  "holdoutAssertion": {
+    "excluded": true,
+    "recordCount": 140,
+    "sha256": "47ce1e1b85ebaae0782f0aed32fa12bb6ec0fd4498ed71c75cf3e4aff5135693"
+  },
+  "packVersion": "glitch-rally-v1",
+  "questionBankSha256": "626565ab322b9b0e4514c39c8df1743a39b44959c0b2e337778147855166ba38",
+  "schemaVersion": "glitch-rally-pack-v1",
+  "validatorVersion": "glitch-rally-validator-v1"
+}

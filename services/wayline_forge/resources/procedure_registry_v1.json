@@ -1,0 +1,1281 @@
+{
+  "schema_version": "wayline-procedure-registry-schema-v1",
+  "registry_id": "wayline-procedures-v1",
+  "procedures": [
+    {
+      "procedure_id": "frac_add_num_den",
+      "topic": "Adding and Subtracting Fractions",
+      "family_id": "fraction_add",
+      "aliases": [
+        "Adds the numerators and the denominators"
+      ],
+      "formula_name": "frac_add_num_den",
+      "applicability": {},
+      "canonical_label": "Adds the numerators and the denominators",
+      "computation_template": "({a} + {c})/({b} + {d})",
+      "can_come_from": "This answer can come from adding both the top numbers and the bottom numbers.",
+      "reliable_method": "A reliable method is to make a common denominator, then add only the numerators and simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 1,
+          "b": 2,
+          "c": 1,
+          "d": 3
+        },
+        "expected": "2/5"
+      }
+    },
+    {
+      "procedure_id": "frac_add_keep_first_den",
+      "topic": "Adding and Subtracting Fractions",
+      "family_id": "fraction_add",
+      "aliases": [
+        "Adds numerators and keeps the first denominator"
+      ],
+      "formula_name": "frac_add_keep_first_den",
+      "applicability": {},
+      "canonical_label": "Adds numerators and keeps the first denominator",
+      "computation_template": "({a} + {c})/{b}",
+      "can_come_from": "This answer can come from adding the numerators while leaving the first denominator unchanged.",
+      "reliable_method": "A reliable method is to make a common denominator, then add only the numerators and simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 1,
+          "b": 2,
+          "c": 1,
+          "d": 3
+        },
+        "expected": "1"
+      }
+    },
+    {
+      "procedure_id": "frac_add_mul_den",
+      "topic": "Adding and Subtracting Fractions",
+      "family_id": "fraction_add",
+      "aliases": [
+        "Adds numerators but multiplies the denominators"
+      ],
+      "formula_name": "frac_add_mul_den",
+      "applicability": {},
+      "canonical_label": "Adds numerators but multiplies the denominators",
+      "computation_template": "({a} + {c})/({b} × {d})",
+      "can_come_from": "This answer can come from adding the numerators but multiplying the denominators.",
+      "reliable_method": "A reliable method is to make a common denominator, then add only the numerators and simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 1,
+          "b": 2,
+          "c": 1,
+          "d": 3
+        },
+        "expected": "1/3"
+      }
+    },
+    {
+      "procedure_id": "frac_add_keep_second_den",
+      "topic": "Adding and Subtracting Fractions",
+      "family_id": "fraction_add",
+      "aliases": [
+        "Adds numerators and keeps the second denominator"
+      ],
+      "formula_name": "frac_add_keep_second_den",
+      "applicability": {},
+      "canonical_label": "Adds numerators and keeps the second denominator",
+      "computation_template": "({a} + {c})/{d}",
+      "can_come_from": "This answer can come from adding the numerators while leaving the second denominator unchanged.",
+      "reliable_method": "A reliable method is to make a common denominator, then add only the numerators and simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 1,
+          "b": 2,
+          "c": 1,
+          "d": 3
+        },
+        "expected": "2/3"
+      }
+    },
+    {
+      "procedure_id": "frac_add_multiply_instead",
+      "topic": "Adding and Subtracting Fractions",
+      "family_id": "fraction_add",
+      "aliases": [
+        "Multiplies the fractions instead of adding them"
+      ],
+      "formula_name": "frac_add_multiply_instead",
+      "applicability": {},
+      "canonical_label": "Multiplies the fractions instead of adding them",
+      "computation_template": "{a}/{b} × {c}/{d}",
+      "can_come_from": "This answer can come from multiplying both fractions when the operation asks for addition.",
+      "reliable_method": "A reliable method is to make a common denominator, then add only the numerators and simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 1,
+          "b": 2,
+          "c": 1,
+          "d": 3
+        },
+        "expected": "1/6"
+      }
+    },
+    {
+      "procedure_id": "frac_mul_cross",
+      "topic": "Multiplying Fractions",
+      "family_id": "fraction_multiply",
+      "aliases": [
+        "Cross-multiplies instead of multiplying straight across"
+      ],
+      "formula_name": "frac_mul_cross",
+      "applicability": {},
+      "canonical_label": "Cross-multiplies instead of multiplying straight across",
+      "computation_template": "({a} × {d})/({b} × {c})",
+      "can_come_from": "This answer can come from cross-multiplying the fraction parts instead of multiplying straight across.",
+      "reliable_method": "A reliable method is to multiply numerator by numerator and denominator by denominator, then simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 3,
+          "d": 5
+        },
+        "expected": "10/9"
+      }
+    },
+    {
+      "procedure_id": "frac_mul_add",
+      "topic": "Multiplying Fractions",
+      "family_id": "fraction_multiply",
+      "aliases": [
+        "Adds the fractions instead of multiplying"
+      ],
+      "formula_name": "frac_mul_add",
+      "applicability": {},
+      "canonical_label": "Adds the fractions instead of multiplying",
+      "computation_template": "{a}/{b} + {c}/{d}",
+      "can_come_from": "This answer can come from adding the fractions when the operation asks for multiplication.",
+      "reliable_method": "A reliable method is to multiply numerator by numerator and denominator by denominator, then simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 3,
+          "d": 5
+        },
+        "expected": "19/15"
+      }
+    },
+    {
+      "procedure_id": "frac_mul_num_add_den",
+      "topic": "Multiplying Fractions",
+      "family_id": "fraction_multiply",
+      "aliases": [
+        "Multiplies numerators but adds denominators"
+      ],
+      "formula_name": "frac_mul_num_add_den",
+      "applicability": {},
+      "canonical_label": "Multiplies numerators but adds denominators",
+      "computation_template": "({a} × {c})/({b} + {d})",
+      "can_come_from": "This answer can come from multiplying the numerators but adding the denominators.",
+      "reliable_method": "A reliable method is to multiply numerator by numerator and denominator by denominator, then simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 3,
+          "d": 5
+        },
+        "expected": "3/4"
+      }
+    },
+    {
+      "procedure_id": "frac_mul_add_num_mul_den",
+      "topic": "Multiplying Fractions",
+      "family_id": "fraction_multiply",
+      "aliases": [
+        "Adds the numerators but multiplies the denominators"
+      ],
+      "formula_name": "frac_mul_add_num_mul_den",
+      "applicability": {},
+      "canonical_label": "Adds the numerators but multiplies the denominators",
+      "computation_template": "({a} + {c})/({b} × {d})",
+      "can_come_from": "This answer can come from adding the numerators while multiplying the denominators.",
+      "reliable_method": "A reliable method is to multiply numerator by numerator and denominator by denominator, then simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 3,
+          "d": 5
+        },
+        "expected": "1/3"
+      }
+    },
+    {
+      "procedure_id": "frac_mul_num_keep_first_den",
+      "topic": "Multiplying Fractions",
+      "family_id": "fraction_multiply",
+      "aliases": [
+        "Multiplies numerators but keeps the first denominator"
+      ],
+      "formula_name": "frac_mul_num_keep_first_den",
+      "applicability": {},
+      "canonical_label": "Multiplies numerators but keeps the first denominator",
+      "computation_template": "({a} × {c})/{b}",
+      "can_come_from": "This answer can come from multiplying the numerators while leaving the first denominator unchanged.",
+      "reliable_method": "A reliable method is to multiply numerator by numerator and denominator by denominator, then simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 3,
+          "d": 5
+        },
+        "expected": "2"
+      }
+    },
+    {
+      "procedure_id": "frac_div_add_int_den",
+      "topic": "Dividing Fractions",
+      "family_id": "fraction_divide_integer",
+      "aliases": [
+        "Adds the integer to the denominator instead of multiplying"
+      ],
+      "formula_name": "frac_div_add_int_den",
+      "applicability": {},
+      "canonical_label": "Adds the integer to the denominator instead of multiplying",
+      "computation_template": "{a}/({b} + {n})",
+      "can_come_from": "This answer can come from adding the integer to the denominator.",
+      "reliable_method": "A reliable method is to write the integer over 1, multiply by its reciprocal, and simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 5,
+          "b": 12,
+          "n": 3
+        },
+        "expected": "1/3"
+      }
+    },
+    {
+      "procedure_id": "frac_div_num_over_int",
+      "topic": "Dividing Fractions",
+      "family_id": "fraction_divide_integer",
+      "aliases": [
+        "Ignores the denominator and divides the numerator by the integer"
+      ],
+      "formula_name": "frac_div_num_over_int",
+      "applicability": {},
+      "canonical_label": "Ignores the denominator and divides the numerator by the integer",
+      "computation_template": "{a}/{n}",
+      "can_come_from": "This answer can come from using the numerator over the integer and leaving out the original denominator.",
+      "reliable_method": "A reliable method is to write the integer over 1, multiply by its reciprocal, and simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 5,
+          "b": 12,
+          "n": 3
+        },
+        "expected": "5/3"
+      }
+    },
+    {
+      "procedure_id": "frac_div_mul_num_by_int",
+      "topic": "Dividing Fractions",
+      "family_id": "fraction_divide_integer",
+      "aliases": [
+        "Multiplies the numerator by the integer instead of the denominator"
+      ],
+      "formula_name": "frac_div_mul_num_by_int",
+      "applicability": {},
+      "canonical_label": "Multiplies the numerator by the integer instead of the denominator",
+      "computation_template": "({a} × {n})/{b}",
+      "can_come_from": "This answer can come from multiplying the numerator by the integer.",
+      "reliable_method": "A reliable method is to write the integer over 1, multiply by its reciprocal, and simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 5,
+          "b": 12,
+          "n": 3
+        },
+        "expected": "5/4"
+      }
+    },
+    {
+      "procedure_id": "frac_div_ignore_int",
+      "topic": "Dividing Fractions",
+      "family_id": "fraction_divide_integer",
+      "aliases": [
+        "Ignores the divisor and leaves the fraction unchanged"
+      ],
+      "formula_name": "frac_div_ignore_int",
+      "applicability": {},
+      "canonical_label": "Ignores the divisor and leaves the fraction unchanged",
+      "computation_template": "{a}/{b}",
+      "can_come_from": "This answer can come from leaving the fraction unchanged instead of dividing.",
+      "reliable_method": "A reliable method is to write the integer over 1, multiply by its reciprocal, and simplify.",
+      "audit_fixture": {
+        "operands": {
+          "a": 5,
+          "b": 12,
+          "n": 3
+        },
+        "expected": "5/12"
+      }
+    },
+    {
+      "procedure_id": "ooo_left_to_right",
+      "topic": "BIDMAS",
+      "family_id": "bidmas_add_multiply",
+      "aliases": [
+        "Carries out operations left to right, ignoring order of operations"
+      ],
+      "formula_name": "ooo_left_to_right",
+      "applicability": {},
+      "canonical_label": "Carries out operations left to right, ignoring order of operations",
+      "computation_template": "({a} + {b}) × {c}",
+      "can_come_from": "This answer can come from working strictly from left to right before doing the multiplication.",
+      "reliable_method": "A reliable method is to complete the multiplication before the addition.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 4
+        },
+        "expected": "20"
+      }
+    },
+    {
+      "procedure_id": "ooo_add_all",
+      "topic": "BIDMAS",
+      "family_id": "bidmas_add_multiply",
+      "aliases": [
+        "Adds all the numbers, ignoring the multiplication"
+      ],
+      "formula_name": "ooo_add_all",
+      "applicability": {},
+      "canonical_label": "Adds all the numbers, ignoring the multiplication",
+      "computation_template": "{a} + {b} + {c}",
+      "can_come_from": "This answer can come from adding all three numbers and replacing the multiplication.",
+      "reliable_method": "A reliable method is to complete the multiplication before the addition.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 4
+        },
+        "expected": "9"
+      }
+    },
+    {
+      "procedure_id": "ooo_mul_all",
+      "topic": "BIDMAS",
+      "family_id": "bidmas_add_multiply",
+      "aliases": [
+        "Multiplies all the numbers together"
+      ],
+      "formula_name": "ooo_mul_all",
+      "applicability": {},
+      "canonical_label": "Multiplies all the numbers together",
+      "computation_template": "{a} × {b} × {c}",
+      "can_come_from": "This answer can come from multiplying all three numbers and replacing the addition.",
+      "reliable_method": "A reliable method is to complete the multiplication before the addition.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 4
+        },
+        "expected": "24"
+      }
+    },
+    {
+      "procedure_id": "ooo_mul_first_two",
+      "topic": "BIDMAS",
+      "family_id": "bidmas_add_multiply",
+      "aliases": [
+        "Multiplies the first two numbers then adds the third"
+      ],
+      "formula_name": "ooo_mul_first_two",
+      "applicability": {},
+      "canonical_label": "Multiplies the first two numbers then adds the third",
+      "computation_template": "{a} × {b} + {c}",
+      "can_come_from": "This answer can come from multiplying the first two numbers instead of the adjacent multiplication pair.",
+      "reliable_method": "A reliable method is to complete the multiplication before the addition.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 4
+        },
+        "expected": "10"
+      }
+    },
+    {
+      "procedure_id": "ooo_add_last_two_first",
+      "topic": "BIDMAS",
+      "family_id": "bidmas_add_multiply",
+      "aliases": [
+        "Adds the last two numbers first, then multiplies by the first"
+      ],
+      "formula_name": "ooo_add_last_two_first",
+      "applicability": {},
+      "canonical_label": "Adds the last two numbers first, then multiplies by the first",
+      "computation_template": "{a} × ({b} + {c})",
+      "can_come_from": "This answer can come from adding the last two numbers before multiplying by the first.",
+      "reliable_method": "A reliable method is to complete the multiplication before the addition.",
+      "audit_fixture": {
+        "operands": {
+          "a": 2,
+          "b": 3,
+          "c": 4
+        },
+        "expected": "14"
+      }
+    },
+    {
+      "procedure_id": "neg_ignore_sign",
+      "topic": "Adding and Subtracting Negative Numbers",
+      "family_id": "negative_add",
+      "aliases": [
+        "Ignores the negative sign and adds the magnitudes"
+      ],
+      "formula_name": "neg_ignore_sign",
+      "applicability": {},
+      "canonical_label": "Ignores the negative sign and adds the magnitudes",
+      "computation_template": "{a} + {b}",
+      "can_come_from": "This answer can come from treating the starting negative value as positive.",
+      "reliable_method": "A reliable method is to start at the negative value and move right by the positive amount.",
+      "audit_fixture": {
+        "operands": {
+          "a": 7,
+          "b": 3
+        },
+        "expected": "10"
+      }
+    },
+    {
+      "procedure_id": "neg_both_negative",
+      "topic": "Adding and Subtracting Negative Numbers",
+      "family_id": "negative_add",
+      "aliases": [
+        "Treats both numbers as negative"
+      ],
+      "formula_name": "neg_both_negative",
+      "applicability": {},
+      "canonical_label": "Treats both numbers as negative",
+      "computation_template": "-{a} - {b}",
+      "can_come_from": "This answer can come from treating the positive amount being added as negative.",
+      "reliable_method": "A reliable method is to start at the negative value and move right by the positive amount.",
+      "audit_fixture": {
+        "operands": {
+          "a": 7,
+          "b": 3
+        },
+        "expected": "-10"
+      }
+    },
+    {
+      "procedure_id": "neg_subtract_wrong_sign",
+      "topic": "Adding and Subtracting Negative Numbers",
+      "family_id": "negative_add",
+      "aliases": [
+        "Subtracts the numbers but gives the wrong sign"
+      ],
+      "formula_name": "neg_subtract_wrong_sign",
+      "applicability": {},
+      "canonical_label": "Subtracts the numbers but gives the wrong sign",
+      "computation_template": "{a} - {b}",
+      "can_come_from": "This answer can come from subtracting the magnitudes in the opposite order.",
+      "reliable_method": "A reliable method is to start at the negative value and move right by the positive amount.",
+      "audit_fixture": {
+        "operands": {
+          "a": 7,
+          "b": 3
+        },
+        "expected": "4"
+      }
+    },
+    {
+      "procedure_id": "dec_one_place",
+      "topic": "Multiplying and Dividing with Decimals",
+      "family_id": "decimal_multiply",
+      "aliases": [
+        "Uses one decimal place instead of counting both"
+      ],
+      "formula_name": "dec_one_place",
+      "applicability": {},
+      "canonical_label": "Uses one decimal place instead of counting both",
+      "computation_template": "({p} × {q})/10",
+      "can_come_from": "This answer can come from placing only one decimal place in the product.",
+      "reliable_method": "A reliable method is to multiply the digits, then place two decimal places in the product.",
+      "audit_fixture": {
+        "operands": {
+          "p": 3,
+          "q": 4
+        },
+        "expected": "1.2"
+      }
+    },
+    {
+      "procedure_id": "dec_no_point",
+      "topic": "Multiplying and Dividing with Decimals",
+      "family_id": "decimal_multiply",
+      "aliases": [
+        "Multiplies as whole numbers and ignores the decimal point"
+      ],
+      "formula_name": "dec_no_point",
+      "applicability": {},
+      "canonical_label": "Multiplies as whole numbers and ignores the decimal point",
+      "computation_template": "{p} × {q}",
+      "can_come_from": "This answer can come from multiplying the digits without restoring either decimal place.",
+      "reliable_method": "A reliable method is to multiply the digits, then place two decimal places in the product.",
+      "audit_fixture": {
+        "operands": {
+          "p": 3,
+          "q": 4
+        },
+        "expected": "12"
+      }
+    },
+    {
+      "procedure_id": "dec_add",
+      "topic": "Multiplying and Dividing with Decimals",
+      "family_id": "decimal_multiply",
+      "aliases": [
+        "Adds the decimals instead of multiplying"
+      ],
+      "formula_name": "dec_add",
+      "applicability": {},
+      "canonical_label": "Adds the decimals instead of multiplying",
+      "computation_template": "0.{p} + 0.{q}",
+      "can_come_from": "This answer can come from adding the decimal factors instead of multiplying them.",
+      "reliable_method": "A reliable method is to multiply the digits, then place two decimal places in the product.",
+      "audit_fixture": {
+        "operands": {
+          "p": 3,
+          "q": 4
+        },
+        "expected": "0.7"
+      }
+    },
+    {
+      "procedure_id": "dec_too_many_places",
+      "topic": "Multiplying and Dividing with Decimals",
+      "family_id": "decimal_multiply",
+      "aliases": [
+        "Multiplies correctly but uses too many decimal places"
+      ],
+      "formula_name": "dec_too_many_places",
+      "applicability": {},
+      "canonical_label": "Multiplies correctly but uses too many decimal places",
+      "computation_template": "({p} × {q})/1000",
+      "can_come_from": "This answer can come from placing three decimal places in a product that needs two.",
+      "reliable_method": "A reliable method is to multiply the digits, then place two decimal places in the product.",
+      "audit_fixture": {
+        "operands": {
+          "p": 3,
+          "q": 4
+        },
+        "expected": "0.012"
+      }
+    },
+    {
+      "procedure_id": "dec_add_digits_no_point",
+      "topic": "Multiplying and Dividing with Decimals",
+      "family_id": "decimal_multiply",
+      "aliases": [
+        "Adds the digits and ignores the decimal point"
+      ],
+      "formula_name": "dec_add_digits_no_point",
+      "applicability": {},
+      "canonical_label": "Adds the digits and ignores the decimal point",
+      "computation_template": "{p} + {q}",
+      "can_come_from": "This answer can come from adding the factor digits and leaving out the decimal points.",
+      "reliable_method": "A reliable method is to multiply the digits, then place two decimal places in the product.",
+      "audit_fixture": {
+        "operands": {
+          "p": 3,
+          "q": 4
+        },
+        "expected": "7"
+      }
+    },
+    {
+      "procedure_id": "pct_no_div_100",
+      "topic": "Percentages of an Amount",
+      "family_id": "percent_of_amount",
+      "aliases": [
+        "Multiplies by the percentage but forgets to divide by 100"
+      ],
+      "formula_name": "pct_no_div_100",
+      "applicability": {},
+      "canonical_label": "Multiplies by the percentage but forgets to divide by 100",
+      "computation_template": "{amount} × {percent}",
+      "can_come_from": "This answer can come from multiplying by the percentage number without dividing by 100.",
+      "reliable_method": "A reliable method is to divide the percentage by 100, then multiply by the amount.",
+      "audit_fixture": {
+        "operands": {
+          "percent": 25,
+          "amount": 80
+        },
+        "expected": "2000"
+      }
+    },
+    {
+      "procedure_id": "pct_divide_by_p",
+      "topic": "Percentages of an Amount",
+      "family_id": "percent_of_amount",
+      "aliases": [
+        "Divides the amount by the percentage number"
+      ],
+      "formula_name": "pct_divide_by_p",
+      "applicability": {},
+      "canonical_label": "Divides the amount by the percentage number",
+      "computation_template": "{amount} ÷ {percent}",
+      "can_come_from": "This answer can come from dividing the amount by the percentage number.",
+      "reliable_method": "A reliable method is to divide the percentage by 100, then multiply by the amount.",
+      "audit_fixture": {
+        "operands": {
+          "percent": 25,
+          "amount": 80
+        },
+        "expected": "3.2"
+      }
+    },
+    {
+      "procedure_id": "pct_subtract",
+      "topic": "Percentages of an Amount",
+      "family_id": "percent_of_amount",
+      "aliases": [
+        "Subtracts the percentage number from the amount"
+      ],
+      "formula_name": "pct_subtract",
+      "applicability": {},
+      "canonical_label": "Subtracts the percentage number from the amount",
+      "computation_template": "{amount} - {percent}",
+      "can_come_from": "This answer can come from subtracting the percentage number from the amount.",
+      "reliable_method": "A reliable method is to divide the percentage by 100, then multiply by the amount.",
+      "audit_fixture": {
+        "operands": {
+          "percent": 25,
+          "amount": 80
+        },
+        "expected": "55"
+      }
+    },
+    {
+      "procedure_id": "pct_div_by_10",
+      "topic": "Percentages of an Amount",
+      "family_id": "percent_of_amount",
+      "aliases": [
+        "Divides by 10 instead of 100"
+      ],
+      "formula_name": "pct_div_by_10",
+      "applicability": {},
+      "canonical_label": "Divides by 10 instead of 100",
+      "computation_template": "({amount} × {percent})/10",
+      "can_come_from": "This answer can come from dividing by 10 instead of 100 after multiplying.",
+      "reliable_method": "A reliable method is to divide the percentage by 100, then multiply by the amount.",
+      "audit_fixture": {
+        "operands": {
+          "percent": 25,
+          "amount": 80
+        },
+        "expected": "200"
+      }
+    },
+    {
+      "procedure_id": "pct_add",
+      "topic": "Percentages of an Amount",
+      "family_id": "percent_of_amount",
+      "aliases": [
+        "Adds the percentage number to the amount"
+      ],
+      "formula_name": "pct_add",
+      "applicability": {},
+      "canonical_label": "Adds the percentage number to the amount",
+      "computation_template": "{amount} + {percent}",
+      "can_come_from": "This answer can come from adding the percentage number to the amount.",
+      "reliable_method": "A reliable method is to divide the percentage by 100, then multiply by the amount.",
+      "audit_fixture": {
+        "operands": {
+          "percent": 25,
+          "amount": 80
+        },
+        "expected": "105"
+      }
+    },
+    {
+      "procedure_id": "pv_face_value",
+      "topic": "Place Value",
+      "family_id": "place_value",
+      "aliases": [
+        "Gives the digit's face value, ignoring its place value"
+      ],
+      "formula_name": "pv_face_value",
+      "applicability": {},
+      "canonical_label": "Gives the digit's face value, ignoring its place value",
+      "computation_template": "{d} × 1",
+      "can_come_from": "This answer can come from using the digit alone without its place value.",
+      "reliable_method": "A reliable method is to locate the digit's column and multiply the digit by that column value.",
+      "audit_fixture": {
+        "operands": {
+          "N": 4729,
+          "d": 7
+        },
+        "expected": "7"
+      }
+    },
+    {
+      "procedure_id": "pv_one_place_low",
+      "topic": "Place Value",
+      "family_id": "place_value",
+      "aliases": [
+        "Reads the digit one place value too low (tens instead of hundreds)"
+      ],
+      "formula_name": "pv_one_place_low",
+      "applicability": {},
+      "canonical_label": "Reads the digit one place value too low (tens instead of hundreds)",
+      "computation_template": "{d} × 10",
+      "can_come_from": "This answer can come from reading the hundreds digit as tens.",
+      "reliable_method": "A reliable method is to locate the digit's column and multiply the digit by that column value.",
+      "audit_fixture": {
+        "operands": {
+          "N": 4729,
+          "d": 7
+        },
+        "expected": "70"
+      }
+    },
+    {
+      "procedure_id": "pv_one_place_high",
+      "topic": "Place Value",
+      "family_id": "place_value",
+      "aliases": [
+        "Reads the digit one place value too high (thousands instead of hundreds)"
+      ],
+      "formula_name": "pv_one_place_high",
+      "applicability": {},
+      "canonical_label": "Reads the digit one place value too high (thousands instead of hundreds)",
+      "computation_template": "{d} × 1000",
+      "can_come_from": "This answer can come from reading the hundreds digit as thousands.",
+      "reliable_method": "A reliable method is to locate the digit's column and multiply the digit by that column value.",
+      "audit_fixture": {
+        "operands": {
+          "N": 4729,
+          "d": 7
+        },
+        "expected": "7000"
+      }
+    },
+    {
+      "procedure_id": "pv_reads_whole",
+      "topic": "Place Value",
+      "family_id": "place_value",
+      "aliases": [
+        "States the whole number instead of the digit's place value"
+      ],
+      "formula_name": "pv_reads_whole",
+      "applicability": {},
+      "canonical_label": "States the whole number instead of the digit's place value",
+      "computation_template": "{N} × 1",
+      "can_come_from": "This answer can come from using the entire number instead of the requested digit's value.",
+      "reliable_method": "A reliable method is to locate the digit's column and multiply the digit by that column value.",
+      "audit_fixture": {
+        "operands": {
+          "N": 4729,
+          "d": 7
+        },
+        "expected": "4729"
+      }
+    },
+    {
+      "procedure_id": "rd_truncate",
+      "topic": "Rounding to Decimal Places",
+      "family_id": "round_one_decimal",
+      "aliases": [
+        "Truncates the extra digit instead of rounding"
+      ],
+      "formula_name": "rd_truncate",
+      "applicability": {},
+      "canonical_label": "Truncates the extra digit instead of rounding",
+      "computation_template": "({whole} × 10 + {d1})/10",
+      "can_come_from": "This answer can come from dropping the hundredths digit without checking whether the tenths should change.",
+      "reliable_method": "A reliable method is to inspect the hundredths digit, then round the tenths digit once.",
+      "audit_fixture": {
+        "operands": {
+          "whole": 3,
+          "d1": 4,
+          "d2": 7
+        },
+        "expected": "3.4"
+      }
+    },
+    {
+      "procedure_id": "rd_round_up_always",
+      "topic": "Rounding to Decimal Places",
+      "family_id": "round_one_decimal",
+      "aliases": [
+        "Always rounds the last digit up regardless of its value"
+      ],
+      "formula_name": "rd_round_up_always",
+      "applicability": {},
+      "canonical_label": "Always rounds the last digit up regardless of its value",
+      "computation_template": "({whole} × 10 + {d1} + 1)/10",
+      "can_come_from": "This answer can come from increasing the tenths digit without first checking the hundredths digit.",
+      "reliable_method": "A reliable method is to inspect the hundredths digit, then round the tenths digit once.",
+      "audit_fixture": {
+        "operands": {
+          "whole": 3,
+          "d1": 4,
+          "d2": 7
+        },
+        "expected": "3.5"
+      }
+    },
+    {
+      "procedure_id": "rd_drops_to_whole",
+      "topic": "Rounding to Decimal Places",
+      "family_id": "round_one_decimal",
+      "aliases": [
+        "Drops the decimal part entirely, giving the whole number"
+      ],
+      "formula_name": "rd_drops_to_whole",
+      "applicability": {},
+      "canonical_label": "Drops the decimal part entirely, giving the whole number",
+      "computation_template": "{whole} × 1",
+      "can_come_from": "This answer can come from removing every decimal digit when one decimal place is required.",
+      "reliable_method": "A reliable method is to inspect the hundredths digit, then round the tenths digit once.",
+      "audit_fixture": {
+        "operands": {
+          "whole": 3,
+          "d1": 4,
+          "d2": 7
+        },
+        "expected": "3"
+      }
+    },
+    {
+      "procedure_id": "rd_keeps_all_digits",
+      "topic": "Rounding to Decimal Places",
+      "family_id": "round_one_decimal",
+      "aliases": [
+        "Does not round and keeps all the decimal digits"
+      ],
+      "formula_name": "rd_keeps_all_digits",
+      "applicability": {},
+      "canonical_label": "Does not round and keeps all the decimal digits",
+      "computation_template": "({whole} × 100 + {d1} × 10 + {d2})/100",
+      "can_come_from": "This answer can come from keeping the original hundredths digit instead of rounding to tenths.",
+      "reliable_method": "A reliable method is to inspect the hundredths digit, then round the tenths digit once.",
+      "audit_fixture": {
+        "operands": {
+          "whole": 3,
+          "d1": 4,
+          "d2": 7
+        },
+        "expected": "3.47"
+      }
+    },
+    {
+      "procedure_id": "cp_move_one_place",
+      "topic": "Converting between Decimals and Percentages",
+      "family_id": "decimal_to_percent",
+      "aliases": [
+        "Moves the decimal one place instead of two"
+      ],
+      "formula_name": "cp_move_one_place",
+      "applicability": {},
+      "canonical_label": "Moves the decimal one place instead of two",
+      "computation_template": "({a} × 10 + {b})/10",
+      "can_come_from": "This answer can come from scaling the decimal by 10 instead of 100.",
+      "reliable_method": "A reliable method is to multiply the decimal by 100 and attach the percent sign.",
+      "audit_fixture": {
+        "operands": {
+          "a": 3,
+          "b": 6
+        },
+        "expected": "3.6%"
+      }
+    },
+    {
+      "procedure_id": "cp_move_three_places",
+      "topic": "Converting between Decimals and Percentages",
+      "family_id": "decimal_to_percent",
+      "aliases": [
+        "Moves the decimal three places instead of two"
+      ],
+      "formula_name": "cp_move_three_places",
+      "applicability": {},
+      "canonical_label": "Moves the decimal three places instead of two",
+      "computation_template": "({a} × 10 + {b}) × 10",
+      "can_come_from": "This answer can come from scaling the decimal by 1000 instead of 100.",
+      "reliable_method": "A reliable method is to multiply the decimal by 100 and attach the percent sign.",
+      "audit_fixture": {
+        "operands": {
+          "a": 3,
+          "b": 6
+        },
+        "expected": "360%"
+      }
+    },
+    {
+      "procedure_id": "cp_first_digit_only",
+      "topic": "Converting between Decimals and Percentages",
+      "family_id": "decimal_to_percent",
+      "aliases": [
+        "Only scales the first decimal digit"
+      ],
+      "formula_name": "cp_first_digit_only",
+      "applicability": {},
+      "canonical_label": "Only scales the first decimal digit",
+      "computation_template": "{a} × 10",
+      "can_come_from": "This answer can come from scaling only the tenths digit and leaving out the hundredths digit.",
+      "reliable_method": "A reliable method is to multiply the decimal by 100 and attach the percent sign.",
+      "audit_fixture": {
+        "operands": {
+          "a": 3,
+          "b": 6
+        },
+        "expected": "30%"
+      }
+    },
+    {
+      "procedure_id": "cp_divide_instead",
+      "topic": "Converting between Decimals and Percentages",
+      "family_id": "decimal_to_percent",
+      "aliases": [
+        "Divides by 100 instead of multiplying"
+      ],
+      "formula_name": "cp_divide_instead",
+      "applicability": {},
+      "canonical_label": "Divides by 100 instead of multiplying",
+      "computation_template": "0.{a}{b} ÷ 100",
+      "can_come_from": "This answer can come from dividing the decimal by 100 instead of multiplying by 100.",
+      "reliable_method": "A reliable method is to multiply the decimal by 100 and attach the percent sign.",
+      "audit_fixture": {
+        "operands": {
+          "a": 3,
+          "b": 6
+        },
+        "expected": "0.0036%"
+      }
+    },
+    {
+      "procedure_id": "da_align_wrong",
+      "topic": "Adding and Subtracting with Decimals",
+      "family_id": "decimal_add",
+      "aliases": [
+        "Does not align place values and adds both as tenths"
+      ],
+      "formula_name": "da_align_wrong",
+      "applicability": {},
+      "canonical_label": "Does not align place values and adds both as tenths",
+      "computation_template": "({a} + {b})/10",
+      "can_come_from": "This answer can come from treating both decimal digits as tenths.",
+      "reliable_method": "A reliable method is to align the decimal points, fill missing places with zero, and add by place.",
+      "audit_fixture": {
+        "operands": {
+          "a": 4,
+          "b": 7
+        },
+        "expected": "1.1"
+      }
+    },
+    {
+      "procedure_id": "da_ignore_point",
+      "topic": "Adding and Subtracting with Decimals",
+      "family_id": "decimal_add",
+      "aliases": [
+        "Ignores the decimal points and adds as whole numbers"
+      ],
+      "formula_name": "da_ignore_point",
+      "applicability": {},
+      "canonical_label": "Ignores the decimal points and adds as whole numbers",
+      "computation_template": "{a} + {b}",
+      "can_come_from": "This answer can come from adding the visible digits as whole numbers.",
+      "reliable_method": "A reliable method is to align the decimal points, fill missing places with zero, and add by place.",
+      "audit_fixture": {
+        "operands": {
+          "a": 4,
+          "b": 7
+        },
+        "expected": "11"
+      }
+    },
+    {
+      "procedure_id": "da_subtract_instead",
+      "topic": "Adding and Subtracting with Decimals",
+      "family_id": "decimal_add",
+      "aliases": [
+        "Subtracts instead of adding"
+      ],
+      "formula_name": "da_subtract_instead",
+      "applicability": {},
+      "canonical_label": "Subtracts instead of adding",
+      "computation_template": "({a} × 10 - {b})/100",
+      "can_come_from": "This answer can come from subtracting the second decimal when the operation asks for addition.",
+      "reliable_method": "A reliable method is to align the decimal points, fill missing places with zero, and add by place.",
+      "audit_fixture": {
+        "operands": {
+          "a": 4,
+          "b": 7
+        },
+        "expected": "0.33"
+      }
+    },
+    {
+      "procedure_id": "idx_mul_exponents",
+      "topic": "Laws of Indices",
+      "family_id": "indices_same_base_multiply",
+      "aliases": [
+        "Multiplies the exponents instead of adding them"
+      ],
+      "formula_name": "idx_mul_exponents",
+      "applicability": {},
+      "canonical_label": "Multiplies the exponents instead of adding them",
+      "computation_template": "{base}^({m} × {n})",
+      "can_come_from": "This answer can come from multiplying the exponents for same-base multiplication.",
+      "reliable_method": "A reliable method is to keep the common base and add the exponents before evaluating.",
+      "audit_fixture": {
+        "operands": {
+          "base": 2,
+          "m": 3,
+          "n": 4
+        },
+        "expected": "4096"
+      }
+    },
+    {
+      "procedure_id": "idx_add_all",
+      "topic": "Laws of Indices",
+      "family_id": "indices_same_base_multiply",
+      "aliases": [
+        "Adds the base and both exponents"
+      ],
+      "formula_name": "idx_add_all",
+      "applicability": {},
+      "canonical_label": "Adds the base and both exponents",
+      "computation_template": "{base} + {m} + {n}",
+      "can_come_from": "This answer can come from adding the base and exponents as ordinary numbers.",
+      "reliable_method": "A reliable method is to keep the common base and add the exponents before evaluating.",
+      "audit_fixture": {
+        "operands": {
+          "base": 2,
+          "m": 3,
+          "n": 4
+        },
+        "expected": "9"
+      }
+    },
+    {
+      "procedure_id": "idx_base_times_sum",
+      "topic": "Laws of Indices",
+      "family_id": "indices_same_base_multiply",
+      "aliases": [
+        "Multiplies the base by the sum of the exponents"
+      ],
+      "formula_name": "idx_base_times_sum",
+      "applicability": {},
+      "canonical_label": "Multiplies the base by the sum of the exponents",
+      "computation_template": "{base} × ({m} + {n})",
+      "can_come_from": "This answer can come from multiplying the base by the exponent sum instead of using that sum as a power.",
+      "reliable_method": "A reliable method is to keep the common base and add the exponents before evaluating.",
+      "audit_fixture": {
+        "operands": {
+          "base": 2,
+          "m": 3,
+          "n": 4
+        },
+        "expected": "14"
+      }
+    },
+    {
+      "procedure_id": "hcf_product",
+      "topic": "Factors and Highest Common Factor",
+      "family_id": "hcf",
+      "aliases": [
+        "Multiplies the two numbers instead of finding the common factor"
+      ],
+      "formula_name": "hcf_product",
+      "applicability": {},
+      "canonical_label": "Multiplies the two numbers instead of finding the common factor",
+      "computation_template": "{a} × {b}",
+      "can_come_from": "This answer can come from multiplying both numbers instead of finding a shared factor.",
+      "reliable_method": "A reliable method is to list or factor both numbers and choose their greatest shared factor.",
+      "audit_fixture": {
+        "operands": {
+          "a": 18,
+          "b": 30
+        },
+        "expected": "540"
+      }
+    },
+    {
+      "procedure_id": "hcf_sum",
+      "topic": "Factors and Highest Common Factor",
+      "family_id": "hcf",
+      "aliases": [
+        "Adds the two numbers"
+      ],
+      "formula_name": "hcf_sum",
+      "applicability": {},
+      "canonical_label": "Adds the two numbers",
+      "computation_template": "{a} + {b}",
+      "can_come_from": "This answer can come from adding both numbers instead of finding a shared factor.",
+      "reliable_method": "A reliable method is to list or factor both numbers and choose their greatest shared factor.",
+      "audit_fixture": {
+        "operands": {
+          "a": 18,
+          "b": 30
+        },
+        "expected": "48"
+      }
+    },
+    {
+      "procedure_id": "hcf_difference",
+      "topic": "Factors and Highest Common Factor",
+      "family_id": "hcf",
+      "aliases": [
+        "Gives the difference of the two numbers"
+      ],
+      "formula_name": "hcf_difference",
+      "applicability": {},
+      "canonical_label": "Gives the difference of the two numbers",
+      "computation_template": "{hi} - {lo}",
+      "can_come_from": "This answer can come from subtracting the two numbers instead of finding a shared factor.",
+      "reliable_method": "A reliable method is to list or factor both numbers and choose their greatest shared factor.",
+      "audit_fixture": {
+        "operands": {
+          "a": 18,
+          "b": 30
+        },
+        "expected": "12"
+      }
+    },
+    {
+      "procedure_id": "ma_subtract_instead",
+      "topic": "Mental Addition and Subtraction",
+      "family_id": "mental_add",
+      "aliases": [
+        "Subtracts the second number instead of adding it"
+      ],
+      "formula_name": "ma_subtract_instead",
+      "applicability": {},
+      "canonical_label": "Subtracts the second number instead of adding it",
+      "computation_template": "{a} - {b}",
+      "can_come_from": "This answer can come from subtracting the second addend.",
+      "reliable_method": "A reliable method is to add tens and ones by place value and check any regrouping.",
+      "audit_fixture": {
+        "operands": {
+          "a": 57,
+          "b": 28
+        },
+        "expected": "29"
+      }
+    },
+    {
+      "procedure_id": "ma_forgets_ten",
+      "topic": "Mental Addition and Subtraction",
+      "family_id": "mental_add",
+      "aliases": [
+        "Forgets to carry a ten"
+      ],
+      "formula_name": "ma_forgets_ten",
+      "applicability": {},
+      "canonical_label": "Forgets to carry a ten",
+      "computation_template": "{a} + {b} - 10",
+      "can_come_from": "This answer can come from leaving out one regrouped ten.",
+      "reliable_method": "A reliable method is to add tens and ones by place value and check any regrouping.",
+      "audit_fixture": {
+        "operands": {
+          "a": 57,
+          "b": 28
+        },
+        "expected": "75"
+      }
+    },
+    {
+      "procedure_id": "ma_adds_extra_ten",
+      "topic": "Mental Addition and Subtraction",
+      "family_id": "mental_add",
+      "aliases": [
+        "Carries an extra ten by mistake"
+      ],
+      "formula_name": "ma_adds_extra_ten",
+      "applicability": {},
+      "canonical_label": "Carries an extra ten by mistake",
+      "computation_template": "{a} + {b} + 10",
+      "can_come_from": "This answer can come from including an extra regrouped ten.",
+      "reliable_method": "A reliable method is to add tens and ones by place value and check any regrouping.",
+      "audit_fixture": {
+        "operands": {
+          "a": 57,
+          "b": 28
+        },
+        "expected": "95"
+      }
+    },
+    {
+      "procedure_id": "mm_add_instead",
+      "topic": "Mental Multiplication and Division",
+      "family_id": "mental_multiply",
+      "aliases": [
+        "Adds the numbers instead of multiplying"
+      ],
+      "formula_name": "mm_add_instead",
+      "applicability": {},
+      "canonical_label": "Adds the numbers instead of multiplying",
+      "computation_template": "{a} + {b}",
+      "can_come_from": "This answer can come from adding the two factors.",
+      "reliable_method": "A reliable method is to split the two-digit factor into tens and ones, multiply each part, and combine.",
+      "audit_fixture": {
+        "operands": {
+          "a": 14,
+          "b": 6
+        },
+        "expected": "20"
+      }
+    },
+    {
+      "procedure_id": "mm_ignore_tens",
+      "topic": "Mental Multiplication and Division",
+      "family_id": "mental_multiply",
+      "aliases": [
+        "Multiplies only the units digit, ignoring the tens"
+      ],
+      "formula_name": "mm_ignore_tens",
+      "applicability": {},
+      "canonical_label": "Multiplies only the units digit, ignoring the tens",
+      "computation_template": "({a} - 10) × {b}",
+      "can_come_from": "This answer can come from multiplying only the units part of the two-digit factor.",
+      "reliable_method": "A reliable method is to split the two-digit factor into tens and ones, multiply each part, and combine.",
+      "audit_fixture": {
+        "operands": {
+          "a": 14,
+          "b": 6
+        },
+        "expected": "24"
+      }
+    },
+    {
+      "procedure_id": "mm_off_by_one_factor",
+      "topic": "Mental Multiplication and Division",
+      "family_id": "mental_multiply",
+      "aliases": [
+        "Multiplies by one less than the second number"
+      ],
+      "formula_name": "mm_off_by_one_factor",
+      "applicability": {},
+      "canonical_label": "Multiplies by one less than the second number",
+      "computation_template": "{a} × ({b} - 1)",
+      "can_come_from": "This answer can come from using one fewer equal group than the question gives.",
+      "reliable_method": "A reliable method is to split the two-digit factor into tens and ones, multiply each part, and combine.",
+      "audit_fixture": {
+        "operands": {
+          "a": 14,
+          "b": 6
+        },
+        "expected": "70"
+      }
+    }
+  ]
+}

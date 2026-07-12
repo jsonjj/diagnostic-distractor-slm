@@ -1,0 +1,30 @@
+{
+  "name": "Wayline.Flow.Unity",
+  "rootNamespace": "Wayline.Flow.Unity",
+  "references": [
+    "Wayline.Flow",
+    "Wayline.Flow.Authority",
+    "Wayline.Flow.Runtime",
+    "Wayline.Campaign",
+    "Wayline.Characters",
+    "Wayline.Combat.Simulation",
+    "Wayline.Gameplay",
+    "Wayline.Learning.Assisted",
+    "Wayline.Learning.Client",
+    "Wayline.Learning.Contracts",
+    "Wayline.Learning.Quiz",
+    "Wayline.Save",
+    "Wayline.UI",
+    "Wayline.UI.Assisted",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

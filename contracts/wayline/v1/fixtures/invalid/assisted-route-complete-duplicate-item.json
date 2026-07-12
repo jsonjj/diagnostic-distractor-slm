@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "wayline.v1",
+  "requestId": "complete-assisted-001",
+  "sessionId": "session-assisted-001",
+  "selections": [
+    {
+      "itemId": "item-supported-001",
+      "optionId": "opt-supported-001-d",
+      "confidence": "certain"
+    },
+    {
+      "itemId": "item-supported-001",
+      "optionId": "opt-supported-001-d",
+      "confidence": "certain"
+    }
+  ]
+}

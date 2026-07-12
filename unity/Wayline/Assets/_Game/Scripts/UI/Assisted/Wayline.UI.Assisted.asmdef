@@ -1,0 +1,19 @@
+{
+  "name": "Wayline.UI.Assisted",
+  "rootNamespace": "Wayline.UI.Assisted",
+  "references": [
+    "Wayline.Learning.Assisted",
+    "Wayline.Learning.Contracts",
+    "Wayline.UI",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

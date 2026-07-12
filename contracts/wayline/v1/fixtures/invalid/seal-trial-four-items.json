@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "wayline.v1",
+  "requestId": "seal-request-001",
+  "worldId": "valuehold",
+  "attemptNumber": 1,
+  "battleId": "valuehold_seal_trial_1",
+  "batch": {
+    "schemaVersion": "wayline.v1",
+    "batchId": "batch-001",
+    "itemCount": 4,
+    "items": [
+      {
+        "itemId": "item-001",
+        "prompt": "What is 2.4 + 0.35?",
+        "options": [
+          {"optionId": "opt-001-a", "displayText": "2.75"},
+          {"optionId": "opt-001-b", "displayText": "2.39"},
+          {"optionId": "opt-001-c", "displayText": "2.435"},
+          {"optionId": "opt-001-d", "displayText": "0.59"}
+        ]
+      },
+      {
+        "itemId": "item-002",
+        "prompt": "What is 84 divided by 7?",
+        "options": [
+          {"optionId": "opt-002-a", "displayText": "12"},
+          {"optionId": "opt-002-b", "displayText": "11"},
+          {"optionId": "opt-002-c", "displayText": "13"},
+          {"optionId": "opt-002-d", "displayText": "77"}
+        ]
+      },
+      {
+        "itemId": "item-003",
+        "prompt": "Which number is 30 percent of 90?",
+        "options": [
+          {"optionId": "opt-003-a", "displayText": "27"},
+          {"optionId": "opt-003-b", "displayText": "3"},
+          {"optionId": "opt-003-c", "displayText": "60"},
+          {"optionId": "opt-003-d", "displayText": "120"}
+        ]
+      },
+      {
+        "itemId": "item-004",
+        "prompt": "What is 18 plus 7?",
+        "options": [
+          {"optionId": "opt-004-a", "displayText": "25"},
+          {"optionId": "opt-004-b", "displayText": "24"},
+          {"optionId": "opt-004-c", "displayText": "26"},
+          {"optionId": "opt-004-d", "displayText": "11"}
+        ]
+      }
+    ]
+  }
+}

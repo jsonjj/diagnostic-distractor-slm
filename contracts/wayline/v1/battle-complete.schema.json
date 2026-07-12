@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/battle-complete.schema.json",
+  "title": "Wayline Battle Completion Command",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "sessionId", "combatWon"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "sessionId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "combatWon": {"type": "boolean"}
+  }
+}

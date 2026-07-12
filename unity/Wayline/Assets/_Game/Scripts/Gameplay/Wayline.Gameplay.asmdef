@@ -1,0 +1,20 @@
+{
+  "name": "Wayline.Gameplay",
+  "rootNamespace": "Wayline.Gameplay",
+  "references": [
+    "Wayline.Core",
+    "Wayline.Combat.Data",
+    "Wayline.Combat.Presentation",
+    "Wayline.Combat.Simulation",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

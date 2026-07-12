@@ -1,0 +1,1351 @@
+{
+  "schema_version": "wayline-curriculum-schema-v1",
+  "curriculum_id": "wayline-launch-core-v1",
+  "holdout": {
+    "boundary_version": "eedi-number-heldout-v1",
+    "record_count": 140,
+    "source_sha256": "ad5b0a15ea5b3f8a306c4f1bda881b6d2ff8cb1951a8b934f5d7b53b6eef4246",
+    "canonical_sha256": "5c114a89cfd7a551bd450054cafc6561b6b155c97025364fa856e414000cde31",
+    "similarity_threshold_bits": 56,
+    "entries": [
+      {
+        "fingerprint": "4b10ed0382642a1c51c8d0a91149471cb7ea7b585a15655a63a451d4caf6b165",
+        "simhash": "e9f26ff0a8f28799"
+      },
+      {
+        "fingerprint": "4f68acece91d03b84bad3173941fb5ba8088ef610c9c53a2999c71bf402af265",
+        "simhash": "77f5f7f00fc10339"
+      },
+      {
+        "fingerprint": "183f8f9e7b4be1dee875f057af0da7ae6385a54c0907ae97b04c2a1d67849353",
+        "simhash": "96af8b6a72b21db3"
+      },
+      {
+        "fingerprint": "75e2503f9749e4f165c9e3a06f368e7fef7e92faa72291438b5289417934785c",
+        "simhash": "fbc25ff39f98ba5c"
+      },
+      {
+        "fingerprint": "3fb02260d0fc11e87a90429abd6ac0c0e36dbb05fd54a0386838ceac66831cc8",
+        "simhash": "a73ae2cbab27140b"
+      },
+      {
+        "fingerprint": "d38a0815fcd3b7dc2372a2e83e97ead2d4f44cee5337264b72806c88450589a3",
+        "simhash": "7fe1707811f7e8af"
+      },
+      {
+        "fingerprint": "673f64fc9442d0378904eb2ef2f94f0e1cfbb75990a23ce1b583a7bac41fc53c",
+        "simhash": "f82c75aa3d8b4734"
+      },
+      {
+        "fingerprint": "fd0e6c9e086f3c06c8ffbfcb5bbffe8f16f847d1f4adfecffbbf1294a1de3e5f",
+        "simhash": "5d01924e325d0577"
+      },
+      {
+        "fingerprint": "c2caa5bab3193bb0c3fb99694e2c74a7a61c7cc2fcc5a95d41a326b8cc22e03d",
+        "simhash": "8f60eacaca411110"
+      },
+      {
+        "fingerprint": "acb6c1db118e05be4934a6e0f9ca1cf3b6d3313e86132799853450434abfc2e9",
+        "simhash": "fec57d98039122bf"
+      },
+      {
+        "fingerprint": "81c4037441a7e0c0ae7617ec8188ced38fb9bc2a2357514da03eb9721ea91805",
+        "simhash": "ff664411ad6846af"
+      },
+      {
+        "fingerprint": "da8aa1f866217c4a1c02c92d05c51ac1e9420537a96afd4aa4f80622bac622de",
+        "simhash": "c9eb7b6ca8a91c45"
+      },
+      {
+        "fingerprint": "979ab00cba6d9c6a5595175297b621740a1c1e88f28d8c2f870deaebd7c1a904",
+        "simhash": "e9ecfdf8b3715d18"
+      },
+      {
+        "fingerprint": "3d8c6b303dcfe3394b75bb7405727e39bb3e8ddd89e6de335053443fd81de142",
+        "simhash": "816beff8213805af"
+      },
+      {
+        "fingerprint": "e24e0270ed39bff8da5401f052029867f091980965e608da4c8bb259e7dc29c2",
+        "simhash": "dc07269af306e7b9"
+      },
+      {
+        "fingerprint": "571079c27afd4afda619852bde3467383a33711e13be50b1de3999cd977d30ea",
+        "simhash": "1a76ee153f2a27b9"
+      },
+      {
+        "fingerprint": "0abb0c04d8581d6faaac89e98654c8d7a7f85ff52f85214e811e3464f1e24200",
+        "simhash": "c5e92459c4e08f6f"
+      },
+      {
+        "fingerprint": "a6dfbeef4adc3f15c521d8ca0b91f546f2f9ad94da50c38d28aeadad499c86de",
+        "simhash": "9a6aacb860b208f3"
+      },
+      {
+        "fingerprint": "ecc8301a294fd0d86bd265a478e9207b09a48316d6febd2ed1309112cf7402c6",
+        "simhash": "f247b25de3b0077f"
+      },
+      {
+        "fingerprint": "89c2f2251f97f2cf3dae93baef5be8d7604bb7c0cb8f65fc71b58b8e46b17c36",
+        "simhash": "65c35ad81990a551"
+      },
+      {
+        "fingerprint": "6afe2e9337bb06e5fac59bd712ea86d3d3d00687427ef785f59545e5efe85c20",
+        "simhash": "070ab9bd621a3629"
+      },
+      {
+        "fingerprint": "da31e258edb1d892306a36182c58af941dd8836a6dd60ed186a664cb8611dfcc",
+        "simhash": "d4aa47ceb9c8bee5"
+      },
+      {
+        "fingerprint": "02078229d00a5afa9c1931dfa5094aea46a7fe00cef688c73a2763ca7ef9515c",
+        "simhash": "d8d972a920eceec1"
+      },
+      {
+        "fingerprint": "ba81eec827e74ad57ac22ecfc9e0db67dcf1671056be386eee7ff3b1a759ef42",
+        "simhash": "976060608272110d"
+      },
+      {
+        "fingerprint": "e4c85c50ff4438344b7696109b5eee164b0f22721a66520f0e860e937744578d",
+        "simhash": "5581422a169d8dd3"
+      },
+      {
+        "fingerprint": "557f37da0d075d3aacb4190890eb5b049ca40d99a717b266da615c4fcce6247e",
+        "simhash": "9180304dffe7a9df"
+      },
+      {
+        "fingerprint": "a0910c5ad8f1af34e8df93d26d87393a9af51af9fd362a9625dd163af145ea82",
+        "simhash": "6551f0ce3edd8653"
+      },
+      {
+        "fingerprint": "204f3e5dd08d3192f94f0f093fe0a886972930d5a1a14417d6b2f92e66c14300",
+        "simhash": "d856914ec79e8eed"
+      },
+      {
+        "fingerprint": "21ce9cb7896f3a5272b62246a41fb126ff290d33998e163fdfa8f4b7d9ff920a",
+        "simhash": "fc8eeeeab64d4fe1"
+      },
+      {
+        "fingerprint": "7fed83837a1ebba2c744a72c21642b74112c3f7df9284af55779f23e081d4a96",
+        "simhash": "62df2fddf5e12b71"
+      },
+      {
+        "fingerprint": "c73fd3e312226236447b405ecf21ed1481f599a5a3031e907291dd30a7aa5df9",
+        "simhash": "f247d305c6b10e7f"
+      },
+      {
+        "fingerprint": "bf1b60dc6a7360508aa032489bf4fba453d5488e6654354bb58249108ba572d6",
+        "simhash": "6e71689acbe94eac"
+      },
+      {
+        "fingerprint": "de13585a7a0cca9eef5c859b7337af0982b2361d9bbbc5d4ba6dd14c2a2ae501",
+        "simhash": "8ffe8789681d9d24"
+      },
+      {
+        "fingerprint": "c60a1f245c1f934367b4acaaf9288860656810c4a407d8ff13bfe0b760ab5bf3",
+        "simhash": "fb26c4fba2e8473f"
+      },
+      {
+        "fingerprint": "86a8a7228f99a806c8bd71682c076078bb0628d25eea37bae7c3fb15b3b52a71",
+        "simhash": "bf4e263086530d0a"
+      },
+      {
+        "fingerprint": "9c88f15a06d20ed40de4d9167c28d2648df9c5162377d5ef527a0b6236a56ff7",
+        "simhash": "fb27c4f9ace8462f"
+      },
+      {
+        "fingerprint": "06fc105838cb5a2ab143147214a39d12593cd111b852f66d24d3a7fb0487b343",
+        "simhash": "75d4d7f00f614339"
+      },
+      {
+        "fingerprint": "86c1d4172b406b43962ddd976f0b9d9bf8fff4345f06ca63c16381178721bb46",
+        "simhash": "5e82d1874b18ac6b"
+      },
+      {
+        "fingerprint": "6cb2ddf92b81444e20309f7ff4afa87b9e0bf8ed241548eef327ad9603944b33",
+        "simhash": "5fcb9dfde3fa337b"
+      },
+      {
+        "fingerprint": "db9c80162a2da1dc67029dff54843d9a6edecfdc08c566fd34ace42ed043acbd",
+        "simhash": "d4fef1e48b09172d"
+      },
+      {
+        "fingerprint": "e6401f87546fdf6603c45e967fa58a265645a10bac6f1d6af8ae1716725b10d2",
+        "simhash": "85bee8f0d8b90709"
+      },
+      {
+        "fingerprint": "5c1a027d6794bb4fa42f50dce8ca4f91177945c71ecbf7f0c6820a1777660663",
+        "simhash": "ad754889bffba0fe"
+      },
+      {
+        "fingerprint": "5e12ddeaf920a82fe067b191f036b17ab7a453be5a6d24317474ba2cc9c90332",
+        "simhash": "de56281f0c8406b5"
+      },
+      {
+        "fingerprint": "4f7e33a8f7d1108feb4942c7c7729275757544030a4f689633a474d555f39e2c",
+        "simhash": "cac477191f93a0ab"
+      },
+      {
+        "fingerprint": "3f454c0bac3b4af7832257cb67712313399258a1be6e3cd04d6f68755408ca87",
+        "simhash": "50ef343e61a87661"
+      },
+      {
+        "fingerprint": "59117acfd25f542aa98cc2669d70079857a13467ca6cb9d1962ec54885fef5be",
+        "simhash": "d6dc2dad4bbdbbbd"
+      },
+      {
+        "fingerprint": "a25f8e7d4f0930ae4b37b46af8c9a7b48c4e6cd4b6e87da80e6a23796dcc279b",
+        "simhash": "d49c531a985064dc"
+      },
+      {
+        "fingerprint": "86803c6f46f7b958b0c81d588bfa1eb22268d98f65f176f93028e6a5b14f428e",
+        "simhash": "a24a1b8139dda3ae"
+      },
+      {
+        "fingerprint": "585d39a887c55053143126f2b954f8228f1f716074b1a77a62eacad9faa48abe",
+        "simhash": "cf643eb03398b29d"
+      },
+      {
+        "fingerprint": "b0211d235ddcd52d5ec5aeb6fb109f42307c059ccbdacafeb1a12c93aadf7534",
+        "simhash": "be8eeac8365805f1"
+      },
+      {
+        "fingerprint": "2f1901965b100264104ac207b256531672d71f8a73944b5a2fdf7dee1482238d",
+        "simhash": "ed6568f8bf78b0bf"
+      },
+      {
+        "fingerprint": "0c354f980e3d99b52a884b97757f9249b99ef6a7f064e228af2ba5a50851cfb3",
+        "simhash": "02f842eb29f987f5"
+      },
+      {
+        "fingerprint": "c7b290d8f648a60bbe44ad12cfc00c638da27010d75de04e4f7058121f6fd0ca",
+        "simhash": "b68a5de28f454066"
+      },
+      {
+        "fingerprint": "62ed3ab40d61a78f29f8ed15897da7e5c84655ce95836c093fdda4aa003d4bc1",
+        "simhash": "bc56935d9f9d3d4a"
+      },
+      {
+        "fingerprint": "c4d2fd60a7ed0b0880b182ed240fc9a193e02c0aa5a0572372261f8021201e2e",
+        "simhash": "3efc43ffb25d86d6"
+      },
+      {
+        "fingerprint": "19f2414634ae43cff512ae3287d505634837cc64ee3309378ec619148bd3bc13",
+        "simhash": "fd52a2ffb32d1f89"
+      },
+      {
+        "fingerprint": "bdba9e3ca154478d2599a4c569d92378540d829e91171ab462d54c5e267a79e1",
+        "simhash": "78515a280afb03fe"
+      },
+      {
+        "fingerprint": "0208a0d9d9479a94495c6073d09753a72f20e99f70aaedf62aebced614193bb9",
+        "simhash": "bf6aa6fe3a1c77db"
+      },
+      {
+        "fingerprint": "3be02d9f6514ca467ce02a029fae7ae9633f137c7d1361e65fdd767ad5307382",
+        "simhash": "104dba022bea08ae"
+      },
+      {
+        "fingerprint": "cd0cf807835179d73cad42fefc8c76827617958cf3e022ae2c8c454828e9cc38",
+        "simhash": "dafb7dbfabddfeef"
+      },
+      {
+        "fingerprint": "cae385cbaea23b4c85965210b35742dd30513d27a0dc4123e77eb022db2c5d01",
+        "simhash": "db57924dd1b9662c"
+      },
+      {
+        "fingerprint": "9663cd4e44816787d96584baeb6f55d6b2cfea9743eabf8ccfdf015a23d0eb7f",
+        "simhash": "e6ae10aab3c863bf"
+      },
+      {
+        "fingerprint": "5ed53b2e3e2be4e755bcaba93ba0c6cb38ba807c1b9103a4af4588efa9d6e100",
+        "simhash": "020abf9dacabf601"
+      },
+      {
+        "fingerprint": "47054e6f546fcc20d138d8917a5ddaccf70b58865969ddb6ba89c549ebd0fd83",
+        "simhash": "8ef363f8796794b8"
+      },
+      {
+        "fingerprint": "5d8529affa32991357b6b253c5ba01a65156edc4fc939231cef0d50d564fa97b",
+        "simhash": "06404cc8a316b00f"
+      },
+      {
+        "fingerprint": "6553da6f28a687ab1a3cf19435ca65f5d2712cca1e0b0734f4c6ed48b06cb22b",
+        "simhash": "fbfbfdecbcbb7f80"
+      },
+      {
+        "fingerprint": "91fa4976fde69923aa9cac646924b5a932dfef34b016c945f9ee7addc5eb4e35",
+        "simhash": "f7ea71ea9d4140c6"
+      },
+      {
+        "fingerprint": "96aa4fcbc2ad5524270be492732316e6c58f520eb0194a4cebed210733db40a2",
+        "simhash": "0680734b7217a1e7"
+      },
+      {
+        "fingerprint": "422b50b2f8670814e14e6c2c4a8287f7139a10c95ce75aab53233f9ae6c8cfc9",
+        "simhash": "9f466c381bcb002e"
+      },
+      {
+        "fingerprint": "143245941e44336df1aaafce215abcd5ed80476f4fec558348b44b83c419015d",
+        "simhash": "1bcd1b2283d0908e"
+      },
+      {
+        "fingerprint": "9c5685869aee0e0b5c0631d49f6ad30c9cbf3bae2c484580605c6aec52cd6b6a",
+        "simhash": "0e2ffbcc7ebb1e56"
+      },
+      {
+        "fingerprint": "2b9c1ad655cbf508df29eee79a55fa27c10b3d160b6e65dbbd7fd476edc0970a",
+        "simhash": "5fcbfc659eb327d1"
+      },
+      {
+        "fingerprint": "5f8de58cf041a9a52b108d3b2858336f4d0d03e4a552a96cd8f36089d7a504c9",
+        "simhash": "b6b4226ea322d4c4"
+      },
+      {
+        "fingerprint": "f6c5c3429a2a45b1a5289d0f58a2449c4424766d2a2acd99f87821bc90eb6fff",
+        "simhash": "6a4b921d6cab14b9"
+      },
+      {
+        "fingerprint": "56b00d66e8e1167432c625e3552609cab857a61beb7ae65623a61886f5dae736",
+        "simhash": "49be67730dd11e2d"
+      },
+      {
+        "fingerprint": "cd63ee914726b33d083cc967819b7a9e8bb1d8a202b7dfaff4c8a198ce722f32",
+        "simhash": "7f766bf083b80f91"
+      },
+      {
+        "fingerprint": "34f625c26105d52d2bec7510c5540c2aa8c38989d63878011b22104267911fca",
+        "simhash": "33a2c1f59d92872f"
+      },
+      {
+        "fingerprint": "2d677773a49e022e3724ed998dfe594242eaaca39ea49a392c63b7bd96af4bf7",
+        "simhash": "c0ce92f9eae9a79d"
+      },
+      {
+        "fingerprint": "e01c16e79598efb06b699bb70dfb96eac8d7cd2f605a5697dc742fefab27dfae",
+        "simhash": "2edd28dc5b3392f3"
+      },
+      {
+        "fingerprint": "72217eb561bde6b48ba43f79573a82c4c9a0e32955479f2e3ec3fd545d5be243",
+        "simhash": "3e342e1bcbd16537"
+      },
+      {
+        "fingerprint": "bfa9c9e9d2c2b11f851c5d0c44dd5933510c2ee2bd3b8cc5c846b6b2a10c623b",
+        "simhash": "9fece097a5cb1430"
+      },
+      {
+        "fingerprint": "f4a37aac32095618ec8fcbde70ab7d2c5715524e3c93c1b5864ac3c51eff78fd",
+        "simhash": "d04368001a098b77"
+      },
+      {
+        "fingerprint": "681586988a625b562a8baa84d09eb4c6415b69562ba41b03c246327599a3cbec",
+        "simhash": "99704cc8bf79f4aa"
+      },
+      {
+        "fingerprint": "8d4a006f9c84abfd066914b7b091364b5f2a335d09aaac0fd685c94a6b0a261f",
+        "simhash": "5f76fdcee6e6149f"
+      },
+      {
+        "fingerprint": "9c5685869aee0e0b5c0631d49f6ad30c9cbf3bae2c484580605c6aec52cd6b6a",
+        "simhash": "0e2ffbcc7ebb1e56"
+      },
+      {
+        "fingerprint": "13beecddb89b39afc21abe3f5175fb9b1cce1b6d2335262c3d7078f6c951ec25",
+        "simhash": "977c31bb80a8072f"
+      },
+      {
+        "fingerprint": "4d0bfe460c309926498dfd1839c94db51c5829f6967dd5293b3481feda430c78",
+        "simhash": "7b13e15c1fc32df0"
+      },
+      {
+        "fingerprint": "ba458474ac5a9e0f4b8ea17316973d7024c64b7af48e94e042b391bbd4a53c63",
+        "simhash": "bff46e8be6bbb8f6"
+      },
+      {
+        "fingerprint": "36075af8350cceecdfbd4b249ab797691450ccc1a95126405cdf4b750b2ba64d",
+        "simhash": "cd42c800e8988f61"
+      },
+      {
+        "fingerprint": "3542aed9bd1171bf7a3ac5da6f008e8f8c949fa031cd353a43eb6c584a9a69d2",
+        "simhash": "c54f10c8768d0d55"
+      },
+      {
+        "fingerprint": "a96a21511a48f45b9f8a0abc5d44e15a9e08f235f488659fc63ede9fcf070346",
+        "simhash": "e97e67bfbba23f82"
+      },
+      {
+        "fingerprint": "5a74772bdacb53878210c06c1b79ec261446a498d105f03e106155af5d8bdc59",
+        "simhash": "37ff4f7db5ff7b95"
+      },
+      {
+        "fingerprint": "4ff167cbe1e20d5c39fb3e877c774d5a0995fea6c6f65a78acd7d28d6516f9d2",
+        "simhash": "9eda7fe718978b21"
+      },
+      {
+        "fingerprint": "bb8aa480ad5f2a152bb9ec1ef1deef4baf04f53a1a6d909c54b2c97bf5ed89d3",
+        "simhash": "f12844b2980047be"
+      },
+      {
+        "fingerprint": "72c89d4c5ee4de67357ee29686c9653e0cf4815763206f1a8b0fe020445f0b30",
+        "simhash": "7e7168984be84eac"
+      },
+      {
+        "fingerprint": "e9ac2a46ae7c350bedd16af246e8ada76805fd59811699f732ce410a3773d55c",
+        "simhash": "1510e170aa5d1115"
+      },
+      {
+        "fingerprint": "538b4fbd9c71647d69368f06fd3bd179532bda92820216d6138384987e9d047f",
+        "simhash": "3791f1b2bdfd3d5c"
+      },
+      {
+        "fingerprint": "e1950b2e9c39a1c534a14ee26561ce7dde76b16472124de66d70aef74d79505d",
+        "simhash": "a3defcbbb7520f10"
+      },
+      {
+        "fingerprint": "c7ae5f413553526c41b0cf078f1008b7f2c2e7a06130e176c49df1168c8492f9",
+        "simhash": "8ef92bf9519fbcb7"
+      },
+      {
+        "fingerprint": "a97cc52a91a1e7100d796683fe3ce3a9dc033d98f9ef62208041a65b3b4165f3",
+        "simhash": "4b4c752901cb64ee"
+      },
+      {
+        "fingerprint": "faeac2e0d1b978626ed901f6a53dc57f120d082595f4301ff0de6205228e1e49",
+        "simhash": "f53cd7bbcb204629"
+      },
+      {
+        "fingerprint": "b64636b92024acb8bc0b630684ef4ea54833520c7b4084549ecc5d6998544d26",
+        "simhash": "04ce241e62250401"
+      },
+      {
+        "fingerprint": "868318ba7902c093a85e4fdbec50ce0a9b90554bc31fb3172f9ed35710c2ce87",
+        "simhash": "9e57f3599f103cdc"
+      },
+      {
+        "fingerprint": "f96e9a677d7825a7da0ffe98e06df04e311d96e194d062b9da83c7265d3bdba7",
+        "simhash": "375447abe85d6c2a"
+      },
+      {
+        "fingerprint": "c9f7cd54586e9485e0277f64e8256cc8acad5ec626b058ea1e67683b81a717ae",
+        "simhash": "479229ffcbb93f69"
+      },
+      {
+        "fingerprint": "08a59cf05c1767274f08a93ee9cfdc5f8e1969a3319fe78c0506e2fb04183ba1",
+        "simhash": "ce87753e3399bb23"
+      },
+      {
+        "fingerprint": "63410c48f23750abb4aa218ef175e0f0338c6e898cb1e7ed4f9d5672955a1cb7",
+        "simhash": "d8f67fd899e7bde0"
+      },
+      {
+        "fingerprint": "52172a4d15d17c3fce04343625145e97d2bb4fdc4d886d0dd27d1364ddf4f5a0",
+        "simhash": "6eb6c00da7801708"
+      },
+      {
+        "fingerprint": "88f2377b6dae36cf4bb612fdba12ff9c5c930df87e4213262a5901e1cb831557",
+        "simhash": "ed424c00a899af61"
+      },
+      {
+        "fingerprint": "dbdc0fb4e1af4238ff754179cbf831bfa1aa24f58f3b5d0d5ed770d9a01c56a2",
+        "simhash": "96c22c9ef35228b2"
+      },
+      {
+        "fingerprint": "9bc84e79fcf77fd340bdb7a3796eb9c56e09f89d6fc6e1e0f11451976d29a672",
+        "simhash": "adbd2bd5d21b3f1b"
+      },
+      {
+        "fingerprint": "458412b59e81fd3baeb4b457978bd5d7a900bb423c06aa5397d2f7f4f6abca88",
+        "simhash": "4e1f97bdcf593f7f"
+      },
+      {
+        "fingerprint": "bbdf2c0ae8f77d572dfd81c9f73c7ea0ec4f45ff0e1ec9793ab1f9feaae7c369",
+        "simhash": "94e6c16a81630469"
+      },
+      {
+        "fingerprint": "c53f2cf8cab22287bdabbf671f33340b52a7ef7097d82707f53de0f3e2177d38",
+        "simhash": "3f9e5b5e530a3e19"
+      },
+      {
+        "fingerprint": "063f87e8d9b8a868c8cbca0dade96e89844fd34d9b879b98c59430e8f26b08bc",
+        "simhash": "d9834761d9cbc6e4"
+      },
+      {
+        "fingerprint": "eba029fc9d0e2c4efabf74a107c2dfb33c4f1652c0d7e1569a1d8f1adba2aa6c",
+        "simhash": "20744ba8e3903588"
+      },
+      {
+        "fingerprint": "faf9cdcc8027d28d6722dbcda4919893b6acd71f9e5c67870f0fdb32f62bcfef",
+        "simhash": "c2ec72ba30c9f4ee"
+      },
+      {
+        "fingerprint": "f3c0edbb3c1ac11b364ddeecdb2bb781df86a4389db19fdd3e82c99265ae3d18",
+        "simhash": "ca8b320c81a99951"
+      },
+      {
+        "fingerprint": "5693b3768be48fa7a744a9d807fa4300e42f675d58101cb8c025b9d528059ec4",
+        "simhash": "50870268cb796554"
+      },
+      {
+        "fingerprint": "752e4cd2698d5db0bf9e73699eb83ece614fda61e6594fe883c9b4ee96745275",
+        "simhash": "f066590fa2ff18e4"
+      },
+      {
+        "fingerprint": "ce4db4979b82845b201241480ca3e40b95b62d5be9aa5b0b0b74cd181a2519f0",
+        "simhash": "d9fff5a629bb6f61"
+      },
+      {
+        "fingerprint": "fbd6afc93e2b6448eab85dced87c3ea2c53bdf44a0e09b3cda7f4ce5ab738aa6",
+        "simhash": "4e6b02812b09a5dc"
+      },
+      {
+        "fingerprint": "3c0eb009d9ed5b18fb2cb4f7c2663b4619dff62d2fa9a4901ab97cbb27ee5241",
+        "simhash": "5135d987e7c16c79"
+      },
+      {
+        "fingerprint": "a176b0a0fe42ca5757d4e0cdf274fe16ba87c915ebaae895c5609da9ab2e4b63",
+        "simhash": "375401abcc5f682e"
+      },
+      {
+        "fingerprint": "33cc7e15ca28e48cb4417d3e0c73d534ff721d43b6a6ac68856820d7d18eb10f",
+        "simhash": "e7cc2bfddabb237d"
+      },
+      {
+        "fingerprint": "c9a47ed361c0579249adfb0296674ce64eb857c97c084cdfada3d8b88805bbeb",
+        "simhash": "fccd0acea8c201ec"
+      },
+      {
+        "fingerprint": "151425307d297d4253cf591839185280ab1c2e1d119f37e8ad9ab3319b871ea1",
+        "simhash": "1351d3058787097a"
+      },
+      {
+        "fingerprint": "6d570619d06d81c44e46c9b957b551f3b65351a57cc519320fa4358c6f49134f",
+        "simhash": "d6d15892ef9028ea"
+      },
+      {
+        "fingerprint": "edad75d12d1942ca3ad95d16f15f259d2029d0ad78652805693c7b2d6e46f6c4",
+        "simhash": "55c233f63ed00776"
+      },
+      {
+        "fingerprint": "da7daf87164f0abe57ed607a533874761d8fc5312ab7d1ae01d161d71e622566",
+        "simhash": "affc69bbe2173699"
+      },
+      {
+        "fingerprint": "12ed83e628f7f66c57890ac7ade40ab89ace2f822f02aed13776add52f2aaf41",
+        "simhash": "fa8c9785b9fc422f"
+      },
+      {
+        "fingerprint": "aff4f773980b04069ae725f8f85589d9d10044def6f96b6f41179bf1a2dde729",
+        "simhash": "c8c53460316db8e9"
+      },
+      {
+        "fingerprint": "68bbec739dfa16b26b785300c20a9768d8ecc1540c31812dcdfcdad7acc95d07",
+        "simhash": "8c54e3e3aa2b9a99"
+      },
+      {
+        "fingerprint": "e4f98724f28a64d36f31ba64e34e33fe727b50e1e923bdce159c8769b596c81e",
+        "simhash": "41efb57605cbf4e1"
+      },
+      {
+        "fingerprint": "927b5206b36adaea38a2b25ba0239011050b67bbb00448668d6dc273b4096042",
+        "simhash": "9ae458be429a3c3f"
+      },
+      {
+        "fingerprint": "2360bbe8b1a7c7f4eb6c5cd6e7d788c03e75de849a9bcc584e44856e87f63753",
+        "simhash": "da678404ad218679"
+      },
+      {
+        "fingerprint": "8d7a6bba5c751d57d91f35cb84e94638bf44e5fada6c957dde165327a0bf7ffc",
+        "simhash": "dfea2befab05e5d1"
+      },
+      {
+        "fingerprint": "c1cb61e06ced121efd2c81d1a0d09b4e25e4ae404949498850c1791d0a4629ee",
+        "simhash": "96c923cc119bbab3"
+      },
+      {
+        "fingerprint": "ffd440b3e8e9f764e10bcfe574c618558f55ff12a549247188e032bd1b5a16a9",
+        "simhash": "7ffefdadabbb3f80"
+      },
+      {
+        "fingerprint": "0f6f513a9ae97917b1fba399ba23f0cb4f379eedf02cc0c8c86f9217a9bcf2b6",
+        "simhash": "64c9603a47c90d20"
+      }
+    ]
+  },
+  "families": [
+    {
+      "family_id": "place_value",
+      "training_family_id": "place_value",
+      "world_id": "valuehold",
+      "skill_id": "place_value",
+      "topic": "Place Value",
+      "solver": "place_value",
+      "operand_names": [
+        "N",
+        "d"
+      ],
+      "shape": {
+        "shape": "value of the nonzero hundreds digit in a four-digit integer",
+        "N": [
+          1000,
+          9999
+        ],
+        "d": [
+          1,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "valuehold-route-counter-v1",
+          "revision": 1,
+          "context_id": "route_counter",
+          "prompt_template": "A route counter reads {N}. What is the value of digit {d} in the hundreds place?",
+          "procedure_ids": [
+            "pv_face_value",
+            "pv_one_place_low",
+            "pv_one_place_high",
+            "pv_reads_whole"
+          ]
+        },
+        {
+          "template_id": "valuehold-survey-marker-v1",
+          "revision": 1,
+          "context_id": "survey_marker",
+          "prompt_template": "Survey marker {N} is engraved on the gate. What value does digit {d} in the hundreds place represent?",
+          "procedure_ids": [
+            "pv_face_value",
+            "pv_one_place_low",
+            "pv_one_place_high",
+            "pv_reads_whole"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "mental_add",
+      "training_family_id": "mental_add",
+      "world_id": "valuehold",
+      "skill_id": "mental_add_sub",
+      "topic": "Mental Addition and Subtraction",
+      "solver": "mental_add",
+      "operand_names": [
+        "a",
+        "b"
+      ],
+      "shape": {
+        "shape": "a + b with a greater than b and a units-place regrouping",
+        "a": [
+          25,
+          89
+        ],
+        "b": [
+          15,
+          88
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "valuehold-route-tokens-v1",
+          "revision": 1,
+          "context_id": "route_tokens",
+          "prompt_template": "A courier has {a} route tokens and receives {b} more. How many tokens are there now?",
+          "procedure_ids": [
+            "ma_subtract_instead",
+            "ma_forgets_ten",
+            "ma_adds_extra_ten"
+          ]
+        },
+        {
+          "template_id": "valuehold-patrol-distance-v1",
+          "revision": 1,
+          "context_id": "patrol_distance",
+          "prompt_template": "One patrol covered {a} kilometres and another covered {b}. What is their combined distance?",
+          "procedure_ids": [
+            "ma_subtract_instead",
+            "ma_forgets_ten",
+            "ma_adds_extra_ten"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "decimal_add",
+      "training_family_id": "dec_addsub",
+      "world_id": "decimara",
+      "skill_id": "decimal_add_sub",
+      "topic": "Adding and Subtracting with Decimals",
+      "solver": "decimal_add",
+      "operand_names": [
+        "a",
+        "b"
+      ],
+      "shape": {
+        "shape": "0.a + 0.0b",
+        "a": [
+          1,
+          9
+        ],
+        "b": [
+          1,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "decimara-tide-rise-v1",
+          "revision": 1,
+          "context_id": "tide_rise",
+          "prompt_template": "A tide gauge rises by 0.{a} metres and then by 0.0{b} metres. What is the total rise?",
+          "procedure_ids": [
+            "da_align_wrong",
+            "da_ignore_point",
+            "da_subtract_instead"
+          ]
+        },
+        {
+          "template_id": "decimara-charge-cells-v1",
+          "revision": 1,
+          "context_id": "charge_cells",
+          "prompt_template": "Two calibrated cells hold 0.{a} and 0.0{b} units of charge. How much charge is there altogether?",
+          "procedure_ids": [
+            "da_align_wrong",
+            "da_ignore_point",
+            "da_subtract_instead"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "fraction_add",
+      "training_family_id": "fraction_add",
+      "world_id": "fracture_isles",
+      "skill_id": "fraction_add_sub",
+      "topic": "Adding and Subtracting Fractions",
+      "solver": "fraction_add",
+      "operand_names": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "shape": {
+        "shape": "a/b + c/d",
+        "numerators": [
+          1,
+          7
+        ],
+        "denominators": [
+          2,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "fracture-bridge-segments-v1",
+          "revision": 1,
+          "context_id": "bridge_segments",
+          "prompt_template": "Two bridge segments measure {a}/{b} and {c}/{d} of a span. What is their total length in spans?",
+          "procedure_ids": [
+            "frac_add_num_den",
+            "frac_add_keep_first_den",
+            "frac_add_mul_den",
+            "frac_add_keep_second_den",
+            "frac_add_multiply_instead"
+          ]
+        },
+        {
+          "template_id": "fracture-map-route-v1",
+          "revision": 1,
+          "context_id": "map_route",
+          "prompt_template": "A map route uses {a}/{b} of a line, then another {c}/{d}. What fraction of a line is used altogether?",
+          "procedure_ids": [
+            "frac_add_num_den",
+            "frac_add_keep_first_den",
+            "frac_add_mul_den",
+            "frac_add_keep_second_den",
+            "frac_add_multiply_instead"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "decimal_multiply",
+      "training_family_id": "decimal_mul",
+      "world_id": "roundglass",
+      "skill_id": "decimal_multiply_divide",
+      "topic": "Multiplying and Dividing with Decimals",
+      "solver": "decimal_multiply",
+      "operand_names": [
+        "p",
+        "q"
+      ],
+      "shape": {
+        "shape": "0.p × 0.q",
+        "p": [
+          1,
+          9
+        ],
+        "q": [
+          1,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "roundglass-lens-scale-v1",
+          "revision": 1,
+          "context_id": "lens_scale",
+          "prompt_template": "A lens scales a beam by 0.{p} and a second lens by 0.{q}. What is the combined scale factor?",
+          "procedure_ids": [
+            "dec_one_place",
+            "dec_no_point",
+            "dec_add",
+            "dec_too_many_places",
+            "dec_add_digits_no_point"
+          ]
+        },
+        {
+          "template_id": "roundglass-channel-area-v1",
+          "revision": 1,
+          "context_id": "channel_area",
+          "prompt_template": "A channel is 0.{p} units wide and 0.{q} units long. What is its rectangular area?",
+          "procedure_ids": [
+            "dec_one_place",
+            "dec_no_point",
+            "dec_add",
+            "dec_too_many_places",
+            "dec_add_digits_no_point"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "round_one_decimal",
+      "training_family_id": "round_dp",
+      "world_id": "roundglass",
+      "skill_id": "rounding_decimal_places",
+      "topic": "Rounding to Decimal Places",
+      "solver": "round_one_decimal",
+      "operand_names": [
+        "whole",
+        "d1",
+        "d2"
+      ],
+      "shape": {
+        "shape": "round whole.d1d2 to one decimal place",
+        "whole": [
+          1,
+          9
+        ],
+        "d1": [
+          1,
+          8
+        ],
+        "d2": [
+          1,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "roundglass-rangefinder-v1",
+          "revision": 1,
+          "context_id": "rangefinder",
+          "prompt_template": "A rangefinder displays {whole}.{d1}{d2} kilometres. Round this to 1 decimal place.",
+          "procedure_ids": [
+            "rd_truncate",
+            "rd_round_up_always",
+            "rd_drops_to_whole",
+            "rd_keeps_all_digits"
+          ]
+        },
+        {
+          "template_id": "roundglass-crystal-gauge-v1",
+          "revision": 1,
+          "context_id": "crystal_gauge",
+          "prompt_template": "A crystal gauge reads {whole}.{d1}{d2}. What is the reading rounded to 1 decimal place?",
+          "procedure_ids": [
+            "rd_truncate",
+            "rd_round_up_always",
+            "rd_drops_to_whole",
+            "rd_keeps_all_digits"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "fraction_multiply",
+      "training_family_id": "fraction_mul",
+      "world_id": "reciprocal_deep",
+      "skill_id": "fraction_multiply",
+      "topic": "Multiplying Fractions",
+      "solver": "fraction_multiply",
+      "operand_names": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "shape": {
+        "shape": "proper a/b × proper c/d",
+        "numerators": [
+          1,
+          7
+        ],
+        "denominators": [
+          2,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "reciprocal-open-route-v1",
+          "revision": 1,
+          "context_id": "open_route",
+          "prompt_template": "A route covers {a}/{b} of a sector, and {c}/{d} of that route is open. What fraction of the sector is open?",
+          "procedure_ids": [
+            "frac_mul_cross",
+            "frac_mul_add",
+            "frac_mul_num_add_den",
+            "frac_mul_add_num_mul_den",
+            "frac_mul_num_keep_first_den"
+          ]
+        },
+        {
+          "template_id": "reciprocal-charge-transfer-v1",
+          "revision": 1,
+          "context_id": "charge_transfer",
+          "prompt_template": "A panel is {a}/{b} full, and {c}/{d} of its charge transfers. What fraction of a full charge transfers?",
+          "procedure_ids": [
+            "frac_mul_cross",
+            "frac_mul_add",
+            "frac_mul_num_add_den",
+            "frac_mul_add_num_mul_den",
+            "frac_mul_num_keep_first_den"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "fraction_divide_integer",
+      "training_family_id": "fraction_div_int",
+      "world_id": "reciprocal_deep",
+      "skill_id": "fraction_divide",
+      "topic": "Dividing Fractions",
+      "solver": "fraction_divide_integer",
+      "operand_names": [
+        "a",
+        "b",
+        "n"
+      ],
+      "shape": {
+        "shape": "a/b ÷ integer n with b divisible by n",
+        "a": [
+          1,
+          29
+        ],
+        "b": [
+          4,
+          30
+        ],
+        "n": [
+          2,
+          6
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "reciprocal-cable-share-v1",
+          "revision": 1,
+          "context_id": "cable_share",
+          "prompt_template": "A cable {a}/{b} kilometres long is split equally among {n} crews. What fraction of a kilometre does each crew get?",
+          "procedure_ids": [
+            "frac_div_add_int_den",
+            "frac_div_num_over_int",
+            "frac_div_mul_num_by_int",
+            "frac_div_ignore_int"
+          ]
+        },
+        {
+          "template_id": "reciprocal-crate-share-v1",
+          "revision": 1,
+          "context_id": "crate_share",
+          "prompt_template": "{a}/{b} of a supply crate is shared equally among {n} scouts. What fraction of a crate does each receive?",
+          "procedure_ids": [
+            "frac_div_add_int_den",
+            "frac_div_num_over_int",
+            "frac_div_mul_num_by_int",
+            "frac_div_ignore_int"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "percent_of_amount",
+      "training_family_id": "percent_of",
+      "world_id": "hundredfold",
+      "skill_id": "percent_of_amount",
+      "topic": "Percentages of an Amount",
+      "solver": "percent_of_amount",
+      "operand_names": [
+        "percent",
+        "amount"
+      ],
+      "shape": {
+        "shape": "percent% of amount",
+        "percent": [
+          5,
+          10,
+          15,
+          20,
+          25,
+          30,
+          40,
+          50,
+          75
+        ],
+        "amount": [
+          16,
+          20,
+          24,
+          30,
+          32,
+          36,
+          40,
+          48,
+          50,
+          60,
+          64,
+          80,
+          90,
+          100,
+          120,
+          150,
+          200,
+          240
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "hundredfold-shield-charge-v1",
+          "revision": 1,
+          "context_id": "shield_charge",
+          "prompt_template": "A shield has {amount} charge units. What is {percent}% of its charge?",
+          "procedure_ids": [
+            "pct_no_div_100",
+            "pct_divide_by_p",
+            "pct_subtract",
+            "pct_div_by_10",
+            "pct_add"
+          ]
+        },
+        {
+          "template_id": "hundredfold-market-stock-v1",
+          "revision": 1,
+          "context_id": "market_stock",
+          "prompt_template": "A market stock contains {amount} parts. How many parts are {percent}% of the stock?",
+          "procedure_ids": [
+            "pct_no_div_100",
+            "pct_divide_by_p",
+            "pct_subtract",
+            "pct_div_by_10",
+            "pct_add"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "decimal_to_percent",
+      "training_family_id": "convert_dec_pct",
+      "world_id": "hundredfold",
+      "skill_id": "decimal_percent_conversion",
+      "topic": "Converting between Decimals and Percentages",
+      "solver": "decimal_to_percent",
+      "operand_names": [
+        "a",
+        "b"
+      ],
+      "shape": {
+        "shape": "convert 0.ab to a percentage",
+        "a": [
+          1,
+          9
+        ],
+        "b": [
+          1,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "hundredfold-route-meter-v1",
+          "revision": 1,
+          "context_id": "route_meter",
+          "prompt_template": "A route meter shows 0.{a}{b} of the path complete. Convert this decimal to a percentage.",
+          "procedure_ids": [
+            "cp_move_one_place",
+            "cp_move_three_places",
+            "cp_first_digit_only",
+            "cp_divide_instead"
+          ]
+        },
+        {
+          "template_id": "hundredfold-power-cell-v1",
+          "revision": 1,
+          "context_id": "power_cell",
+          "prompt_template": "A power cell is filled to 0.{a}{b} of capacity. What percentage is filled?",
+          "procedure_ids": [
+            "cp_move_one_place",
+            "cp_move_three_places",
+            "cp_first_digit_only",
+            "cp_divide_instead"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "negative_add",
+      "training_family_id": "neg_add",
+      "world_id": "minus_meridian",
+      "skill_id": "negative_add_sub",
+      "topic": "Adding and Subtracting Negative Numbers",
+      "solver": "negative_add",
+      "operand_names": [
+        "a",
+        "b"
+      ],
+      "shape": {
+        "shape": "-a + b with unequal positive magnitudes",
+        "a": [
+          1,
+          20
+        ],
+        "b": [
+          1,
+          20
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "minus-lift-level-v1",
+          "revision": 1,
+          "context_id": "lift_level",
+          "prompt_template": "A lift starts at level -{a} and rises {b} levels. What level does it reach?",
+          "procedure_ids": [
+            "neg_ignore_sign",
+            "neg_both_negative",
+            "neg_subtract_wrong_sign"
+          ]
+        },
+        {
+          "template_id": "minus-temperature-v1",
+          "revision": 1,
+          "context_id": "temperature",
+          "prompt_template": "The temperature is -{a} degrees and increases by {b} degrees. What is the new temperature?",
+          "procedure_ids": [
+            "neg_ignore_sign",
+            "neg_both_negative",
+            "neg_subtract_wrong_sign"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "mental_multiply",
+      "training_family_id": "mental_mult",
+      "world_id": "factor_forge",
+      "skill_id": "mental_multiply_divide",
+      "topic": "Mental Multiplication and Division",
+      "solver": "mental_multiply",
+      "operand_names": [
+        "a",
+        "b"
+      ],
+      "shape": {
+        "shape": "a × b",
+        "a": [
+          11,
+          19
+        ],
+        "b": [
+          3,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "factor-supply-racks-v1",
+          "revision": 1,
+          "context_id": "supply_racks",
+          "prompt_template": "{a} supply racks each hold {b} cells. How many cells are there?",
+          "procedure_ids": [
+            "mm_add_instead",
+            "mm_ignore_tens",
+            "mm_off_by_one_factor"
+          ]
+        },
+        {
+          "template_id": "factor-patrol-circuits-v1",
+          "revision": 1,
+          "context_id": "patrol_circuits",
+          "prompt_template": "A patrol completes {a} circuits of {b} kilometres. What distance does it cover?",
+          "procedure_ids": [
+            "mm_add_instead",
+            "mm_ignore_tens",
+            "mm_off_by_one_factor"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "hcf",
+      "training_family_id": "hcf",
+      "world_id": "factor_forge",
+      "skill_id": "factors_hcf",
+      "topic": "Factors and Highest Common Factor",
+      "solver": "hcf",
+      "operand_names": [
+        "a",
+        "b"
+      ],
+      "shape": {
+        "shape": "HCF of two constructed multiples",
+        "common_factor": [
+          2,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "factor-signal-cycles-v1",
+          "revision": 1,
+          "context_id": "signal_cycles",
+          "prompt_template": "Two signal cycles last {a} and {b} ticks. What is their highest common factor?",
+          "procedure_ids": [
+            "hcf_product",
+            "hcf_sum",
+            "hcf_difference"
+          ]
+        },
+        {
+          "template_id": "factor-panel-groups-v1",
+          "revision": 1,
+          "context_id": "panel_groups",
+          "prompt_template": "Panels have {a} and {b} sockets. What is the greatest number of equal groups that fits both counts?",
+          "procedure_ids": [
+            "hcf_product",
+            "hcf_sum",
+            "hcf_difference"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "bidmas_add_multiply",
+      "training_family_id": "order_of_ops",
+      "world_id": "order_spire",
+      "skill_id": "bidmas",
+      "topic": "BIDMAS",
+      "solver": "bidmas_add_multiply",
+      "operand_names": [
+        "a",
+        "b",
+        "c"
+      ],
+      "shape": {
+        "shape": "a + b × c",
+        "a": [
+          2,
+          9
+        ],
+        "b": [
+          2,
+          9
+        ],
+        "c": [
+          2,
+          9
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "order-route-score-v1",
+          "revision": 1,
+          "context_id": "route_score",
+          "prompt_template": "A route score is {a} + {b} × {c}. What is its value using order of operations?",
+          "procedure_ids": [
+            "ooo_left_to_right",
+            "ooo_add_all",
+            "ooo_mul_all",
+            "ooo_mul_first_two",
+            "ooo_add_last_two_first"
+          ]
+        },
+        {
+          "template_id": "order-forge-points-v1",
+          "revision": 1,
+          "context_id": "forge_points",
+          "prompt_template": "A forge awards {a} base points plus {b} groups of {c} points. How many points is that?",
+          "procedure_ids": [
+            "ooo_left_to_right",
+            "ooo_add_all",
+            "ooo_mul_all",
+            "ooo_mul_first_two",
+            "ooo_add_last_two_first"
+          ]
+        }
+      ]
+    },
+    {
+      "family_id": "indices_same_base_multiply",
+      "training_family_id": "indices",
+      "world_id": "order_spire",
+      "skill_id": "laws_of_indices",
+      "topic": "Laws of Indices",
+      "solver": "indices_same_base_multiply",
+      "operand_names": [
+        "base",
+        "m",
+        "n"
+      ],
+      "shape": {
+        "shape": "same-base multiplication base^m × base^n with unequal exponents",
+        "base": [
+          2,
+          9
+        ],
+        "m": [
+          2,
+          5
+        ],
+        "n": [
+          2,
+          5
+        ]
+      },
+      "templates": [
+        {
+          "template_id": "order-power-array-v1",
+          "revision": 1,
+          "context_id": "power_array",
+          "prompt_template": "A power array gives {base}^{m} × {base}^{n}. What is the value?",
+          "procedure_ids": [
+            "idx_mul_exponents",
+            "idx_add_all",
+            "idx_base_times_sum"
+          ]
+        },
+        {
+          "template_id": "order-same-base-signals-v1",
+          "revision": 1,
+          "context_id": "same_base_signals",
+          "prompt_template": "Two same-base signals combine as {base}^{m} × {base}^{n}. Give the value.",
+          "procedure_ids": [
+            "idx_mul_exponents",
+            "idx_add_all",
+            "idx_base_times_sum"
+          ]
+        }
+      ]
+    }
+  ]
+}

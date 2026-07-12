@@ -1,0 +1,18 @@
+{
+  "name": "Wayline.UI",
+  "rootNamespace": "Wayline.UI",
+  "references": [
+    "Wayline.Learning.Contracts",
+    "Wayline.Learning.Quiz",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/assisted-route-complete.schema.json",
+  "title": "Wayline Assisted Route Completion Command",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "sessionId", "selections"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "sessionId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "selections": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["itemId", "optionId", "confidence"],
+        "properties": {
+          "itemId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+          "optionId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+          "confidence": {"$ref": "progression-shared.schema.json#/$defs/confidence"}
+        }
+      }
+    }
+  }
+}

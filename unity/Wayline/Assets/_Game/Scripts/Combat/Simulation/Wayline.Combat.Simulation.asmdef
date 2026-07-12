@@ -1,0 +1,16 @@
+{
+  "name": "Wayline.Combat.Simulation",
+  "rootNamespace": "Wayline.Combat.Simulation",
+  "references": [
+    "Wayline.Combat.Data"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

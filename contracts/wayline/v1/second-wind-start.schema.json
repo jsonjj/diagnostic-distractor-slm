@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/second-wind-start.schema.json",
+  "title": "Wayline Second Wind Start Command",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "sessionId", "preparationRequestId"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "sessionId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "preparationRequestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"}
+  }
+}

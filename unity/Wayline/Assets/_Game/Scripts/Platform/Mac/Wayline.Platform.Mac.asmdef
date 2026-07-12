@@ -1,0 +1,16 @@
+{
+  "name": "Wayline.Platform.Mac",
+  "rootNamespace": "Wayline.Platform.Mac",
+  "references": [
+    "Wayline.UI"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

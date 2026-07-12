@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/final-quiz-result.schema.json",
+  "title": "Wayline Final Quiz Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "batchId",
+    "itemCount",
+    "firstPassWrongCount",
+    "finalCorrectCount",
+    "revisionUsed",
+    "items"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "batchId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "itemCount": {"type": "integer", "minimum": 3, "maximum": 10},
+    "firstPassWrongCount": {"type": "integer", "minimum": 0, "maximum": 10},
+    "finalCorrectCount": {"type": "integer", "minimum": 0, "maximum": 10},
+    "revisionUsed": {"type": "boolean"},
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "itemId",
+          "firstSelection",
+          "finalSelection",
+          "correctOptionId",
+          "correctAnswer",
+          "trustedSteps",
+          "possibleError",
+          "reliableMethod",
+          "selfCorrected"
+        ],
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 96,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+          },
+          "firstSelection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["optionId", "confidence", "isCorrect"],
+            "properties": {
+              "optionId": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 96,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+              },
+              "confidence": {"type": "string", "enum": ["certain", "leaning", "guessing"]},
+              "isCorrect": {"type": "boolean"}
+            }
+          },
+          "finalSelection": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["optionId", "confidence", "isCorrect"],
+            "properties": {
+              "optionId": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 96,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+              },
+              "confidence": {"type": "string", "enum": ["certain", "leaning", "guessing"]},
+              "isCorrect": {"type": "boolean"}
+            }
+          },
+          "correctOptionId": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 96,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+          },
+          "correctAnswer": {"type": "string", "minLength": 1, "maxLength": 256},
+          "trustedSteps": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 8,
+            "items": {"type": "string", "minLength": 1, "maxLength": 512}
+          },
+          "possibleError": {
+            "anyOf": [
+              {"type": "string", "minLength": 1, "maxLength": 512},
+              {"type": "null"}
+            ]
+          },
+          "reliableMethod": {"type": "string", "minLength": 1, "maxLength": 512},
+          "selfCorrected": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

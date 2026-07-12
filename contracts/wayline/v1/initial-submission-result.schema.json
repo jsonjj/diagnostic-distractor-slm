@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/initial-submission-result.schema.json",
+  "title": "Wayline Initial Submission Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "batchId",
+    "itemCount",
+    "wrongCount",
+    "revisionRequired",
+    "finalResult"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "batchId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "itemCount": {"type": "integer", "minimum": 3, "maximum": 10},
+    "wrongCount": {"type": "integer", "minimum": 0, "maximum": 10},
+    "revisionRequired": {"type": "boolean"},
+    "finalResult": {
+      "anyOf": [
+        {"$ref": "final-quiz-result.schema.json"},
+        {"type": "null"}
+      ]
+    }
+  }
+}

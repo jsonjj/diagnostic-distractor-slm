@@ -1,0 +1,1 @@
+{"distractors":[{"misconception":"Does not align\u0000 place values","computation":"(6 + 5)/10 = 1.1","answer":"1.1"},{"misconception":"Ignores the decimal points and adds as whole numbers","computation":"6 + 5 = 11","answer":"11"},{"misconception":"Subtracts instead of adding","computation":"(6 × 10 - 5)/100 = 0.55","answer":"0.55"}]}

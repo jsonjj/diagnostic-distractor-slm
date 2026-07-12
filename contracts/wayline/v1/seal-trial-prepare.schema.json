@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/seal-trial-prepare.schema.json",
+  "title": "Wayline Seal Trial Preparation Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "sessionId"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "sessionId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    }
+  }
+}

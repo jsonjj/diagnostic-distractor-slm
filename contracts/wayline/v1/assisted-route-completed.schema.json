@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/assisted-route-completed.schema.json",
+  "title": "Wayline Fresh Assisted Route Completion Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "worldId", "routeId", "workedExampleCount", "supportedMcqCount", "finalCorrect", "worldCleared", "items"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "worldId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "routeId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "workedExampleCount": {"const": 1},
+    "supportedMcqCount": {"const": 2},
+    "finalCorrect": {"type": "integer", "minimum": 0, "maximum": 2},
+    "worldCleared": {"const": true},
+    "items": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {"$ref": "#/$defs/itemResult"}
+    }
+  },
+  "$defs": {
+    "itemResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["itemId", "selectedOptionId", "selectedAnswer", "confidence", "correctOptionId", "correctAnswer", "isCorrect", "possibleError", "reliableMethod", "trustedSteps", "canonicalFeedback"],
+      "properties": {
+        "itemId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+        "selectedOptionId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+        "selectedAnswer": {"$ref": "progression-shared.schema.json#/$defs/displayText"},
+        "confidence": {"$ref": "progression-shared.schema.json#/$defs/confidence"},
+        "correctOptionId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+        "correctAnswer": {"$ref": "progression-shared.schema.json#/$defs/displayText"},
+        "isCorrect": {"type": "boolean"},
+        "possibleError": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "progression-shared.schema.json#/$defs/feedbackText"}
+          ]
+        },
+        "reliableMethod": {"$ref": "progression-shared.schema.json#/$defs/feedbackText"},
+        "trustedSteps": {"$ref": "progression-shared.schema.json#/$defs/trustedSteps"},
+        "canonicalFeedback": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 10,
+          "items": {"$ref": "progression-shared.schema.json#/$defs/feedbackText"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"isCorrect": {"const": true}}},
+          "then": {"properties": {"possibleError": {"type": "null"}}},
+          "else": {"properties": {"possibleError": {"$ref": "progression-shared.schema.json#/$defs/feedbackText"}}}
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"finalCorrect": {"const": 0}}},
+      "then": {"properties": {"items": {"not": {"contains": {"properties": {"isCorrect": {"const": true}}, "required": ["isCorrect"]}}}}}
+    },
+    {
+      "if": {"properties": {"finalCorrect": {"const": 1}}},
+      "then": {"properties": {"items": {"contains": {"properties": {"isCorrect": {"const": true}}, "required": ["isCorrect"]}, "minContains": 1, "maxContains": 1}}}
+    },
+    {
+      "if": {"properties": {"finalCorrect": {"const": 2}}},
+      "then": {"properties": {"items": {"contains": {"properties": {"isCorrect": {"const": true}}, "required": ["isCorrect"]}, "minContains": 2, "maxContains": 2}}}
+    }
+  ]
+}

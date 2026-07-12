@@ -1,0 +1,336 @@
+{
+  "schemaVersion": "wayline.shared-invariants.v1",
+  "contractVersion": "wayline.v1",
+  "jsonSchemaScope": "structural_only",
+  "semanticEnforcers": ["python", "unity"],
+  "displayNormalization": {
+    "id": "wayline.display-normalization.v1",
+    "unicodeDataVersion": "15.0.0",
+    "algorithm": [
+      "unicode_nfkc",
+      "collapse_unicode_whitespace_runs_to_ascii_space",
+      "trim",
+      "unicode_casefold"
+    ],
+    "testVectors": [
+      {"input": "Straße", "normalized": "strasse"},
+      {"input": "1\u20032", "normalized": "1 2"},
+      {"input": "１２", "normalized": "12"}
+    ],
+    "unityRequirement": "Unity must implement these four operations in this exact order and compare the resulting strings for display-option uniqueness.",
+    "numericAnswerValidation": "Numeric answer equivalence and safe numeric parsing remain a later Unity Task 2 validation layer; display normalization does not establish mathematical equality."
+  },
+  "notes": "The Draft 2020-12 schemas validate wire structure, local types, required fields, bounds, and closed objects. Dynamic equality, aggregate counts, uniqueness by identity, and relationships between fields are semantic rules that both Python and Unity must enforce from this manifest.",
+  "invariants": [
+    {
+      "id": "public_item.unique_option_ids",
+      "contract": "public-quiz-batch",
+      "contractSchemas": ["public-quiz-batch.schema.json"],
+      "pythonModels": ["PublicQuizBatch"],
+      "pythonErrorContains": "optionId must be unique within an item",
+      "description": "Every optionId is unique within one quiz item.",
+      "fields": ["items[].options[].optionId"],
+      "invalidFixtures": ["duplicate-option-id.json"]
+    },
+    {
+      "id": "public_item.unique_display_values",
+      "contract": "public-quiz-batch",
+      "contractSchemas": ["public-quiz-batch.schema.json"],
+      "pythonModels": ["PublicQuizBatch"],
+      "pythonErrorContains": "displayText must be unique within an item",
+      "description": "Every normalized displayText is unique within one quiz item.",
+      "fields": ["items[].options[].displayText"],
+      "invalidFixtures": ["duplicate-display-normalization.json"]
+    },
+    {
+      "id": "public_batch.item_count_matches_items",
+      "contract": "public-quiz-batch",
+      "contractSchemas": ["public-quiz-batch.schema.json"],
+      "pythonModels": ["PublicQuizBatch"],
+      "pythonErrorContains": "itemCount must equal the number of items",
+      "description": "itemCount equals the number of items in the batch.",
+      "fields": ["itemCount", "items"],
+      "invalidFixtures": ["count-mismatch.json"]
+    },
+    {
+      "id": "public_batch.unique_item_ids",
+      "contract": "public-quiz-batch",
+      "contractSchemas": ["public-quiz-batch.schema.json"],
+      "pythonModels": ["PublicQuizBatch"],
+      "pythonErrorContains": "itemId must be unique within a batch",
+      "description": "Every itemId is unique within one public batch.",
+      "fields": ["items[].itemId"],
+      "invalidFixtures": ["duplicate-batch-item-id.json"]
+    },
+    {
+      "id": "submission.item_count_matches_selections",
+      "contract": "initial-submit,revision-submit",
+      "contractSchemas": ["initial-submit.schema.json", "revision-submit.schema.json"],
+      "pythonModels": ["InitialSubmission", "RevisionSubmission"],
+      "pythonErrorContains": "itemCount must equal the number of selections",
+      "description": "itemCount equals the number of complete selections.",
+      "fields": ["itemCount", "selections"],
+      "invalidFixtures": ["selection-count-mismatch.json"]
+    },
+    {
+      "id": "submission.unique_item_ids",
+      "contract": "initial-submit,revision-submit",
+      "contractSchemas": ["initial-submit.schema.json", "revision-submit.schema.json"],
+      "pythonModels": ["InitialSubmission", "RevisionSubmission"],
+      "pythonErrorContains": "each itemId must be selected exactly once",
+      "description": "Each submitted itemId appears exactly once in a complete submission.",
+      "fields": ["selections[].itemId"],
+      "invalidFixtures": ["duplicate-selection-item-id.json"]
+    },
+    {
+      "id": "wrong_count.not_above_item_count",
+      "contract": "wrong-count-result",
+      "contractSchemas": ["wrong-count-result.schema.json"],
+      "pythonModels": ["WrongCountResult"],
+      "pythonErrorContains": "wrongCount cannot exceed itemCount",
+      "description": "wrongCount is less than or equal to itemCount.",
+      "fields": ["wrongCount", "itemCount"],
+      "invalidFixtures": ["wrong-count-exceeds-item-count.json"]
+    },
+    {
+      "id": "wrong_count.revision_required_iff_nonzero",
+      "contract": "wrong-count-result",
+      "contractSchemas": ["wrong-count-result.schema.json"],
+      "pythonModels": ["WrongCountResult"],
+      "pythonErrorContains": "revisionRequired must equal wrongCount > 0",
+      "description": "revisionRequired is true if and only if wrongCount is greater than zero.",
+      "fields": ["revisionRequired", "wrongCount"],
+      "invalidFixtures": ["revision-required-mismatch.json"]
+    },
+    {
+      "id": "initial_result.final_present_iff_zero",
+      "contract": "initial-submission-result",
+      "contractSchemas": ["initial-submission-result.schema.json"],
+      "pythonModels": ["InitialSubmissionResult"],
+      "pythonErrorContains": "finalResult must be present exactly when wrongCount is zero",
+      "description": "The initial response reveals item truth if and only if the exact first-pass wrong count is zero.",
+      "fields": ["wrongCount", "finalResult"],
+      "invalidFixtures": ["initial-zero-without-final.json", "initial-nonzero-with-final.json"]
+    },
+    {
+      "id": "initial_result.final_matches_first_pass",
+      "contract": "initial-submission-result",
+      "contractSchemas": ["initial-submission-result.schema.json"],
+      "pythonModels": ["InitialSubmissionResult"],
+      "pythonErrorContains": "finalResult must match the zero-wrong first pass",
+      "description": "A zero-wrong reveal belongs to the same batch and item count and records no revision.",
+      "fields": ["batchId", "itemCount", "finalResult.batchId", "finalResult.itemCount", "finalResult.firstPassWrongCount", "finalResult.revisionUsed"],
+      "invalidFixtures": ["initial-final-identity-mismatch.json"]
+    },
+    {
+      "id": "final_item.first_correctness_matches_key",
+      "contract": "final-quiz-result",
+      "contractSchemas": ["final-quiz-result.schema.json"],
+      "pythonModels": ["FinalQuizResult"],
+      "pythonErrorContains": "firstSelection.isCorrect must match correctOptionId",
+      "description": "firstSelection.isCorrect equals whether firstSelection.optionId matches correctOptionId.",
+      "fields": ["items[].firstSelection.optionId", "items[].firstSelection.isCorrect", "items[].correctOptionId"],
+      "invalidFixtures": ["first-correctness-key-mismatch.json"]
+    },
+    {
+      "id": "final_item.final_correctness_matches_key",
+      "contract": "final-quiz-result",
+      "contractSchemas": ["final-quiz-result.schema.json"],
+      "pythonModels": ["FinalQuizResult"],
+      "pythonErrorContains": "finalSelection.isCorrect must match correctOptionId",
+      "description": "finalSelection.isCorrect equals whether finalSelection.optionId matches correctOptionId.",
+      "fields": ["items[].finalSelection.optionId", "items[].finalSelection.isCorrect", "items[].correctOptionId"],
+      "invalidFixtures": ["final-correctness-key-mismatch.json"]
+    },
+    {
+      "id": "final_item.self_corrected_iff_wrong_to_correct",
+      "contract": "final-quiz-result",
+      "contractSchemas": ["final-quiz-result.schema.json"],
+      "pythonModels": ["FinalQuizResult"],
+      "pythonErrorContains": "selfCorrected must represent wrong-to-correct revision",
+      "description": "selfCorrected is true if and only if the first selection is wrong and the final selection is correct.",
+      "fields": ["items[].firstSelection.isCorrect", "items[].finalSelection.isCorrect", "items[].selfCorrected"],
+      "invalidFixtures": ["self-corrected-mismatch.json"]
+    },
+    {
+      "id": "final_result.item_count_matches_items",
+      "contract": "final-quiz-result",
+      "contractSchemas": ["final-quiz-result.schema.json"],
+      "pythonModels": ["FinalQuizResult"],
+      "pythonErrorContains": "itemCount must equal the number of item results",
+      "description": "itemCount equals the number of final item results.",
+      "fields": ["itemCount", "items"],
+      "invalidFixtures": ["final-item-count-mismatch.json"]
+    },
+    {
+      "id": "final_result.unique_item_ids",
+      "contract": "final-quiz-result",
+      "contractSchemas": ["final-quiz-result.schema.json"],
+      "pythonModels": ["FinalQuizResult"],
+      "pythonErrorContains": "itemId must be unique within final results",
+      "description": "Every itemId is unique within one final result.",
+      "fields": ["items[].itemId"],
+      "invalidFixtures": ["duplicate-final-item-id.json"]
+    },
+    {
+      "id": "final_result.first_wrong_count_matches_items",
+      "contract": "final-quiz-result",
+      "contractSchemas": ["final-quiz-result.schema.json"],
+      "pythonModels": ["FinalQuizResult"],
+      "pythonErrorContains": "firstPassWrongCount must match item results",
+      "description": "firstPassWrongCount equals the number of items whose first selection is incorrect.",
+      "fields": ["firstPassWrongCount", "items[].firstSelection.isCorrect"],
+      "invalidFixtures": ["first-wrong-count-mismatch.json"]
+    },
+    {
+      "id": "final_result.final_correct_count_matches_items",
+      "contract": "final-quiz-result",
+      "contractSchemas": ["final-quiz-result.schema.json"],
+      "pythonModels": ["FinalQuizResult"],
+      "pythonErrorContains": "finalCorrectCount must match item results",
+      "description": "finalCorrectCount equals the number of items whose final selection is correct.",
+      "fields": ["finalCorrectCount", "items[].finalSelection.isCorrect"],
+      "invalidFixtures": ["final-aggregate-mismatch.json"]
+    },
+    {
+      "id": "final_result.revision_used_iff_initial_wrong",
+      "contract": "final-quiz-result",
+      "contractSchemas": ["final-quiz-result.schema.json"],
+      "pythonModels": ["FinalQuizResult"],
+      "pythonErrorContains": "revisionUsed must equal firstPassWrongCount > 0",
+      "description": "revisionUsed is true if and only if firstPassWrongCount is greater than zero.",
+      "fields": ["revisionUsed", "firstPassWrongCount"],
+      "invalidFixtures": ["revision-used-mismatch.json"]
+    },
+    {
+      "id": "final_result.no_revision_keeps_selection",
+      "contract": "final-quiz-result",
+      "contractSchemas": ["final-quiz-result.schema.json"],
+      "pythonModels": ["FinalQuizResult"],
+      "pythonErrorContains": "finalSelection must equal firstSelection when revision is skipped",
+      "description": "When revisionUsed is false, every final selection exactly equals its first selection.",
+      "fields": ["revisionUsed", "items[].firstSelection", "items[].finalSelection"],
+      "invalidFixtures": ["no-revision-selection-changed.json"]
+    },
+    {
+      "id": "boss_gate.latest_correct_not_above_items",
+      "contract": "boss-gate-result",
+      "contractSchemas": ["boss-gate-result.schema.json"],
+      "pythonModels": ["BossGateResult"],
+      "pythonErrorContains": "latestTenCorrectCount cannot exceed latestTenItemCount",
+      "description": "latestTenCorrectCount is less than or equal to latestTenItemCount.",
+      "fields": ["latestTenCorrectCount", "latestTenItemCount"],
+      "invalidFixtures": ["gate-latest-correct-exceeds-items.json"]
+    },
+    {
+      "id": "boss_gate.ready_subskills_not_above_total",
+      "contract": "boss-gate-result",
+      "contractSchemas": ["boss-gate-result.schema.json"],
+      "pythonModels": ["BossGateResult"],
+      "pythonErrorContains": "readyCoreSubskillCount cannot exceed coreSubskillCount",
+      "description": "readyCoreSubskillCount is less than or equal to coreSubskillCount.",
+      "fields": ["readyCoreSubskillCount", "coreSubskillCount"],
+      "invalidFixtures": ["gate-ready-subskills-exceeds-total.json"]
+    },
+    {
+      "id": "boss_gate.unmet_requirements_match_thresholds",
+      "contract": "boss-gate-result",
+      "contractSchemas": ["boss-gate-result.schema.json"],
+      "pythonModels": ["BossGateResult"],
+      "pythonErrorContains": "unmetRequirements must list each failed gate in canonical order",
+      "description": "unmetRequirements lists every failed threshold exactly once in canonical order.",
+      "fields": ["unmetRequirements", "leadInWins", "requiredLeadInWins", "validWorldItems", "requiredValidWorldItems", "latestTenItemCount", "latestTenCorrectCount", "requiredLatestTenCorrectCount", "coreSubskillCount", "readyCoreSubskillCount"],
+      "invalidFixtures": ["gate-unmet-requirements-mismatch.json"]
+    },
+    {
+      "id": "boss_gate.unlocked_iff_no_unmet",
+      "contract": "boss-gate-result",
+      "contractSchemas": ["boss-gate-result.schema.json"],
+      "pythonModels": ["BossGateResult"],
+      "pythonErrorContains": "unlocked must match the deterministic boss gate",
+      "description": "unlocked is true if and only if no deterministic gate requirement is unmet.",
+      "fields": ["unlocked", "unmetRequirements"],
+      "invalidFixtures": ["gate-mismatch.json"]
+    },
+    {
+      "id": "seal_trial.battle_id_matches_attempt",
+      "contract": "seal-trial-prepared",
+      "contractSchemas": ["seal-trial-prepared.schema.json"],
+      "pythonModels": ["SealTrialPrepared"],
+      "pythonErrorContains": "battleId must match the Seal Trial attempt",
+      "description": "battleId is derived exactly from worldId and attemptNumber.",
+      "fields": ["worldId", "attemptNumber", "battleId"],
+      "invalidFixtures": ["seal-trial-battle-id-mismatch.json"]
+    },
+    {
+      "id": "seal_trial.exactly_three_items",
+      "contract": "seal-trial-prepared",
+      "contractSchemas": ["seal-trial-prepared.schema.json"],
+      "pythonModels": ["SealTrialPrepared"],
+      "pythonErrorContains": "Seal Trials must contain exactly three items",
+      "description": "Every prepared Seal Trial contains exactly three quiz items.",
+      "fields": ["batch.itemCount", "batch.items"],
+      "invalidFixtures": ["seal-trial-four-items.json"]
+    },
+    {
+      "id": "battle_completion.final_correct_not_above_item_count",
+      "contract": "battle-completed",
+      "contractSchemas": ["battle-completed.schema.json"],
+      "pythonModels": ["BattleCompleted"],
+      "pythonErrorContains": "finalCorrect cannot exceed itemCount",
+      "description": "Battle finalCorrect never exceeds the sealed quiz itemCount.",
+      "fields": ["finalCorrect", "itemCount"],
+      "invalidFixtures": ["battle-completed-count-mismatch.json"]
+    },
+    {
+      "id": "seal_completion.pass_matches_score",
+      "contract": "seal-trial-completed",
+      "contractSchemas": ["seal-trial-completed.schema.json"],
+      "pythonModels": ["SealTrialCompleted"],
+      "pythonErrorContains": "passed must equal finalCorrect >= 2",
+      "description": "A three-item Seal Trial passes exactly at two or more correct answers.",
+      "fields": ["finalCorrect", "passed"],
+      "invalidFixtures": ["seal-trial-completed-pass-mismatch.json"]
+    },
+    {
+      "id": "second_wind_started.identities_derived",
+      "contract": "second-wind-started",
+      "contractSchemas": ["second-wind-started.schema.json"],
+      "pythonModels": ["SecondWindStarted"],
+      "pythonErrorContains": "Second Wind identities must be derived from combat",
+      "description": "Second Wind and quiz battle IDs derive from the bound combat attempt and battle.",
+      "fields": ["secondWindId", "combatAttemptId", "quizBattleId", "battleId"],
+      "invalidFixtures": ["second-wind-started-identity-mismatch.json"]
+    },
+    {
+      "id": "second_wind_completed.shield_matches_score",
+      "contract": "second-wind-completed",
+      "contractSchemas": ["second-wind-completed.schema.json"],
+      "pythonModels": ["SecondWindCompleted"],
+      "pythonErrorContains": "shieldPercent must match finalCorrect",
+      "description": "Shield is five percent per correct answer capped at fifteen percent.",
+      "fields": ["finalCorrect", "shieldPercent"],
+      "invalidFixtures": ["second-wind-completed-shield-mismatch.json"]
+    },
+    {
+      "id": "revived_combat_completed.battle_matches_win",
+      "contract": "revived-combat-completed",
+      "contractSchemas": ["revived-combat-completed.schema.json"],
+      "pythonModels": ["RevivedCombatCompleted"],
+      "pythonErrorContains": "battleCompleted must equal combatWon",
+      "description": "Revived combat completes the battle exactly when combat was won.",
+      "fields": ["combatWon", "battleCompleted"],
+      "invalidFixtures": ["revived-combat-completed-state-mismatch.json"]
+    },
+    {
+      "id": "world_activation.active_differs_from_completed",
+      "contract": "world-activated",
+      "contractSchemas": ["world-activated.schema.json"],
+      "pythonModels": ["WorldActivated"],
+      "pythonErrorContains": "activeWorldId must differ from completedWorldId",
+      "description": "World activation advances to a different catalog world.",
+      "fields": ["completedWorldId", "activeWorldId"],
+      "invalidFixtures": ["world-activated-same-world.json"]
+    }
+  ]
+}

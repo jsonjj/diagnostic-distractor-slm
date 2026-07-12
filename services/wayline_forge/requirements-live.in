@@ -1,0 +1,8 @@
+# Runtime-only dependencies. Resolve with Python 3.12 into a hash-locked
+# requirements-live.lock in an isolated release environment.
+fastapi==0.139.0
+pydantic==2.13.4
+uvicorn[standard]==0.51.0
+httpx==0.28.1
+jsonschema==4.26.0
+pyinstaller==6.21.0

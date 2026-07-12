@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/assisted-route-prepared.schema.json",
+  "title": "Wayline Prepared Fresh Assisted Route",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "worldId", "batch"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "worldId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "batch": {"$ref": "#/$defs/batch"}
+  },
+  "$defs": {
+    "workedExample": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["itemId", "prompt", "correctAnswer", "trustedSteps", "reliableMethod"],
+      "properties": {
+        "itemId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+        "prompt": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "correctAnswer": {"$ref": "progression-shared.schema.json#/$defs/displayText"},
+        "trustedSteps": {"$ref": "progression-shared.schema.json#/$defs/trustedSteps"},
+        "reliableMethod": {"$ref": "progression-shared.schema.json#/$defs/feedbackText"}
+      }
+    },
+    "supportedItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["itemId", "prompt", "options"],
+      "properties": {
+        "itemId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+        "prompt": {"type": "string", "minLength": 1, "maxLength": 1000},
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {"$ref": "progression-shared.schema.json#/$defs/publicOption"}
+        }
+      }
+    },
+    "batch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["routeId", "worldId", "workedExample", "items"],
+      "properties": {
+        "routeId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+        "worldId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+        "workedExample": {"$ref": "#/$defs/workedExample"},
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {"$ref": "#/$defs/supportedItem"}
+        }
+      }
+    }
+  },
+  "allOf": [
+    {"if": {"properties": {"worldId": {"const": "valuehold"}}}, "then": {"properties": {"batch": {"properties": {"worldId": {"const": "valuehold"}}}}}},
+    {"if": {"properties": {"worldId": {"const": "decimara"}}}, "then": {"properties": {"batch": {"properties": {"worldId": {"const": "decimara"}}}}}},
+    {"if": {"properties": {"worldId": {"const": "fracture_isles"}}}, "then": {"properties": {"batch": {"properties": {"worldId": {"const": "fracture_isles"}}}}}},
+    {"if": {"properties": {"worldId": {"const": "roundglass"}}}, "then": {"properties": {"batch": {"properties": {"worldId": {"const": "roundglass"}}}}}},
+    {"if": {"properties": {"worldId": {"const": "reciprocal_deep"}}}, "then": {"properties": {"batch": {"properties": {"worldId": {"const": "reciprocal_deep"}}}}}},
+    {"if": {"properties": {"worldId": {"const": "hundredfold"}}}, "then": {"properties": {"batch": {"properties": {"worldId": {"const": "hundredfold"}}}}}},
+    {"if": {"properties": {"worldId": {"const": "minus_meridian"}}}, "then": {"properties": {"batch": {"properties": {"worldId": {"const": "minus_meridian"}}}}}},
+    {"if": {"properties": {"worldId": {"const": "factor_forge"}}}, "then": {"properties": {"batch": {"properties": {"worldId": {"const": "factor_forge"}}}}}},
+    {"if": {"properties": {"worldId": {"const": "order_spire"}}}, "then": {"properties": {"batch": {"properties": {"worldId": {"const": "order_spire"}}}}}}
+  ]
+}

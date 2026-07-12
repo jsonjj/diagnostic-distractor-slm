@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "wayline.model-manifest.v1",
+  "baseModelId": "unsloth/Qwen3-4B-bnb-4bit",
+  "baseModelRevision": "main",
+  "adapterId": "j2ampn/qwen3-4b-distractor-lora-v7",
+  "adapterRevision": "89abcdef0123456789abcdef0123456789abcdef",
+  "llamaCppRevision": "fedcba9876543210fedcba9876543210fedcba98",
+  "quantization": "Q4_K_M",
+  "ggufFileName": "wayline-qwen3-4b-distractor-v7-q4_k_m.gguf",
+  "ggufSha256": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  "promptSha256": "89abcdef0123456789abcdef0123456789abcdef0123456789abcdef01234567",
+  "tokenizerSha256": "fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210",
+  "contextSize": 2048,
+  "threadCount": 8,
+  "platform": "macos-arm64"
+}

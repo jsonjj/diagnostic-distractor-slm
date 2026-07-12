@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "wayline.v1",
+  "requestId": "prepare-assisted-001",
+  "worldId": "valuehold",
+  "batch": {
+    "routeId": "assisted-aaaaaaaaaaaaaaaaaaaaaaaa",
+    "worldId": "decimara",
+    "workedExample": {
+      "itemId": "item-worked-001",
+      "prompt": "What is the value of the 7 in 4,782?",
+      "correctAnswer": "700",
+      "trustedSteps": ["The 7 is in the hundreds place."],
+      "reliableMethod": "Name the digit's place, then write its value."
+    },
+    "items": [
+      {
+        "itemId": "item-supported-001",
+        "prompt": "What is the value of the 6 in 6,241?",
+        "options": [
+          {"optionId": "opt-supported-001-a", "displayText": "6"},
+          {"optionId": "opt-supported-001-b", "displayText": "60"},
+          {"optionId": "opt-supported-001-c", "displayText": "600"},
+          {"optionId": "opt-supported-001-d", "displayText": "6000"}
+        ]
+      },
+      {
+        "itemId": "item-supported-002",
+        "prompt": "What is the value of the 3 in 1,305?",
+        "options": [
+          {"optionId": "opt-supported-002-a", "displayText": "3"},
+          {"optionId": "opt-supported-002-b", "displayText": "30"},
+          {"optionId": "opt-supported-002-c", "displayText": "300"},
+          {"optionId": "opt-supported-002-d", "displayText": "3000"}
+        ]
+      }
+    ]
+  }
+}

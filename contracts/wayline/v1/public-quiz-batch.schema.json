@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/public-quiz-batch.schema.json",
+  "title": "Wayline Public Quiz Batch",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "batchId", "itemCount", "items"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "batchId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "itemCount": {"type": "integer", "minimum": 3, "maximum": 10},
+    "items": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["itemId", "prompt", "options"],
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 96,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+          },
+          "prompt": {"type": "string", "minLength": 1, "maxLength": 1000},
+          "options": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["optionId", "displayText"],
+              "properties": {
+                "optionId": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 96,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+                },
+                "displayText": {"type": "string", "minLength": 1, "maxLength": 256}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

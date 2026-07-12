@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/battle-completed.schema.json",
+  "title": "Wayline Battle Completion Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "worldId", "battleId", "batchId", "finalCorrect", "itemCount", "bossBattle", "worldCleared", "sealTrialRequired"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "worldId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "battleId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "batchId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "finalCorrect": {"type": "integer", "minimum": 0, "maximum": 10},
+    "itemCount": {"type": "integer", "minimum": 3, "maximum": 10},
+    "bossBattle": {"type": "boolean"},
+    "worldCleared": {"type": "boolean"},
+    "sealTrialRequired": {"type": "boolean"}
+  }
+}

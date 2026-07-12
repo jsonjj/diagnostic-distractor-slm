@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:wayline:model-manifest:v1",
+  "title": "Wayline Immutable Model Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "baseModelId",
+    "baseModelRevision",
+    "adapterId",
+    "adapterRevision",
+    "llamaCppRevision",
+    "quantization",
+    "ggufFileName",
+    "ggufSha256",
+    "promptSha256",
+    "tokenizerSha256",
+    "contextSize",
+    "threadCount",
+    "platform"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "wayline.model-manifest.v1"},
+    "baseModelId": {"const": "unsloth/Qwen3-4B-bnb-4bit"},
+    "baseModelRevision": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 40,
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "adapterId": {"const": "j2ampn/qwen3-4b-distractor-lora-v7"},
+    "adapterRevision": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 40,
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "llamaCppRevision": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 40,
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "quantization": {"const": "Q4_K_M"},
+    "ggufFileName": {
+      "type": "string",
+      "minLength": 6,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*\\.gguf$",
+      "allOf": [
+        {"not": {"pattern": "[Ll][Aa][Tt][Ee][Ss][Tt]"}},
+        {"not": {"pattern": "[Ss][Ee][Cc][Rr][Ee][Tt]"}},
+        {"not": {"pattern": "[Hh][Ff]_"}},
+        {"not": {"pattern": "[Aa][Pp][Ii]_?[Kk][Ee][Yy]"}}
+      ]
+    },
+    "ggufSha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "promptSha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "tokenizerSha256": {
+      "type": "string",
+      "minLength": 64,
+      "maxLength": 64,
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "contextSize": {"type": "integer", "minimum": 512, "maximum": 8192},
+    "threadCount": {"type": "integer", "minimum": 1, "maximum": 32},
+    "platform": {"const": "macos-arm64"}
+  }
+}

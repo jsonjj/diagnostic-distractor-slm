@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/world-activated.schema.json",
+  "title": "Wayline World Activation Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "completedWorldId", "activeWorldId", "campaignSequence"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "completedWorldId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "activeWorldId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "campaignSequence": {"type": "integer", "minimum": 2, "maximum": 9}
+  }
+}

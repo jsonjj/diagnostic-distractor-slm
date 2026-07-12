@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "wayline.v1",
+  "batchId": "batch-001",
+  "itemCount": 3,
+  "wrongCount": 0,
+  "revisionRequired": false,
+  "finalResult": {
+    "schemaVersion": "wayline.v1",
+    "batchId": "batch-001",
+    "itemCount": 3,
+    "firstPassWrongCount": 0,
+    "finalCorrectCount": 3,
+    "revisionUsed": false,
+    "items": [
+      {
+        "itemId": "item-001",
+        "firstSelection": {"optionId": "opt-001-a", "confidence": "certain", "isCorrect": true},
+        "finalSelection": {"optionId": "opt-001-a", "confidence": "certain", "isCorrect": true},
+        "correctOptionId": "opt-001-a",
+        "correctAnswer": "2.75",
+        "trustedSteps": ["Align the decimal points.", "Add each place value to get 2.75."],
+        "possibleError": null,
+        "reliableMethod": "Align the decimal points first, then add by place value.",
+        "selfCorrected": false
+      },
+      {
+        "itemId": "item-002",
+        "firstSelection": {"optionId": "opt-002-a", "confidence": "certain", "isCorrect": true},
+        "finalSelection": {"optionId": "opt-002-a", "confidence": "certain", "isCorrect": true},
+        "correctOptionId": "opt-002-a",
+        "correctAnswer": "12",
+        "trustedSteps": ["Use the related multiplication fact: 7 times 12 is 84."],
+        "possibleError": null,
+        "reliableMethod": "Check division with the related multiplication fact.",
+        "selfCorrected": false
+      },
+      {
+        "itemId": "item-003",
+        "firstSelection": {"optionId": "opt-003-a", "confidence": "leaning", "isCorrect": true},
+        "finalSelection": {"optionId": "opt-003-a", "confidence": "leaning", "isCorrect": true},
+        "correctOptionId": "opt-003-a",
+        "correctAnswer": "27",
+        "trustedSteps": ["Write 30 percent as 0.30.", "Multiply 0.30 by 90 to get 27."],
+        "possibleError": null,
+        "reliableMethod": "Convert the percent to a decimal, then multiply by the amount.",
+        "selfCorrected": false
+      }
+    ]
+  }
+}

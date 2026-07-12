@@ -1,0 +1,16 @@
+{
+  "name": "Wayline.Learning.Client",
+  "rootNamespace": "Wayline.Learning.Client",
+  "references": [
+    "Wayline.Learning.Contracts"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

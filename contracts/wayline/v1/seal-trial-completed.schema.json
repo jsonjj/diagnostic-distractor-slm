@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/seal-trial-completed.schema.json",
+  "title": "Wayline Seal Trial Completion Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "worldId", "attemptNumber", "batchId", "finalCorrect", "itemCount", "passed", "worldCleared", "assistedRouteUnlocked"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "worldId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "attemptNumber": {"type": "integer", "minimum": 1},
+    "batchId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "finalCorrect": {"type": "integer", "minimum": 0, "maximum": 3},
+    "itemCount": {"const": 3},
+    "passed": {"type": "boolean"},
+    "worldCleared": {"type": "boolean"},
+    "assistedRouteUnlocked": {"type": "boolean"}
+  }
+}

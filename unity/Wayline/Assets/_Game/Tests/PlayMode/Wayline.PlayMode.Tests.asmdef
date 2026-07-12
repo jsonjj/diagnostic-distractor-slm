@@ -1,0 +1,37 @@
+{
+  "name": "Wayline.PlayMode.Tests",
+  "rootNamespace": "Wayline.Tests",
+  "references": [
+    "Wayline.Core",
+    "Wayline.Combat.Simulation",
+    "Wayline.Gameplay",
+    "Wayline.Learning.Contracts",
+    "Wayline.Learning.Client",
+    "Wayline.Learning.Quiz",
+    "Wayline.Learning.Assisted",
+    "Wayline.UI",
+    "Wayline.UI.Assisted",
+    "Wayline.Flow",
+    "Wayline.Flow.Runtime",
+    "Wayline.Flow.Unity",
+    "Wayline.Campaign",
+    "Wayline.Characters",
+    "Wayline.Save",
+    "Unity.InputSystem",
+    "Unity.InputSystem.TestFramework",
+    "UnityEngine.TestRunner"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

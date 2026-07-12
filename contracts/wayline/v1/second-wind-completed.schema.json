@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/second-wind-completed.schema.json",
+  "title": "Wayline Second Wind Quiz Completion Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "requestId", "secondWindId", "batchId", "finalCorrect", "itemCount", "reviveHealthPercent", "shieldPercent", "revivedCombatPending"],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "requestId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "secondWindId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "batchId": {"$ref": "progression-shared.schema.json#/$defs/identifier"},
+    "finalCorrect": {"type": "integer", "minimum": 0, "maximum": 3},
+    "itemCount": {"const": 3},
+    "reviveHealthPercent": {"const": 35},
+    "shieldPercent": {"type": "integer", "minimum": 0, "maximum": 15},
+    "revivedCombatPending": {"const": true}
+  }
+}

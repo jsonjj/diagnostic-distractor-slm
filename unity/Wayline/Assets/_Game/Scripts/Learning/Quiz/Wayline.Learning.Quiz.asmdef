@@ -1,0 +1,19 @@
+{
+  "name": "Wayline.Learning.Quiz",
+  "rootNamespace": "Wayline.Learning.Quiz",
+  "references": [
+    "Wayline.Learning.Client",
+    "Wayline.Learning.Contracts"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Newtonsoft.Json.dll"
+  ],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

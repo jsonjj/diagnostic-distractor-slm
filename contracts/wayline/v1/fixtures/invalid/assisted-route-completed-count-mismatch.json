@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "wayline.v1",
+  "requestId": "complete-assisted-001",
+  "worldId": "valuehold",
+  "routeId": "assisted-aaaaaaaaaaaaaaaaaaaaaaaa",
+  "workedExampleCount": 1,
+  "supportedMcqCount": 2,
+  "finalCorrect": 2,
+  "worldCleared": true,
+  "items": [
+    {
+      "itemId": "item-supported-001",
+      "selectedOptionId": "opt-supported-001-d",
+      "selectedAnswer": "6000",
+      "confidence": "certain",
+      "correctOptionId": "opt-supported-001-d",
+      "correctAnswer": "6000",
+      "isCorrect": true,
+      "possibleError": null,
+      "reliableMethod": "Name the digit's place, then write its value.",
+      "trustedSteps": ["The 6 is in the thousands place."],
+      "canonicalFeedback": [
+        "Name the digit's place, then write its value.",
+        "The 6 is in the thousands place."
+      ]
+    },
+    {
+      "itemId": "item-supported-002",
+      "selectedOptionId": "opt-supported-002-b",
+      "selectedAnswer": "30",
+      "confidence": "leaning",
+      "correctOptionId": "opt-supported-002-c",
+      "correctAnswer": "300",
+      "isCorrect": false,
+      "possibleError": "This answer can come from reading the tens place instead of the hundreds place.",
+      "reliableMethod": "Name the digit's place, then write its value.",
+      "trustedSteps": ["The 3 is in the hundreds place."],
+      "canonicalFeedback": [
+        "This answer can come from reading the tens place instead of the hundreds place.",
+        "Name the digit's place, then write its value.",
+        "The 3 is in the hundreds place."
+      ]
+    }
+  ]
+}

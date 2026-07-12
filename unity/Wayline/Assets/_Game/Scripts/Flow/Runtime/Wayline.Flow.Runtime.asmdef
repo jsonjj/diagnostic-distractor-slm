@@ -1,0 +1,20 @@
+{
+  "name": "Wayline.Flow.Runtime",
+  "rootNamespace": "Wayline.Flow.Runtime",
+  "references": [
+    "Wayline.Flow",
+    "Wayline.Campaign",
+    "Wayline.Save"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Newtonsoft.Json.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

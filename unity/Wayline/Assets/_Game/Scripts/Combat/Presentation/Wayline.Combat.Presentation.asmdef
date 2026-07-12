@@ -1,0 +1,16 @@
+{
+  "name": "Wayline.Combat.Presentation",
+  "rootNamespace": "Wayline.Combat.Presentation",
+  "references": [
+    "Wayline.Combat.Data"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

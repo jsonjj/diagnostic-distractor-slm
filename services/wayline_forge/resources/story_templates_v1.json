@@ -1,0 +1,186 @@
+{
+  "schema_version": "wayline.story-templates.v1",
+  "template_set_id": "wayline-demo-story-templates-v1",
+  "templates": [
+    {
+      "template_id": "valuehold_route_arrival",
+      "style_id": "measured_surveyor",
+      "setting_id": "valuehold_reach",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "route_arrival",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "Bronze route lines carry {A} and {B} {UNIT} toward the survey marker."
+    },
+    {
+      "template_id": "valuehold_arena_brief",
+      "style_id": "measured_surveyor",
+      "setting_id": "valuehold_reach",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "arena_brief",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "The sunlit terrace holds {A} and {B} {UNIT} beside the survey arch."
+    },
+    {
+      "template_id": "valuehold_crossing_repair",
+      "style_id": "measured_surveyor",
+      "setting_id": "valuehold_reach",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "crossing_repair",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "A brass crossing guides {A} and {B} {UNIT} between the limestone spans."
+    },
+    {
+      "template_id": "valuehold_supply_relay",
+      "style_id": "measured_surveyor",
+      "setting_id": "valuehold_reach",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "supply_relay",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "The beacon relay gathers {A} and {B} {UNIT} beneath a lapis signal."
+    },
+    {
+      "template_id": "valuehold_seal_approach",
+      "style_id": "measured_surveyor",
+      "setting_id": "valuehold_reach",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "seal_approach",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "The quiet route seal awaits {A} and {B} {UNIT} near the coordinate monument."
+    },
+    {
+      "template_id": "valuehold_world_restoration",
+      "style_id": "measured_surveyor",
+      "setting_id": "valuehold_reach",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "world_restoration",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "Gold inlay carries {A} and {B} {UNIT} across the restored terrace."
+    },
+    {
+      "template_id": "decimara_route_arrival",
+      "style_id": "flowing_tidekeeper",
+      "setting_id": "decimara_basin",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "route_arrival",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "Storm channels guide {A} and {B} {UNIT} toward the tide gate."
+    },
+    {
+      "template_id": "decimara_arena_brief",
+      "style_id": "flowing_tidekeeper",
+      "setting_id": "decimara_basin",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "arena_brief",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "The dry arena platform holds {A} and {B} {UNIT} above the reflective basin."
+    },
+    {
+      "template_id": "decimara_crossing_repair",
+      "style_id": "flowing_tidekeeper",
+      "setting_id": "decimara_basin",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "crossing_repair",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "Calibrated sluices carry {A} and {B} {UNIT} between the stone channels."
+    },
+    {
+      "template_id": "decimara_supply_relay",
+      "style_id": "flowing_tidekeeper",
+      "setting_id": "decimara_basin",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "supply_relay",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "Pale route glass gathers {A} and {B} {UNIT} beside the basin relay."
+    },
+    {
+      "template_id": "decimara_seal_approach",
+      "style_id": "flowing_tidekeeper",
+      "setting_id": "decimara_basin",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "seal_approach",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "The tide seal awaits {A} and {B} {UNIT} beyond the misty gate."
+    },
+    {
+      "template_id": "decimara_world_restoration",
+      "style_id": "flowing_tidekeeper",
+      "setting_id": "decimara_basin",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "world_restoration",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "Teal route light carries {A} and {B} {UNIT} through the restored basin."
+    },
+    {
+      "template_id": "fracture_route_arrival",
+      "style_id": "steadfast_warden",
+      "setting_id": "fracture_isles",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "route_arrival",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "Turquoise seams guide {A} and {B} {UNIT} toward the island crossing."
+    },
+    {
+      "template_id": "fracture_arena_brief",
+      "style_id": "steadfast_warden",
+      "setting_id": "fracture_isles",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "arena_brief",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "The stable arena platform holds {A} and {B} {UNIT} above the cloud sea."
+    },
+    {
+      "template_id": "fracture_crossing_repair",
+      "style_id": "steadfast_warden",
+      "setting_id": "fracture_isles",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "crossing_repair",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "Glass bound arches carry {A} and {B} {UNIT} between the floating spans."
+    },
+    {
+      "template_id": "fracture_supply_relay",
+      "style_id": "steadfast_warden",
+      "setting_id": "fracture_isles",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "supply_relay",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "A quiet bridge relay gathers {A} and {B} {UNIT} near the masonry beacon."
+    },
+    {
+      "template_id": "fracture_seal_approach",
+      "style_id": "steadfast_warden",
+      "setting_id": "fracture_isles",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "seal_approach",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "The island seal awaits {A} and {B} {UNIT} beside the steady causeway."
+    },
+    {
+      "template_id": "fracture_world_restoration",
+      "style_id": "steadfast_warden",
+      "setting_id": "fracture_isles",
+      "reading_level_id": "middle_grade",
+      "story_frame_id": "world_restoration",
+      "placeholder_names": ["A", "B", "UNIT"],
+      "display_text": "Route light carries {A} and {B} {UNIT} across the restored isles."
+    }
+  ],
+  "feedback_tones": [
+    {
+      "feedback_tone_id": "calm_review",
+      "display_text": "Take a calm look at the route and review the method."
+    },
+    {
+      "feedback_tone_id": "method_focus",
+      "display_text": "Pause at the marker and notice which steps stay reliable."
+    },
+    {
+      "feedback_tone_id": "transfer_ready",
+      "display_text": "Trace the route again, then test the method in a fresh setting."
+    },
+    {
+      "feedback_tone_id": "forward_motion",
+      "display_text": "The route is ready for a careful pass."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "wayline.v1", "batchId": "batch-001", "itemCount": 4,
+  "firstPassWrongCount": 1, "finalCorrectCount": 3, "revisionUsed": true,
+  "items": [
+    {"itemId": "item-001", "firstSelection": {"optionId": "opt-001-b", "confidence": "leaning", "isCorrect": false}, "finalSelection": {"optionId": "opt-001-a", "confidence": "certain", "isCorrect": true}, "correctOptionId": "opt-001-a", "correctAnswer": "1", "trustedSteps": ["Use the trusted method."], "possibleError": "This answer can come from a supported error route.", "reliableMethod": "Use the trusted method.", "selfCorrected": true},
+    {"itemId": "item-002", "firstSelection": {"optionId": "opt-002-a", "confidence": "certain", "isCorrect": true}, "finalSelection": {"optionId": "opt-002-a", "confidence": "certain", "isCorrect": true}, "correctOptionId": "opt-002-a", "correctAnswer": "2", "trustedSteps": ["Use the trusted method."], "possibleError": null, "reliableMethod": "Use the trusted method.", "selfCorrected": false},
+    {"itemId": "item-003", "firstSelection": {"optionId": "opt-003-a", "confidence": "certain", "isCorrect": true}, "finalSelection": {"optionId": "opt-003-a", "confidence": "certain", "isCorrect": true}, "correctOptionId": "opt-003-a", "correctAnswer": "3", "trustedSteps": ["Use the trusted method."], "possibleError": null, "reliableMethod": "Use the trusted method.", "selfCorrected": false}
+  ]
+}

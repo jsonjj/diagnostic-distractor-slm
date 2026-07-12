@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "wayline.v1",
+  "batchId": "batch-001",
+  "itemCount": 3,
+  "items": [
+    {"itemId": "item-001", "prompt": "Casefold duplicate", "options": [
+      {"optionId": "opt-001-a", "displayText": "Straße"},
+      {"optionId": "opt-001-b", "displayText": "STRASSE"},
+      {"optionId": "opt-001-c", "displayText": "alpha"},
+      {"optionId": "opt-001-d", "displayText": "beta"}
+    ]},
+    {"itemId": "item-002", "prompt": "Unicode whitespace duplicate", "options": [
+      {"optionId": "opt-002-a", "displayText": "1\u20032"},
+      {"optionId": "opt-002-b", "displayText": "1 2"},
+      {"optionId": "opt-002-c", "displayText": "3"},
+      {"optionId": "opt-002-d", "displayText": "4"}
+    ]},
+    {"itemId": "item-003", "prompt": "Fullwidth duplicate", "options": [
+      {"optionId": "opt-003-a", "displayText": "１２"},
+      {"optionId": "opt-003-b", "displayText": "12"},
+      {"optionId": "opt-003-c", "displayText": "13"},
+      {"optionId": "opt-003-d", "displayText": "14"}
+    ]}
+  ]
+}

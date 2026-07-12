@@ -1,0 +1,19 @@
+{
+  "schemaVersion":"wayline.v1",
+  "requestId":"start-second-wind-001",
+  "secondWindId":"second-wind-wrong-attempt",
+  "worldId":"valuehold",
+  "battleId":"valuehold_route_1",
+  "combatAttemptId":"combat-attempt-001",
+  "quizBattleId":"valuehold_route_1_second_wind",
+  "batch":{
+    "schemaVersion":"wayline.v1",
+    "batchId":"batch-001",
+    "itemCount":3,
+    "items":[
+      {"itemId":"item-001","prompt":"What is 1 + 1?","options":[{"optionId":"opt-001-a","displayText":"2"},{"optionId":"opt-001-b","displayText":"1"},{"optionId":"opt-001-c","displayText":"3"},{"optionId":"opt-001-d","displayText":"11"}]},
+      {"itemId":"item-002","prompt":"What is 2 + 2?","options":[{"optionId":"opt-002-a","displayText":"4"},{"optionId":"opt-002-b","displayText":"2"},{"optionId":"opt-002-c","displayText":"5"},{"optionId":"opt-002-d","displayText":"22"}]},
+      {"itemId":"item-003","prompt":"What is 3 + 3?","options":[{"optionId":"opt-003-a","displayText":"6"},{"optionId":"opt-003-b","displayText":"3"},{"optionId":"opt-003-c","displayText":"7"},{"optionId":"opt-003-d","displayText":"33"}]}
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "wayline.v1",
+  "worldId": "valuehold",
+  "unlocked": false,
+  "leadInWins": 4,
+  "requiredLeadInWins": 4,
+  "validWorldItems": 16,
+  "requiredValidWorldItems": 16,
+  "latestTenItemCount": 6,
+  "latestTenCorrectCount": 7,
+  "requiredLatestTenCorrectCount": 7,
+  "coreSubskillCount": 2,
+  "readyCoreSubskillCount": 2,
+  "unmetRequirements": ["latest_ten_accuracy"]
+}

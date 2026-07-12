@@ -1,0 +1,1 @@
+{"distractors":[{"misconception":"Uses one decimal place instead of counting both","computation":"(2 × 2)/10 = 0.4","answer":"0.4"},{"misconception":"Multiplies as whole numbers and ignores the decimal point","computation":"2 × 2 = 4","answer":"4"},{"misconception":"Multiplies correctly but uses too many decimal places","computation":"(2 × 2)/1000 = 0.004","answer":"0.004"}]}

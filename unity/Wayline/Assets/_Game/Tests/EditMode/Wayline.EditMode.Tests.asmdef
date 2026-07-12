@@ -1,0 +1,41 @@
+{
+  "name": "Wayline.EditMode.Tests",
+  "rootNamespace": "Wayline.Tests",
+  "references": [
+    "Wayline.Core",
+    "Wayline.Combat.Data",
+    "Wayline.Combat.Presentation",
+    "Wayline.Combat.Simulation",
+    "Wayline.Learning.Contracts",
+    "Wayline.Learning.Client",
+    "Wayline.Learning.Quiz",
+    "Wayline.Learning.Assisted",
+    "Wayline.Flow",
+    "Wayline.Flow.Authority",
+    "Wayline.Flow.Runtime",
+    "Wayline.Flow.Unity",
+    "Wayline.Editor",
+    "Wayline.Campaign",
+    "Wayline.Characters",
+    "Wayline.Save",
+    "Unity.RenderPipelines.Universal.Runtime",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Newtonsoft.Json.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

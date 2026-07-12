@@ -1,0 +1,17 @@
+{
+  "name": "Wayline.Flow.Authority",
+  "rootNamespace": "Wayline.Flow.Authority",
+  "references": [
+    "Wayline.Flow",
+    "Wayline.Learning.Contracts"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://wayline.game/contracts/v1/boss-gate-result.schema.json",
+  "title": "Wayline Boss Gate Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "worldId",
+    "unlocked",
+    "leadInWins",
+    "requiredLeadInWins",
+    "validWorldItems",
+    "requiredValidWorldItems",
+    "latestTenItemCount",
+    "latestTenCorrectCount",
+    "requiredLatestTenCorrectCount",
+    "coreSubskillCount",
+    "readyCoreSubskillCount",
+    "unmetRequirements"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "wayline.v1"},
+    "worldId": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,95}$"
+    },
+    "unlocked": {"type": "boolean"},
+    "leadInWins": {"type": "integer", "minimum": 0, "maximum": 4},
+    "requiredLeadInWins": {"const": 4},
+    "validWorldItems": {"type": "integer", "minimum": 0, "maximum": 10000},
+    "requiredValidWorldItems": {"const": 16},
+    "latestTenItemCount": {"type": "integer", "minimum": 0, "maximum": 10},
+    "latestTenCorrectCount": {"type": "integer", "minimum": 0, "maximum": 10},
+    "requiredLatestTenCorrectCount": {"const": 7},
+    "coreSubskillCount": {"type": "integer", "minimum": 1, "maximum": 32},
+    "readyCoreSubskillCount": {"type": "integer", "minimum": 0, "maximum": 32},
+    "unmetRequirements": {
+      "type": "array",
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["lead_in_wins", "valid_world_items", "latest_ten_accuracy", "core_subskill_coverage"]
+      }
+    }
+  }
+}

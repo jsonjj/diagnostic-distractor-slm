@@ -1,0 +1,139 @@
+{
+  "schema_version": "wayline.campaign-catalog.v1",
+  "catalog_id": "wayline-campaign-v1",
+  "initial_world_id": "valuehold",
+  "worlds": [
+    {
+      "sequence": 1,
+      "world_id": "valuehold",
+      "core_subskill_ids": [
+        "place_value",
+        "mental_add_sub"
+      ],
+      "battles": [
+        {"sequence": 1, "battle_id": "valuehold_route_1", "tier": "route_1"},
+        {"sequence": 2, "battle_id": "valuehold_route_2", "tier": "route_2"},
+        {"sequence": 3, "battle_id": "valuehold_route_3", "tier": "route_3"},
+        {"sequence": 4, "battle_id": "valuehold_elite", "tier": "elite"},
+        {"sequence": 5, "battle_id": "valuehold_boss", "tier": "world_boss"}
+      ]
+    },
+    {
+      "sequence": 2,
+      "world_id": "decimara",
+      "core_subskill_ids": [
+        "decimal_add_sub"
+      ],
+      "battles": [
+        {"sequence": 1, "battle_id": "decimara_route_1", "tier": "route_1"},
+        {"sequence": 2, "battle_id": "decimara_route_2", "tier": "route_2"},
+        {"sequence": 3, "battle_id": "decimara_route_3", "tier": "route_3"},
+        {"sequence": 4, "battle_id": "decimara_elite", "tier": "elite"},
+        {"sequence": 5, "battle_id": "decimara_boss", "tier": "world_boss"}
+      ]
+    },
+    {
+      "sequence": 3,
+      "world_id": "fracture_isles",
+      "core_subskill_ids": [
+        "fraction_add_sub"
+      ],
+      "battles": [
+        {"sequence": 1, "battle_id": "fracture_isles_route_1", "tier": "route_1"},
+        {"sequence": 2, "battle_id": "fracture_isles_route_2", "tier": "route_2"},
+        {"sequence": 3, "battle_id": "fracture_isles_route_3", "tier": "route_3"},
+        {"sequence": 4, "battle_id": "fracture_isles_elite", "tier": "elite"},
+        {"sequence": 5, "battle_id": "fracture_isles_boss", "tier": "world_boss"}
+      ]
+    },
+    {
+      "sequence": 4,
+      "world_id": "roundglass",
+      "core_subskill_ids": [
+        "decimal_multiply_divide",
+        "rounding_decimal_places"
+      ],
+      "battles": [
+        {"sequence": 1, "battle_id": "roundglass_route_1", "tier": "route_1"},
+        {"sequence": 2, "battle_id": "roundglass_route_2", "tier": "route_2"},
+        {"sequence": 3, "battle_id": "roundglass_route_3", "tier": "route_3"},
+        {"sequence": 4, "battle_id": "roundglass_elite", "tier": "elite"},
+        {"sequence": 5, "battle_id": "roundglass_boss", "tier": "world_boss"}
+      ]
+    },
+    {
+      "sequence": 5,
+      "world_id": "reciprocal_deep",
+      "core_subskill_ids": [
+        "fraction_multiply",
+        "fraction_divide"
+      ],
+      "battles": [
+        {"sequence": 1, "battle_id": "reciprocal_deep_route_1", "tier": "route_1"},
+        {"sequence": 2, "battle_id": "reciprocal_deep_route_2", "tier": "route_2"},
+        {"sequence": 3, "battle_id": "reciprocal_deep_route_3", "tier": "route_3"},
+        {"sequence": 4, "battle_id": "reciprocal_deep_elite", "tier": "elite"},
+        {"sequence": 5, "battle_id": "reciprocal_deep_boss", "tier": "world_boss"}
+      ]
+    },
+    {
+      "sequence": 6,
+      "world_id": "hundredfold",
+      "core_subskill_ids": [
+        "percent_of_amount",
+        "decimal_percent_conversion"
+      ],
+      "battles": [
+        {"sequence": 1, "battle_id": "hundredfold_route_1", "tier": "route_1"},
+        {"sequence": 2, "battle_id": "hundredfold_route_2", "tier": "route_2"},
+        {"sequence": 3, "battle_id": "hundredfold_route_3", "tier": "route_3"},
+        {"sequence": 4, "battle_id": "hundredfold_elite", "tier": "elite"},
+        {"sequence": 5, "battle_id": "hundredfold_boss", "tier": "world_boss"}
+      ]
+    },
+    {
+      "sequence": 7,
+      "world_id": "minus_meridian",
+      "core_subskill_ids": [
+        "negative_add_sub"
+      ],
+      "battles": [
+        {"sequence": 1, "battle_id": "minus_meridian_route_1", "tier": "route_1"},
+        {"sequence": 2, "battle_id": "minus_meridian_route_2", "tier": "route_2"},
+        {"sequence": 3, "battle_id": "minus_meridian_route_3", "tier": "route_3"},
+        {"sequence": 4, "battle_id": "minus_meridian_elite", "tier": "elite"},
+        {"sequence": 5, "battle_id": "minus_meridian_boss", "tier": "world_boss"}
+      ]
+    },
+    {
+      "sequence": 8,
+      "world_id": "factor_forge",
+      "core_subskill_ids": [
+        "mental_multiply_divide",
+        "factors_hcf"
+      ],
+      "battles": [
+        {"sequence": 1, "battle_id": "factor_forge_route_1", "tier": "route_1"},
+        {"sequence": 2, "battle_id": "factor_forge_route_2", "tier": "route_2"},
+        {"sequence": 3, "battle_id": "factor_forge_route_3", "tier": "route_3"},
+        {"sequence": 4, "battle_id": "factor_forge_elite", "tier": "elite"},
+        {"sequence": 5, "battle_id": "factor_forge_boss", "tier": "world_boss"}
+      ]
+    },
+    {
+      "sequence": 9,
+      "world_id": "order_spire",
+      "core_subskill_ids": [
+        "bidmas",
+        "laws_of_indices"
+      ],
+      "battles": [
+        {"sequence": 1, "battle_id": "order_spire_route_1", "tier": "route_1"},
+        {"sequence": 2, "battle_id": "order_spire_route_2", "tier": "route_2"},
+        {"sequence": 3, "battle_id": "order_spire_route_3", "tier": "route_3"},
+        {"sequence": 4, "battle_id": "order_spire_elite", "tier": "elite"},
+        {"sequence": 5, "battle_id": "order_spire_boss", "tier": "campaign_finale"}
+      ]
+    }
+  ]
+}
