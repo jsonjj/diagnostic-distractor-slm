@@ -182,6 +182,21 @@ namespace Wayline.Save
             return Contains(ClearedWorldIds, worldId);
         }
 
+        /// <summary>
+        /// Advances the local campaign to a known next world. World membership
+        /// is validated by CampaignController/session coherence before this
+        /// mutation is persisted.
+        /// </summary>
+        public void ActivateWorld(string worldId)
+        {
+            worldId = Require(worldId, nameof(worldId));
+            if (string.Equals(ActiveWorldId, worldId, StringComparison.Ordinal))
+                return;
+            ActiveWorldId = worldId;
+            CampaignOrdinal = checked(CampaignOrdinal + 1);
+            ClearPending();
+        }
+
         public void UnlockWeapon(string weaponId)
         {
             UnlockedWeaponIds = AddUnique(UnlockedWeaponIds, weaponId);

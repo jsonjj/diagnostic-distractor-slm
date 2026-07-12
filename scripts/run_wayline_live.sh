@@ -66,7 +66,7 @@ if [ "$READY" != "1" ]; then
   exit 3
 fi
 
-PYTHONPATH="$ROOT" "$PYTHON" "$BRIDGE" \
+PYTHONPATH="$ROOT" "$PYTHON" -u "$BRIDGE" \
   --llama-url "http://127.0.0.1:$LLAMA_PORT" \
   --port "$BRIDGE_PORT" \
   > /tmp/wayline-live-bridge.log 2>&1 &

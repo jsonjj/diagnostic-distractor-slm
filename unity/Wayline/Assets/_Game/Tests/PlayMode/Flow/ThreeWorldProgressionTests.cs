@@ -120,6 +120,46 @@ namespace Wayline.Tests.Flow
                 Does.Contain("COMPLETE"));
         }
 
+        [UnityTest]
+        public IEnumerator LegacyNextWorldTrialSaveMigratesAndShowsQuestions()
+        {
+            // Exact shape written by the first three-world build: Valuehold is
+            // fully completed, Decimara combat is won and its NormalTrial is
+            // stable, but activeWorldId still says Valuehold.
+            var profile = CreateProfile();
+            profile.RecordCombatVictory("valuehold-scout");
+            profile.RecordBattleCompleted("valuehold-scout");
+            profile.MarkBattleRewarded("valuehold-scout");
+            profile.RecordCombatVictory("decimara-scout");
+            var trial = new FlowCheckpoint(
+                FlowState.NormalTrial,
+                new FlowBattle("decimara", "decimara-scout"),
+                combatVictoryPreserved: true,
+                committedTrialIds: new[] { "complete-battle-valuehold-001" },
+                committedRewardIds: new[] { "complete-battle-valuehold-001" },
+                rewardSourceCompletionId: null,
+                rewardAuthorityReceiptId: null);
+            new RuntimeSessionStore(_sessionPath).Save(profile, trial);
+
+            CreateRestoredBootstrap();
+            yield return null;
+            yield return null;
+
+            Assert.That(_slice.Profile.ActiveWorldId, Is.EqualTo("decimara"));
+            Assert.That(_slice.Flow.State, Is.EqualTo(FlowState.NormalTrial));
+            Assert.That(_slice.TrialPanel, Is.Not.Null);
+            Assert.That(_slice.TrialController, Is.Not.Null);
+            Assert.That(
+                _slice.TrialController.State,
+                Is.EqualTo(Wayline.Learning.Quiz.QuizState.Answering));
+
+            var repaired = new RuntimeSessionStore(_sessionPath).Load();
+            Assert.That(repaired.Profile.ActiveWorldId, Is.EqualTo("decimara"));
+            Assert.That(
+                repaired.Checkpoint.StableState,
+                Is.EqualTo(FlowState.NormalTrial));
+        }
+
         private void CreateRestoredBootstrap()
         {
             var runtime = new GameObject("Restored Three World Runtime");

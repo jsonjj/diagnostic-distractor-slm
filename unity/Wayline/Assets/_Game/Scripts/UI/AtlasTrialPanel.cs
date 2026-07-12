@@ -629,7 +629,11 @@ namespace Wayline.UI
         {
             View = AtlasTrialView.Loading;
             SetMainSections(false, false, false, true);
-            UnavailableText.text = "Preparing the route trial…";
+            UnavailableText.text =
+                "GENERATING VERIFIED ROUTE TRIAL\n\n" +
+                "Local Qwen is creating three diagnostic questions.\n" +
+                "Every distractor is checked before it appears.\n\n" +
+                "This can take up to one minute.";
             UnavailableText.fontSize = Mathf.RoundToInt(36f * _textScale);
             ScaleGlobalActionLabels();
             RetryButton.gameObject.SetActive(false);

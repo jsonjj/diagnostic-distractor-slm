@@ -75,7 +75,10 @@ def generate_verified(
     topic: str,
 ) -> list[str] | None:
     correct_norm = normalize_answer(correct)
-    for attempt in range(4):
+    # Two bounded attempts keep the Unity loading screen under its 120-second
+    # timeout. Any remaining miss returns 422 and the sealed deterministic batch
+    # appears immediately instead of leaving the learner waiting.
+    for attempt in range(2):
         try:
             raw = _model_chat(
                 llama_url,

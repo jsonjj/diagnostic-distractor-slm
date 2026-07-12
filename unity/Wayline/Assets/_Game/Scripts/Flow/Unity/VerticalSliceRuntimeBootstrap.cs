@@ -151,6 +151,19 @@ namespace Wayline.Flow.Unity
                     IsRuntimeSessionCoherent(worlds, snapshot));
                 Profile = restored.Profile;
                 restoredCheckpoint = restored.Checkpoint;
+                // Migrate saves written by the first three-world build, which
+                // persisted the next world's stable checkpoint before updating
+                // activeWorldId. Coherence has already proven this is a valid
+                // sequential advance through completed prior routes.
+                if (restoredCheckpoint.Battle != null &&
+                    !string.Equals(
+                        Profile.ActiveWorldId,
+                        restoredCheckpoint.Battle.WorldId,
+                        StringComparison.Ordinal))
+                {
+                    Profile.ActivateWorld(restoredCheckpoint.Battle.WorldId);
+                    store.Save(Profile, restoredCheckpoint);
+                }
             }
             else
             {
@@ -506,7 +519,23 @@ namespace Wayline.Flow.Unity
 
         private void AcknowledgeReward()
         {
-            Flow.CompleteReward();
+            var completedBattle = Battle;
+            if (!Flow.CompleteReward())
+                return;
+
+            var completedIndex = completedBattle == null
+                ? -1
+                : DemoWorldIndexFor(completedBattle.WorldId);
+            var nextIndex = completedIndex + 1;
+            if (_demoWorlds != null &&
+                completedIndex >= 0 &&
+                nextIndex < _demoWorlds.Length)
+            {
+                Profile.ActivateWorld(_demoWorlds[nextIndex].Id);
+                // Flow already persisted the Map checkpoint before presenting
+                // it; persist once more with the new active-world identity.
+                _persistence?.Store(Flow.LastCheckpoint);
+            }
         }
 
         private void BeginStandardTrial(
@@ -1200,7 +1229,11 @@ namespace Wayline.Flow.Unity
                 if (!string.Equals(
                         checkpointWorldId,
                         profile.ActiveWorldId,
-                        StringComparison.Ordinal))
+                        StringComparison.Ordinal) &&
+                    !CanMigrateActiveWorld(
+                        worlds,
+                        profile,
+                        checkpointWorldId))
                 {
                     return false;
                 }
@@ -1278,6 +1311,51 @@ namespace Wayline.Flow.Unity
                     return false;
             }
 
+            return true;
+        }
+
+        private static bool CanMigrateActiveWorld(
+            WorldDefinition[] worlds,
+            ProfileDataV1 profile,
+            string checkpointWorldId)
+        {
+            var activeIndex = -1;
+            var checkpointIndex = -1;
+            for (var index = 0; index < worlds.Length; index++)
+            {
+                if (string.Equals(
+                        worlds[index].Id,
+                        profile.ActiveWorldId,
+                        StringComparison.Ordinal))
+                {
+                    activeIndex = index;
+                }
+                if (string.Equals(
+                        worlds[index].Id,
+                        checkpointWorldId,
+                        StringComparison.Ordinal))
+                {
+                    checkpointIndex = index;
+                }
+            }
+
+            if (activeIndex < 0 || checkpointIndex <= activeIndex)
+                return false;
+
+            // Every world crossed by the migration must have its demo scout
+            // victory, trial completion, and reward committed. This preserves
+            // the original cross-world tamper guard while accepting the one
+            // save shape written by the first three-world build.
+            for (var index = activeIndex; index < checkpointIndex; index++)
+            {
+                var scoutId = worlds[index].LeadInBattles[0].Id;
+                if (!profile.HasCombatVictory(scoutId) ||
+                    !profile.IsBattleCompleted(scoutId) ||
+                    !profile.HasRewardedBattle(scoutId))
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
