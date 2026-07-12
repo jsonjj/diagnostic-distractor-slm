@@ -7,10 +7,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 using Wayline.Characters;
+using Wayline.Combat.Simulation;
 using Wayline.Flow;
 using Wayline.Flow.Runtime;
 using Wayline.Flow.Unity;
 using Wayline.Gameplay;
+using Wayline.Learning.Contracts;
+using Wayline.Learning.Quiz;
 using Wayline.Save;
 
 namespace Wayline.Tests.Flow
@@ -160,6 +163,94 @@ namespace Wayline.Tests.Flow
                 Is.EqualTo(FlowState.NormalTrial));
         }
 
+        [UnityTest]
+        public IEnumerator EveryWorldRequiresTrialAndRewardBeforeNextFight()
+        {
+            new RuntimeSessionStore(_sessionPath).Save(
+                CreateProfile(),
+                new FlowCheckpoint(
+                    FlowState.Title,
+                    null,
+                    combatVictoryPreserved: false,
+                    committedTrialIds: Array.Empty<string>(),
+                    committedRewardIds: Array.Empty<string>(),
+                    rewardSourceCompletionId: null,
+                    rewardAuthorityReceiptId: null));
+            CreateRestoredBootstrap();
+            yield return null;
+
+            _slice.EnterMapButton.onClick.Invoke();
+            yield return null;
+
+            var worlds = new[] { "valuehold", "decimara", "fracture" };
+            foreach (var worldId in worlds)
+            {
+                Assert.That(_slice.Flow.State, Is.EqualTo(FlowState.Map));
+                Assert.That(_slice.Battle.WorldId, Is.EqualTo(worldId));
+
+                _slice.StartBattleButton.onClick.Invoke();
+                Assert.That(_slice.Flow.State, Is.EqualTo(FlowState.Combat));
+                _runner.RunAutomatically = false;
+                _runner.SetCommandSources(
+                    new AggressiveCommandSource(),
+                    new IdleCommandSource());
+                for (var frame = 0;
+                     frame < 1000 &&
+                     _runner.State.Result == CombatResult.InProgress;
+                     frame++)
+                {
+                    _runner.AdvanceFrame(1.0 / 60.0);
+                }
+                Assert.That(_runner.State.Result, Is.EqualTo(CombatResult.PlayerWon));
+
+                yield return WaitFor(() =>
+                    _slice.Flow.State == FlowState.NormalTrial &&
+                    _slice.TrialController != null &&
+                    _slice.TrialController.State == QuizState.Answering);
+
+                // The key regression assertion: a new world may not advance
+                // directly from combat to map/reward; its questions must exist.
+                Assert.That(_slice.Flow.State, Is.EqualTo(FlowState.NormalTrial));
+                Assert.That(
+                    _slice.Profile.IsBattleCompleted(worldId + "-scout"),
+                    Is.False);
+
+                for (var item = 0; item < _slice.TrialController.Batch.ItemCount; item++)
+                {
+                    var publicItem = _slice.TrialController.Batch.Items[item];
+                    _slice.TrialController.SelectOption(
+                        publicItem.ItemId,
+                        publicItem.Options[0].OptionId);
+                    _slice.TrialController.SelectConfidence(
+                        publicItem.ItemId,
+                        Confidence.Certain);
+                }
+
+                var submission = _slice.TrialController.SubmitInitialAsync(
+                    System.Threading.CancellationToken.None);
+                while (!submission.IsCompleted)
+                    yield return null;
+                Assert.That(submission.IsFaulted, Is.False);
+                _slice.TrialController.AcknowledgeWrongCount();
+                while (_slice.TrialController.State == QuizState.Revealed)
+                    _slice.TrialController.AdvanceFinalFeedback();
+
+                yield return WaitFor(() =>
+                    _slice.Flow.State == FlowState.Reward &&
+                    _slice.RewardButton.gameObject.activeInHierarchy);
+                Assert.That(
+                    _slice.Profile.IsBattleCompleted(worldId + "-scout"),
+                    Is.True);
+
+                _slice.RewardButton.onClick.Invoke();
+                yield return WaitFor(() => _slice.Flow.State == FlowState.Map);
+            }
+
+            Assert.That(
+                _slice.StartBattleButton.GetComponentInChildren<Text>().text,
+                Does.Contain("COMPLETE"));
+        }
+
         private void CreateRestoredBootstrap()
         {
             var runtime = new GameObject("Restored Three World Runtime");
@@ -197,6 +288,37 @@ namespace Wayline.Tests.Flow
                     "dye-lapis",
                     "dye-oxide",
                     "inlay-gold"));
+        }
+
+        private static IEnumerator WaitFor(Func<bool> condition)
+        {
+            var deadline = Time.realtimeSinceStartup + 4f;
+            while (Time.realtimeSinceStartup < deadline)
+            {
+                if (condition())
+                    yield break;
+                yield return null;
+            }
+            Assert.Fail("The three-world flow did not reach the expected state.");
+        }
+
+        private sealed class AggressiveCommandSource : ICombatCommandSource
+        {
+            public CombatCommand NextCommand(CombatWorldState state, FighterSide side)
+            {
+                var fighter = side == FighterSide.Player ? state.Player : state.Enemy;
+                return fighter.CurrentAction == CombatAction.None &&
+                       fighter.StunTicksRemaining == 0
+                    ? CombatCommand.LightAttack
+                    : CombatCommand.None;
+            }
+        }
+
+        private sealed class IdleCommandSource : ICombatCommandSource
+        {
+            public CombatCommand NextCommand(
+                CombatWorldState state,
+                FighterSide side) => CombatCommand.None;
         }
     }
 }
