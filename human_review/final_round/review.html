@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blinded distractor review</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17213a;
+      --muted: #61708d;
+      --faint: #8d98ad;
+      --canvas: #f4f6fb;
+      --paper: #ffffff;
+      --paper-soft: #f9faff;
+      --line: #dbe1ee;
+      --line-strong: #bbc6da;
+      --accent: #4866e8;
+      --accent-soft: #e9edff;
+      --teal: #087f78;
+      --teal-soft: #e3f6f3;
+      --warning: #9b5d12;
+      --warning-soft: #fff4df;
+      --danger: #b43d4d;
+      --danger-soft: #fdecef;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --shadow: 0 18px 50px rgba(23, 33, 58, 0.09);
+      --font-body: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-display: "Avenir Next", "Segoe UI", ui-sans-serif, sans-serif;
+      --font-math: "STIX Two Math", "Cambria Math", serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 8% 0%, #e9edff 0, transparent 34rem),
+        var(--canvas);
+      color: var(--ink);
+      font-family: var(--font-body);
+      line-height: 1.5;
+    }
+    button, input, textarea { font: inherit; }
+    button, label, input { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(72, 102, 232, 0.28);
+      outline-offset: 2px;
+    }
+    .shell { width: min(1480px, 100%); margin: 0 auto; padding: 20px; }
+    .topbar {
+      display: flex; align-items: center; gap: 16px; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center;
+      background: var(--ink); color: var(--paper); font: 700 12px/1 var(--font-display);
+      letter-spacing: .08em;
+    }
+    .brand-copy strong { display: block; font: 650 14px/1.2 var(--font-display); }
+    .brand-copy span { color: var(--muted); font-size: 12px; }
+    .save-state {
+      display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 12px;
+    }
+    .save-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--teal); }
+    .layout { display: grid; grid-template-columns: 244px minmax(0, 1fr); gap: 20px; align-items: start; }
+    .rail {
+      position: sticky; top: 20px; border: 1px solid var(--line); border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, .85); backdrop-filter: blur(16px); padding: 18px;
+    }
+    .eyebrow {
+      color: var(--accent); font-size: 11px; font-weight: 750; letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+    .rail h1 { margin: 7px 0 8px; font: 650 24px/1.12 var(--font-display); letter-spacing: -.025em; }
+    .rail p { margin: 0; color: var(--muted); font-size: 13px; }
+    .progress-label { display: flex; justify-content: space-between; margin-top: 20px; font-size: 12px; color: var(--muted); }
+    .progress-track { height: 8px; margin-top: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0; background: var(--accent); border-radius: inherit; transition: width .25s ease; }
+    .reviewer-field { display: grid; gap: 6px; margin-top: 20px; }
+    .reviewer-field label { font-size: 12px; font-weight: 700; }
+    .reviewer-field input {
+      width: 100%; border: 1px solid var(--line-strong); border-radius: var(--radius-sm);
+      padding: 9px 10px; color: var(--ink); background: var(--paper);
+    }
+    .rail-rule { height: 1px; background: var(--line); margin: 18px 0; }
+    .anchor-list { display: grid; gap: 10px; }
+    .anchor-list div { display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+    .anchor-list b {
+      width: 22px; height: 22px; border-radius: 7px; display: grid; place-items: center;
+      background: var(--accent-soft); color: var(--accent); font-size: 11px;
+    }
+    .anchor-list span { color: var(--muted); font-size: 11px; line-height: 1.35; }
+    .rail details { margin-top: 16px; font-size: 12px; }
+    .rail summary { cursor: pointer; color: var(--ink); font-weight: 700; }
+    .rail details p { margin-top: 8px; font-size: 11px; }
+    .workspace { min-width: 0; }
+    .question-card {
+      border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--paper);
+      box-shadow: var(--shadow); overflow: hidden;
+    }
+    .question-head {
+      display: flex; justify-content: space-between; gap: 18px; align-items: flex-start;
+      padding: 22px 24px 18px; border-bottom: 1px solid var(--line);
+    }
+    .question-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 9px; }
+    .chip {
+      display: inline-flex; min-height: 24px; align-items: center; border-radius: 999px;
+      padding: 3px 9px; background: var(--paper-soft); border: 1px solid var(--line);
+      color: var(--muted); font-size: 11px; font-weight: 650;
+    }
+    .question-copy {
+      font: 570 19px/1.55 var(--font-display); letter-spacing: -.012em; max-width: 980px;
+    }
+    .question-copy math { font-family: var(--font-math); font-size: 1.08em; }
+    .question-copy math[display="block"] { margin: 10px 0; }
+    .visual-prompt {
+      margin: 10px 0; border-left: 3px solid var(--teal); background: var(--teal-soft);
+      padding: 10px 12px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      color: #185b59; font: 500 13px/1.45 var(--font-body);
+    }
+    .correct {
+      min-width: 170px; border-radius: var(--radius-md); background: var(--paper-soft);
+      border: 1px solid var(--line); padding: 11px 13px;
+    }
+    .correct span { display: block; color: var(--muted); font-size: 10px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    .correct strong { display: block; margin-top: 4px; font-family: var(--font-math); overflow-wrap: anywhere; }
+    .candidate-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .candidate { min-width: 0; padding: 22px 24px 24px; }
+    .candidate + .candidate { border-left: 1px solid var(--line); }
+    .candidate-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .candidate-title h2 { margin: 0; font: 650 17px/1.2 var(--font-display); }
+    .candidate-title span { color: var(--muted); font-size: 11px; }
+    .distractor-list { display: grid; gap: 10px; }
+    .distractor {
+      border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; background: var(--paper-soft);
+    }
+    .distractor-top { display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 12px; }
+    .distractor-num {
+      width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center;
+      background: var(--ink); color: var(--paper); font-size: 11px; font-weight: 750;
+    }
+    .misconception { font-size: 13px; font-weight: 650; overflow-wrap: anywhere; }
+    .distractor-data { display: grid; grid-template-columns: 1.2fr .8fr; border-top: 1px solid var(--line); }
+    .data-cell { min-width: 0; padding: 9px 11px; }
+    .data-cell + .data-cell { border-left: 1px solid var(--line); }
+    .data-cell small { display: block; color: var(--muted); font-size: 9px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    .data-cell code { display: block; margin-top: 3px; color: var(--ink); font-family: var(--font-math); font-size: 12px; white-space: normal; overflow-wrap: anywhere; }
+    .rating-panel { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 16px; }
+    fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+    .rating-panel fieldset + fieldset { margin-top: 14px; }
+    legend { width: 100%; padding: 0; font-size: 12px; font-weight: 700; }
+    .rating-help { display: flex; justify-content: space-between; gap: 10px; color: var(--faint); font-size: 9px; margin: 5px 0 6px; }
+    .scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--line-strong); border-radius: 10px; overflow: hidden; }
+    .scale label { position: relative; cursor: pointer; }
+    .scale label + label { border-left: 1px solid var(--line); }
+    .scale input { position: absolute; opacity: 0; pointer-events: none; }
+    .scale span { min-height: 34px; display: grid; place-items: center; color: var(--muted); font-size: 12px; font-weight: 700; background: var(--paper); }
+    .scale input:checked + span { color: var(--paper); background: var(--accent); }
+    .issues { margin-top: 16px; padding: 12px; border-radius: var(--radius-md); background: var(--warning-soft); border: 1px solid #f1d8a9; }
+    .issues legend { color: var(--warning); }
+    .issue-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 10px; margin-top: 9px; }
+    .check { display: flex; align-items: flex-start; gap: 7px; color: var(--ink); font-size: 11px; cursor: pointer; }
+    .check input { margin: 2px 0 0; accent-color: var(--accent); }
+    .check.none { grid-column: 1 / -1; border-top: 1px solid #efd29c; padding-top: 8px; color: var(--teal); font-weight: 700; }
+    .assessment {
+      margin-top: 18px; border: 1px solid var(--line); border-radius: var(--radius-lg);
+      background: var(--paper); padding: 20px 22px; box-shadow: var(--shadow);
+    }
+    .assessment h2 { margin: 0 0 5px; font: 650 18px/1.2 var(--font-display); }
+    .assessment > p { margin: 0 0 14px; color: var(--muted); font-size: 12px; }
+    .preference { display: grid; grid-template-columns: 1fr .72fr 1fr; border: 1px solid var(--line-strong); border-radius: var(--radius-md); overflow: hidden; }
+    .preference label { position: relative; cursor: pointer; }
+    .preference label + label { border-left: 1px solid var(--line); }
+    .preference input { position: absolute; opacity: 0; }
+    .preference span { min-height: 48px; display: grid; place-items: center; background: var(--paper-soft); font-weight: 750; color: var(--muted); }
+    .preference input:checked + span { color: var(--paper); background: var(--ink); }
+    .note-field { display: grid; gap: 6px; margin-top: 15px; }
+    .note-field label { font-size: 12px; font-weight: 700; }
+    .note-field textarea {
+      resize: vertical; min-height: 66px; width: 100%; border: 1px solid var(--line-strong);
+      border-radius: var(--radius-md); padding: 10px 12px; color: var(--ink); background: var(--paper);
+    }
+    .validation {
+      display: none; margin-top: 12px; border-radius: var(--radius-sm); padding: 9px 11px;
+      color: var(--danger); background: var(--danger-soft); font-size: 12px; font-weight: 650;
+    }
+    .validation.show { display: block; }
+    .actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 18px 0 32px; }
+    .action-group { display: flex; gap: 9px; flex-wrap: wrap; }
+    .button {
+      border: 1px solid var(--line-strong); border-radius: 10px; min-height: 40px; padding: 8px 15px;
+      background: var(--paper); color: var(--ink); font-weight: 750; cursor: pointer;
+    }
+    .button.primary { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+    .button.ghost { background: transparent; }
+    .button:disabled { opacity: .42; cursor: not-allowed; }
+    .completion {
+      display: none; border: 1px solid var(--line); border-radius: var(--radius-lg);
+      background: var(--paper); padding: 32px; box-shadow: var(--shadow);
+    }
+    .completion.show { display: block; }
+    .completion h2 { margin: 0 0 8px; font: 650 25px/1.2 var(--font-display); }
+    .completion p { color: var(--muted); max-width: 650px; }
+    .completion .action-group { margin-top: 18px; }
+    .hide { display: none !important; }
+    @media (max-width: 1050px) {
+      .layout { grid-template-columns: 1fr; }
+      .rail { position: static; display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; }
+      .rail-rule, .rail details { display: none; }
+      .reviewer-field { margin-top: 10px; }
+    }
+    @media (max-width: 760px) {
+      .shell { padding: 12px; }
+      .rail { display: block; }
+      .anchor-list { display: none; }
+      .question-head { display: grid; padding: 18px; }
+      .correct { min-width: 0; }
+      .candidate-grid { grid-template-columns: 1fr; }
+      .candidate { padding: 18px; }
+      .candidate + .candidate { border-left: 0; border-top: 1px solid var(--line); }
+      .issue-grid { grid-template-columns: 1fr; }
+      .check.none { grid-column: auto; }
+      .actions { align-items: stretch; flex-direction: column; }
+      .action-group { width: 100%; }
+      .button { flex: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+    @media print {
+      body { background: var(--paper); }
+      .rail, .actions, .topbar { display: none; }
+      .layout { display: block; }
+      .question-card, .assessment { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">DR</div>
+        <div class="brand-copy">
+          <strong>Distractor review</strong>
+          <span>Anonymous paired evaluation</span>
+        </div>
+      </div>
+      <div class="save-state"><span class="save-dot"></span><span id="save-copy">Saved locally</span></div>
+    </header>
+    <div class="layout">
+      <aside class="rail">
+        <div>
+          <div class="eyebrow">Blinded review</div>
+          <h1>Judge the teaching value.</h1>
+          <p>Compare each pair on the same question. Identity and automatic scores are intentionally hidden.</p>
+          <div class="progress-label"><span id="progress-copy">0 of 24 complete</span><span id="position-copy">Item 1 / 24</span></div>
+          <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
+          <div class="reviewer-field">
+            <label for="reviewer-code">Reviewer code</label>
+            <input id="reviewer-code" autocomplete="off" maxlength="40" placeholder="Owner-assigned code, e.g. R1">
+          </div>
+        </div>
+        <div>
+          <div class="rail-rule"></div>
+          <div class="eyebrow">1–5 anchors</div>
+          <div class="anchor-list">
+            <div><b>1</b><span>Not useful, implausible, or unclear.</span></div>
+            <div><b>3</b><span>Mixed but usable; some diagnostic signal.</span></div>
+            <div><b>5</b><span>Distinct, believable, and immediately teachable.</span></div>
+          </div>
+          <details>
+            <summary>Review discipline</summary>
+            <p>Use your own sixth-grade math and teaching judgment. Do not research candidate identity. Plausibility is human judgment, not observed student frequency.</p>
+          </details>
+        </div>
+      </aside>
+      <main class="workspace">
+        <div id="review-view">
+          <section class="question-card">
+            <header class="question-head">
+              <div>
+                <div class="question-meta">
+                  <span class="chip" id="item-code"></span>
+                  <span class="chip" id="topic"></span>
+                </div>
+                <div class="question-copy" id="question"></div>
+              </div>
+              <div class="correct"><span>Correct answer</span><strong id="correct-answer"></strong></div>
+            </header>
+            <div class="candidate-grid" id="candidate-grid"></div>
+          </section>
+          <section class="assessment">
+            <h2>Overall choice</h2>
+            <p>Which complete set is better for diagnosing and acting on sixth-grade misconceptions?</p>
+            <fieldset>
+              <legend class="hide">Overall preferred candidate</legend>
+              <div class="preference">
+                <label><input type="radio" name="preference" value="A"><span>Candidate A</span></label>
+                <label><input type="radio" name="preference" value="Tie"><span>Tie</span></label>
+                <label><input type="radio" name="preference" value="B"><span>Candidate B</span></label>
+              </div>
+            </fieldset>
+            <div class="note-field">
+              <label for="note">Optional short note</label>
+              <textarea id="note" maxlength="600" placeholder="Only add context that will help later adjudication."></textarea>
+            </div>
+            <div class="validation" id="validation" role="alert"></div>
+          </section>
+          <nav class="actions" aria-label="Review navigation">
+            <div class="action-group">
+              <button class="button ghost" id="previous" type="button">Previous</button>
+              <button class="button primary" id="next" type="button">Save & next</button>
+            </div>
+            <div class="action-group">
+              <button class="button" id="download-json" type="button" disabled>Download JSON</button>
+              <button class="button" id="download-csv" type="button" disabled>Download CSV</button>
+            </div>
+          </nav>
+        </div>
+        <section class="completion" id="completion">
+          <div class="eyebrow">Review complete</div>
+          <h2>Export both formats before unblinding.</h2>
+          <p>Your ratings remain anonymous with respect to candidate identity. Download JSON for analysis and CSV for a readable backup, then return the file(s) to the owner.</p>
+          <div class="action-group">
+            <button class="button primary" id="complete-json" type="button">Download JSON</button>
+            <button class="button" id="complete-csv" type="button">Download CSV</button>
+            <button class="button ghost" id="back-to-review" type="button">Review answers</button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script>
+    "use strict";
+    const REVIEW_ITEMS = [{"review_item_id":"R01","topic":"Standard Form","question_html":"Tom and Katie are discussing standard form.\u003cbr>\u003cbr>Tom says \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>9.3\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>×\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmsup>\u003cmn>10\u003c/mn>\u003cmrow>\u003cmn>5\u003c/mn>\u003c/mrow>\u003c/msup>\u003cmo>&gt;\u003c/mo>\u003cmn>2.3\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>×\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmsup>\u003cmn>10\u003c/mn>\u003cmrow>\u003cmn>6\u003c/mn>\u003c/mrow>\u003c/msup>\u003c/mrow>\u003c/math>\u003cbr>\u003cbr>Katie says \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>9.3\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>×\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmsup>\u003cmn>10\u003c/mn>\u003cmrow>\u003cmo>-\u003c/mo>\u003cmn>5\u003c/mn>\u003c/mrow>\u003c/msup>\u003cmo>&gt;\u003c/mo>\u003cmn>2.3\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>×\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmsup>\u003cmn>10\u003c/mn>\u003cmrow>\u003cmo>-\u003c/mo>\u003cmn>6\u003c/mn>\u003c/mrow>\u003c/msup>\u003c/mrow>\u003c/math>\u003cbr>\u003cbr>Who is correct?","correct_answer":"OnlyKatie","candidate_a":[{"misconception":"Compares only the mantissas, ignoring the powers of 10","computation":"9.3 > 2.3 and 9.3 > 2.3, so both true = Only Tom","answer":"Only Tom"},{"misconception":"Thinks larger mantissa always means larger number regardless of exponent, so both statements are correct","computation":"9.3 > 2.3 in both cases = Both Tom and Katie","answer":"Both Tom and Katie"},{"misconception":"Treats more negative exponent as larger value, reversing Katie's comparison","computation":"10^-6 > 10^-5 assumed, so Katie wrong and Tom wrong = Neither is correct","answer":"Neither is correct"}],"candidate_b":[{"misconception":"Multiplies the two numbers but ignores the power of 10","computation":"9.3 × 2.3 = 21.39","answer":"21.39"},{"misconception":"Multiplies by the smaller power of 10 instead of the larger one","computation":"9.3 × 10^{-6} = 0.0000093","answer":"0.0000093"},{"misconception":"Multiplies by the larger power of 10 instead of the smaller one","computation":"9.3 × 10^{6} = 9300000","answer":"9300000"}]},{"review_item_id":"R02","topic":"BIDMAS","question_html":"What does the following equal?\u003cbr>\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">\u003cmrow>\u003cmn>8\u003c/mn>\u003cmo>-\u003c/mo>\u003cmn>7\u003c/mn>\u003cmo>+\u003c/mo>\u003cmn>10\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>×\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmn>3\u003c/mn>\u003c/mrow>\u003c/math>","correct_answer":"31","candidate_a":[{"misconception":"Works strictly left to right ignoring order of operations","computation":"((8-7)+10)×3 = 33","answer":"33"},{"misconception":"Does addition before subtraction and multiplication last","computation":"(8-(7+10))×3 = -27","answer":"-27"},{"misconception":"Does subtraction and addition after multiplication but subtracts the whole thing","computation":"8-(7+10×3) = -29","answer":"-29"}],"candidate_b":[{"misconception":"Carries out operations left to right, ignoring order of operations","computation":"((8 - 7) + 10) × 3 = 33","answer":"33"},{"misconception":"Adds the last two numbers first, then multiplies by the first","computation":"8 × (7 + 10) = 136","answer":"136"},{"misconception":"Multiplies the first two numbers then adds the third","computation":"8 × 7 + 10 = 66","answer":"66"}]},{"review_item_id":"R03","topic":"Mental Addition and Subtraction","question_html":"A \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>3\u003c/mn>\u003c/mrow>\u003c/math> digit number belongs in this box to make the calculation true\u003cbr>\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>467\u003c/mn>\u003cmo>+\u003c/mo>\u003cmo>□\u003c/mo>\u003cmo>=\u003c/mo>\u003cmn>1253\u003c/mn>\u003c/mrow>\u003c/math>\u003cbr>What is the \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmsup>\u003cmn>3\u003c/mn>\u003cmrow>\u003cmrow>\u003cmi>rd\u003c/mi>\u003cmtext> \u003c/mtext>\u003c/mrow>\u003c/mrow>\u003c/msup>\u003c/mrow>\u003c/math> digit of the number that belongs in the box?","correct_answer":"6","candidate_a":[{"misconception":"Carries an extra ten by mistake","computation":"1253-467-10 = 776","answer":"776"},{"misconception":"Subtracts the numbers but gives the wrong answer","computation":"467-1253 = -786","answer":"-786"},{"misconception":"Subtracts the first number from the target number but gives the wrong answer","computation":"1253-467-100 = 786","answer":"786"}],"candidate_b":[{"misconception":"Adds instead of subtracting to find the missing number","computation":"467+1253 = 1720, 3rd digit = 2","answer":"2"},{"misconception":"Subtracts correctly but reads the first digit instead of the third","computation":"1253-467 = 786, 1st digit = 7","answer":"7"},{"misconception":"Makes a borrowing error in subtraction giving wrong units digit","computation":"1253-467 = 796, 3rd digit = 6... miscomputes as 796 giving middle 9","answer":"9"}]},{"review_item_id":"R04","topic":"Multiples and Lowest Common Multiple","question_html":"What is the lowest common multiple of \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>6\u003c/mn>\u003c/mrow>\u003c/math> and \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>7\u003c/mn>\u003c/mrow>\u003c/math> ?","correct_answer":"42","candidate_a":[{"misconception":"Finds the highest common factor instead","computation":"6 / 6 = 1","answer":"1"},{"misconception":"Multiplies the two numbers without removing a common factor","computation":"6 * 7 = 42","answer":"42"},{"misconception":"Adds the two numbers","computation":"6 + 7 = 13","answer":"13"}],"candidate_b":[{"misconception":"Adds the two numbers instead of finding LCM","computation":"6 + 7 = 13","answer":"13"},{"misconception":"Finds the greatest common factor / difference instead of LCM","computation":"7 - 6 = 1","answer":"1"},{"misconception":"Uses the larger number as the LCM since both are involved","computation":"max(6, 7) = 7","answer":"7"}]},{"review_item_id":"R05","topic":"Converting between Fractions and Percentages","question_html":"Tom and Katie are arguing about percentages.\u003cbr>Tom says \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>45\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>%\u003c/mo>\u003cmo>&gt;\u003c/mo>\u003cmn>0.059\u003c/mn>\u003c/mrow>\u003c/math>\u003cbr>Katie says \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>45\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>%\u003c/mo>\u003cmo>&gt;\u003c/mo>\u003cmfrac>\u003cmrow>\u003cmn>16\u003c/mn>\u003c/mrow>\u003cmrow>\u003cmn>31\u003c/mn>\u003c/mrow>\u003c/mfrac>\u003c/mrow>\u003c/math>\u003cbr>Who is correct?","correct_answer":"OnlyTom","candidate_a":[{"misconception":"Converts a percentage to a fraction by dividing by 10 instead of 100","computation":"(45 + 10)/10 = 5.5","answer":"5.5"},{"misconception":"Converts a percentage to a fraction by using the percentage number as the numerator and 10 as the denominator","computation":"45/10 = 4.5","answer":"4.5"},{"misconception":"Converts a percentage to a fraction by using the percentage number as the denominator and 10 as the numerator","computation":"10/45 = 2/9","answer":"2/9"}],"candidate_b":[{"misconception":"Thinks 45% converts to 0.045, making it smaller than 0.059","computation":"0.045 \u003c 0.059 and 0.45 \u003c 16/31 = Only Katie","answer":"Only Katie"},{"misconception":"Believes both statements are true without comparing 16/31 (0.516) correctly to 45%","computation":"0.45 > 0.059 and 0.45 > 0.516 = Both Tom and Katie","answer":"Both Tom and Katie"},{"misconception":"Misconverts 45% to 4.5 and 16/31 incorrectly, concluding neither statement holds","computation":"4.5 vs 0.059 and 4.5 vs 16/31 mishandled = Neither","answer":"Neither"}]},{"review_item_id":"R06","topic":"Ordering Decimals","question_html":"\u003caside class=\"visual-prompt\">\u003cstrong>Visual prompt:\u003c/strong> A number line from 0 to 1 split into 5 parts with a red arrow pointing to the marker for the value 0.4\u003c/aside> What number is the arrow pointing to?","correct_answer":"0.4","candidate_a":[{"misconception":"Counts the tick mark position instead of the value it represents","computation":"2 = 2","answer":"2"},{"misconception":"Reads each of the 5 parts as tenths but miscounts and uses fifths as the denominator writing it as a fraction value","computation":"2 ÷ 5 = 0.2","answer":"0.2"},{"misconception":"Treats the number line as having 10 parts and reads position as hundredths","computation":"4 ÷ 100 = 0.04","answer":"0.04"}],"candidate_b":[{"misconception":"Reads the decimal one place value too low (tenth instead of hundredth)","computation":"0.4 - 0.01 = 0.39","answer":"0.39"},{"misconception":"Reads the decimal one place value too high (hundredth instead of tenth)","computation":"0.4 + 0.01 = 0.41","answer":"0.41"},{"misconception":"States the decimal as a percentage","computation":"0.4 × 100 = 40","answer":"40"}]},{"review_item_id":"R07","topic":"Rounding to Decimal Places","question_html":"Round \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>27.48\u003c/mn>\u003c/mrow>\u003c/math> to one decimal place","correct_answer":"27.5","candidate_a":[{"misconception":"Rounds down (truncates) instead of rounding to nearest","computation":"27.48 → 27.4 = 27.4","answer":"27.4"},{"misconception":"Rounds to the nearest whole number instead of one decimal place","computation":"27.48 → 28 = 28","answer":"28"},{"misconception":"Rounds to two decimal places / leaves number unchanged","computation":"27.48 = 27.48","answer":"27.48"}],"candidate_b":[{"misconception":"Does not round and keeps all the decimal digits","computation":"(2 × 10 + 7 × 1 + 4 × 0.1 + 8 × 0.01) = 27.48","answer":"27.48"},{"misconception":"Truncates the extra digit instead of rounding","computation":"(2 × 10 + 7 × 1 + 4 × 0.1) = 27.4","answer":"27.4"},{"misconception":"Drops the decimal part entirely, giving the whole number","computation":"2 × 10 + 7 = 27","answer":"27"}]},{"review_item_id":"R08","topic":"Converting between Decimals and Percentages","question_html":"How do you write \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>2.5\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>%\u003c/mo>\u003c/mrow>\u003c/math> as a decimal?","correct_answer":"0.025","candidate_a":[{"misconception":"Divides by 10 instead of 100","computation":"2.5 ÷ 10 = 0.25","answer":"0.25"},{"misconception":"Just removes the percent sign without dividing","computation":"2.5 = 2.5","answer":"2.5"},{"misconception":"Moves decimal point wrong direction, multiplies by 100","computation":"2.5 × 100 = 250","answer":"250"}],"candidate_b":[{"misconception":"Divides by 100 instead of 100%","computation":"(2 × 10 + 5)/1000 = 0.025","answer":"0.025"},{"misconception":"Moves the decimal three places instead of two","computation":"(2 × 10 + 5)/10 = 2.5","answer":"2.5"},{"misconception":"Moves the decimal one place instead of two","computation":"(2 × 10 + 5)/100 = 0.25","answer":"0.25"}]},{"review_item_id":"R09","topic":"Multiples and Lowest Common Multiple","question_html":"If you list the multiples of \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>15\u003c/mn>\u003c/mrow>\u003c/math> in ascending order, what is the \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmsup>\u003cmn>5\u003c/mn>\u003cmrow>\u003cmrow>\u003cmi>th\u003c/mi>\u003cmtext> \u003c/mtext>\u003c/mrow>\u003c/mrow>\u003c/msup>\u003c/mrow>\u003c/math> number in the list?","correct_answer":"75","candidate_a":[{"misconception":"Starts counting from 0 as the first multiple, so 5th is 4×15","computation":"15 × 4 = 60","answer":"60"},{"misconception":"Confuses multiples with factors or adds 5 to 15","computation":"15 + 5 = 20","answer":"20"},{"misconception":"Counts 5th multiple but multiplies by 6 (off-by-one the other way)","computation":"15 × 6 = 90","answer":"90"}],"candidate_b":[{"misconception":"Gives the index number as the answer","computation":"5","answer":"5"},{"misconception":"Writes the number multiplied by one less than the index number","computation":"15×(5-1)","answer":"60"},{"misconception":"Adds the index number to the number","computation":"15+5","answer":"20"}]},{"review_item_id":"R10","topic":"Mental Multiplication and Division","question_html":"\u003caside class=\"visual-prompt\">\u003cstrong>Visual prompt:\u003c/strong> Six groups of three dots\u003c/aside> Jo says the diagram above represents\u003cbr>\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"block\">\u003cmrow>\u003cmn>3\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>÷\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmn>18\u003c/mn>\u003cmo>=\u003c/mo>\u003cmn>6\u003c/mn>\u003c/mrow>\u003c/math>\u003cbr>Paul says the diagram represents \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>6\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>×\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmn>3\u003c/mn>\u003cmo>=\u003c/mo>\u003cmn>18\u003c/mn>\u003c/mrow>\u003c/math>\u003cbr>Who is correct?","correct_answer":"OnlyPaul","candidate_a":[{"misconception":"Multiplies the first number by the second number","computation":"3 × 18 = 54","answer":"54"},{"misconception":"Adds the numbers instead of multiplying","computation":"3 + 18 = 21","answer":"21"},{"misconception":"Multiplies only the units digit, ignoring the tens","computation":"3 × 8 = 24","answer":"24"}],"candidate_b":[{"misconception":"Believes division can be written in either order and gives the same result as multiplication","computation":"3 ÷ 18 = 6 (treated as valid) = Only Jo","answer":"Only Jo"},{"misconception":"Thinks both statements describe the diagram, ignoring that division is written incorrectly","computation":"accepts 3÷18=6 and 6×3=18 = Both Jo and Paul","answer":"Both Jo and Paul"},{"misconception":"Believes neither correctly represents six groups of three","computation":"rejects both statements = Neither","answer":"Neither"}]},{"review_item_id":"R11","topic":"Rounding to the Nearest Whole (10, 100, etc)","question_html":"What is \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>637\u003c/mn>\u003c/mrow>\u003c/math> rounded to the nearest \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>1000\u003c/mn>\u003c/mrow>\u003c/math> ?","correct_answer":"1000","candidate_a":[{"misconception":"Rounds to the nearest hundred instead of the nearest thousand","computation":"637 - 37 = 600","answer":"600"},{"misconception":"Rounds down instead of up","computation":"637 - 637 = 0","answer":"0"},{"misconception":"Rounds to the nearest ten instead of the nearest thousand","computation":"637 - 7 = 630","answer":"630"}],"candidate_b":[{"misconception":"Rounds down because the number is less than 1000, ignoring rounding rules","computation":"637 → 0 = 0","answer":"0"},{"misconception":"Rounds to nearest 100 instead of nearest 1000","computation":"637 → 600 = 600","answer":"600"},{"misconception":"Rounds to nearest 10 instead of nearest 1000","computation":"637 → 640 = 640","answer":"640"}]},{"review_item_id":"R12","topic":"BIDMAS","question_html":"\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>12\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>÷\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmn>2\u003c/mn>\u003cmo>+\u003c/mo>\u003cmn>1\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>×\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmn>2\u003c/mn>\u003cmo>=\u003c/mo>\u003c/mrow>\u003c/math>","correct_answer":"8","candidate_a":[{"misconception":"Works strictly left to right ignoring order of operations","computation":"((12 ÷ 2) + 1) × 2 = 14","answer":"14"},{"misconception":"Does addition before multiplication","computation":"12 ÷ (2 + 1) × 2 = 8... treats as (12÷2)+(1×2) wrong grouping: (6+1)×2 = 14","answer":"10"},{"misconception":"Adds all results together ignoring operations","computation":"12 ÷ (2 + 1 × 2) = 3","answer":"3"}],"candidate_b":[{"misconception":"Adds the last two numbers first, then divides the first by the result","computation":"12 ÷ (2+1) = 4","answer":"4"},{"misconception":"Adds all the numbers, ignoring the multiplication","computation":"12+2+1+2 = 17","answer":"17"},{"misconception":"Multiplies the first two numbers then adds the third","computation":"12×2+1 = 25","answer":"25"}]},{"review_item_id":"R13","topic":"Converting between Fractions and Percentages","question_html":"\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>0.2\u003c/mn>\u003cmo>=\u003c/mo>\u003cmfrac>\u003cmrow>\u003cmn>1\u003c/mn>\u003c/mrow>\u003cmrow>\u003cmn>5\u003c/mn>\u003c/mrow>\u003c/mfrac>\u003cmo>=\u003c/mo>\u003cmo>?\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmo>%\u003c/mo>\u003c/mrow>\u003c/math>","correct_answer":"20%","candidate_a":[{"misconception":"Treats the fraction denominator as the percentage","computation":"1/5 → 5 = 5%","answer":"5%"},{"misconception":"Reads the decimal digits directly as the percent without multiplying by 100","computation":"0.2 = 2%","answer":"2%"},{"misconception":"Uses the numerator as the percentage","computation":"1/5 → 1 = 1%","answer":"1%"}],"candidate_b":[{"misconception":"Converts a fraction to a decimal instead of a percentage","computation":"1 / 5 = 0.2","answer":"0.2"},{"misconception":"Converts a fraction to a percentage by using the denominator as the percentage number","computation":"1 / 5 * 100 = 20","answer":"20"},{"misconception":"Converts a fraction to a percentage by using the numerator as the percentage number","computation":"1 / 1 * 100 = 100","answer":"100"}]},{"review_item_id":"R14","topic":"Multiples and Lowest Common Multiple","question_html":"&quot;Common multiples of \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>2\u003c/mn>\u003c/mrow>\u003c/math> and \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>5\u003c/mn>\u003c/mrow>\u003c/math> are also multiples of \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>25\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>&quot;\u003c/mo>\u003c/mrow>\u003c/math>\u003cbr>Is this statement...","correct_answer":"sometimestrue","candidate_a":[{"misconception":"Multiplies the two numbers instead of finding the common multiple","computation":"2 × 5 = 10","answer":"10"},{"misconception":"Adds the two numbers","computation":"2 + 5 = 7","answer":"7"},{"misconception":"Gives the difference of the two numbers as the common multiple","computation":"5 - 2 = 3","answer":"3"}],"candidate_b":[{"misconception":"Multiplies the two numbers instead of finding LCM, concluding all common multiples are multiples of that product","computation":"2 × 5 = 10, thinks 25 divides all → always true","answer":"alwaystrue"},{"misconception":"Believes since 25 is not a multiple of 2, no common multiple can be a multiple of 25","computation":"25 ÷ 2 = 12.5 (not whole) → never true","answer":"nevertrue"},{"misconception":"Confuses LCM of 2 and 5 (which is 10) as unrelated to 25, so statement cannot be evaluated","computation":"LCM(2,5) = 10, 10 ≠ 25 → false always","answer":"alwaysfalse"}]},{"review_item_id":"R15","topic":"Multiplying and Dividing Negative Numbers","question_html":"The product of two numbers is \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmo>-\u003c/mo>\u003cmn>24\u003c/mn>\u003c/mrow>\u003c/math>.\u003cbr>What could the two numbers be?","correct_answer":"-4and6","candidate_a":[{"misconception":"Ignores the negative sign and multiplies the magnitudes","computation":"4 × 6 = 24","answer":"24"},{"misconception":"Subtracts the factors instead of multiplying","computation":"-4 - 6 = -10","answer":"-10"},{"misconception":"Adds the numbers instead of multiplying","computation":"-4 + 6 = 2","answer":"2"}],"candidate_b":[{"misconception":"Believes two negative numbers multiply to give a negative product","computation":"-4 × -6 = -24","answer":"-4 and -6"},{"misconception":"Believes two positive numbers can give a negative product","computation":"4 × 6 = -24","answer":"4 and 6"},{"misconception":"Ignores the negative sign and finds numbers giving positive 24, but uses addition instead of multiplication","computation":"-4 + 6 = 2, uses -20 and 4 thinking -20 × 4 = -24","answer":"-20 and 4"}]},{"review_item_id":"R16","topic":"Simplifying Fractions","question_html":"Jo and Paul are arguing about simplifying fractions.\u003cbr>\u003cbr>Jo says you can never simplify a fraction if either the numerator or denominator is a prime number.\u003cbr>\u003cbr>Paul says you will always be able to simplify a fraction if neither the numerator or denominator is prime.\u003cbr>\u003cbr>Who is correct?","correct_answer":"Neitheriscorrect","candidate_a":[{"misconception":"Adds the common factor to numerator and denominator","computation":"(10 + 2) / (15 + 2) = 12/17","answer":"12/17"},{"misconception":"Subtracts the common factor once from numerator and denominator","computation":"(12 - 2) / (15 - 2) = 10/13","answer":"10/13"},{"misconception":"Divides only the numerator by the common factor","computation":"(12 / 2) / 15 = 2/15","answer":"2/15"}],"candidate_b":[{"misconception":"Believes a prime in numerator or denominator blocks simplification, agreeing with Jo","computation":"Only Jo is correct = Jo","answer":"Jo"},{"misconception":"Believes two composite numbers always share a common factor, agreeing with Paul","computation":"Only Paul is correct = Paul","answer":"Paul"},{"misconception":"Thinks both statements are valid rules simultaneously","computation":"Both are correct = Both","answer":"Both"}]},{"review_item_id":"R17","topic":"Dividing Fractions","question_html":"\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>4\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmo>÷\u003c/mo>\u003cmtext> \u003c/mtext>\u003cmn>2\u003c/mn>\u003cmtext> \u003c/mtext>\u003cmfrac>\u003cmrow>\u003cmn>4\u003c/mn>\u003c/mrow>\u003cmrow>\u003cmn>5\u003c/mn>\u003c/mrow>\u003c/mfrac>\u003c/mrow>\u003c/math> Which of the following is a correct way to write the answer to this calculation?","correct_answer":"13/7","candidate_a":[{"misconception":"Multiplies the numerator by the reciprocal of the denominator","computation":"(4 × 5)/(2 × 4 + 5) = 20/13","answer":"20/13"},{"misconception":"Adds the integer and the reciprocal of the fractional denominator","computation":"4/(2 + 5/4) = 16/9","answer":"16/9"},{"misconception":"Ignores the denominator and divides by the numerator of the fraction","computation":"4/(2 + 4/5) = 10/7","answer":"10/7"}],"candidate_b":[{"misconception":"Multiplies instead of dividing, or keeps the mixed number without inverting","computation":"4 × 14/5 = 56/5","answer":"56/5"},{"misconception":"Divides only the whole numbers and ignores the fraction part","computation":"4 ÷ 2 = 2","answer":"2"},{"misconception":"Divides numerator and denominator separately by treating the mixed number as 2 and 4/5","computation":"(4÷2) + (4/5) = 14/5","answer":"14/5"}]},{"review_item_id":"R18","topic":"Place Value","question_html":"How do you write this number in words?\u003cbr>\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>204050\u003c/mn>\u003c/mrow>\u003c/math>","correct_answer":"Twohundredandfourthousandandfifty","candidate_a":[{"misconception":"Ignores the zero in the thousands/hundreds place and misreads place values","computation":"reads 204050 as twenty-four thousand and fifty = Twentyfourthousandandfifty","answer":"Twentyfourthousandandfifty"},{"misconception":"Reads the digits after 204 as hundreds instead of tens","computation":"reads 204050 as two hundred and four thousand and five hundred = Twohundredandfourthousandandfivehundred","answer":"Twohundredandfourthousandandfivehundred"},{"misconception":"Misplaces the thousands split, reading it as two million-based","computation":"reads 204050 as two million forty thousand and fifty = Twomillionfortythousandandfifty","answer":"Twomillionfortythousandandfifty"}],"candidate_b":[{"misconception":"Reads the digit one place value too low (tens instead of hundreds)","computation":"204050 - 10 = 204040","answer":"204040"},{"misconception":"Reads the digit one place value too high (thousands instead of hundreds)","computation":"204050 + 100000 = 1204050","answer":"1204050"},{"misconception":"Reads the digit two place values too low (tens instead of thousands)","computation":"204050 - 100000 = 104050","answer":"104050"}]},{"review_item_id":"R19","topic":"Rounding to Significant Figures","question_html":"Round this number to \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>1\u003c/mn>\u003c/mrow>\u003c/math> significant figure:\u003cbr>\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>95365\u003c/mn>\u003c/mrow>\u003c/math>","correct_answer":"100000","candidate_a":[],"candidate_b":[{"misconception":"Rounds to 2 significant figures instead of 1","computation":"95365 + 635 = 96000","answer":"96000"},{"misconception":"Rounds to 3 significant figures instead of 1","computation":"95365 + 635 = 96000","answer":"96000"},{"misconception":"Rounds down instead of up","computation":"95365 - 5365 = 90000","answer":"90000"}]},{"review_item_id":"R20","topic":"Square Roots, Cube Roots, etc","question_html":"\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmroot>\u003cmrow>\u003cmn>27\u003c/mn>\u003c/mrow>\u003cmrow>\u003cmn>3\u003c/mn>\u003c/mrow>\u003c/mroot>\u003cmo>=\u003c/mo>\u003cmo>?\u003c/mo>\u003c/mrow>\u003c/math>","correct_answer":"3","candidate_a":[{"misconception":"Divides by 3 instead of taking cube root","computation":"27 ÷ 3 = 9","answer":"9"},{"misconception":"Takes square root instead of cube root","computation":"27 ÷ 2 = 13.5","answer":"13.5"},{"misconception":"Confuses cube root with dividing by the index and adds","computation":"27 ÷ 3 - 3 = 6","answer":"6"}],"candidate_b":[{"misconception":"Divides the radicand by 2","computation":"27 / 2 = 13.5","answer":"13.5"},{"misconception":"Doubles the radicand","computation":"2 * 27 = 54","answer":"54"},{"misconception":"Subtracts 2 from the radicand","computation":"27 - 2 = 25","answer":"25"}]},{"review_item_id":"R21","topic":"Adding and Subtracting with Decimals","question_html":"\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmn>70.04\u003c/mn>\u003cmo>-\u003c/mo>\u003cmn>0.1\u003c/mn>\u003cmo>=\u003c/mo>\u003c/mrow>\u003c/math>","correct_answer":"69.94","candidate_a":[{"misconception":"Does not align place values and subtracts both as tenths","computation":"(70×10-1)/10 = 69.9","answer":"69.9"},{"misconception":"Ignores the decimal points and subtracts as whole numbers","computation":"70-0 = 70","answer":"70"},{"misconception":"Subtracts the digits but does not account for the decimal point","computation":"70-1 = 69","answer":"69"}],"candidate_b":[{"misconception":"Aligns digits from the right without regard to place value","computation":"70.04 - 0.10 treated as 7004 - 10 = 69.94... aligns 0.1 under the 4: 70.04 - 0.01 = 70.03","answer":"70.03"},{"misconception":"Subtracts 1 instead of 0.1","computation":"70.04 - 1 = 69.04","answer":"69.04"},{"misconception":"Adds instead of subtracts","computation":"70.04 + 0.1 = 70.14","answer":"70.14"}]},{"review_item_id":"R22","topic":"Multiplying and Dividing Negative Numbers","question_html":"\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmfrac>\u003cmrow>\u003cmn>1\u003c/mn>\u003c/mrow>\u003cmrow>\u003cmn>3\u003c/mn>\u003c/mrow>\u003c/mfrac>\u003cmtext> \u003c/mtext>\u003cmo>×\u003c/mo>\u003cmo>(\u003c/mo>\u003cmo>-\u003c/mo>\u003cmn>6\u003c/mn>\u003cmo>)\u003c/mo>\u003cmo>=\u003c/mo>\u003c/mrow>\u003c/math>","correct_answer":"-2","candidate_a":[{"misconception":"Ignores the negative sign, treating result as positive","computation":"1/3 × 6 = 2","answer":"2"},{"misconception":"Divides by the whole number instead of multiplying by the fraction","computation":"(-6) ÷ (1/3) = -18","answer":"-18"},{"misconception":"Multiplies denominator by the number instead of applying the fraction","computation":"(-6) × 3 = -18 then confuses, uses 1/(3×6) sign = -1/2 → (-6)/(3) reversed = -1/2","answer":"-1/2"}],"candidate_b":[{"misconception":"Ignores the negative sign","computation":"1/3 * 6 = 2","answer":"2"},{"misconception":"Subtracts the factors instead of multiplying","computation":"(-6) - 3 = -9","answer":"-9"},{"misconception":"Subtracts the second factor from the unsigned first factor","computation":"6 - 3 = 3","answer":"3"}]},{"review_item_id":"R23","topic":"Adding and Subtracting Fractions","question_html":"\u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmfrac>\u003cmrow>\u003cmn>2\u003c/mn>\u003c/mrow>\u003cmrow>\u003cmn>3\u003c/mn>\u003c/mrow>\u003c/mfrac>\u003cmo>-\u003c/mo>\u003cmfrac>\u003cmrow>\u003cmn>1\u003c/mn>\u003c/mrow>\u003cmrow>\u003cmn>10\u003c/mn>\u003c/mrow>\u003c/mfrac>\u003cmo>=\u003c/mo>\u003cmfrac>\u003cmrow>\u003cmo>★\u003c/mo>\u003c/mrow>\u003cmrow>\u003cmn>30\u003c/mn>\u003c/mrow>\u003c/mfrac>\u003c/mrow>\u003c/math>\u003cbr>What should replace the star?","correct_answer":"17","candidate_a":[{"misconception":"Subtracts numerators and denominators directly without common denominator","computation":"(2-1)/(3-10) applied to numerator: 2-1 = 1","answer":"1"},{"misconception":"Finds common denominator but forgets to scale one numerator correctly","computation":"20 - 1 = 19","answer":"19"},{"misconception":"Adds instead of subtracting after converting","computation":"20 + 3 = 23","answer":"23"}],"candidate_b":[{"misconception":"Adds instead of subtracts","computation":"(2×10 + 3×1)/(3×10) = 23/30","answer":"23/30"},{"misconception":"When subtracting fractions, subtracts the numerators and denominators","computation":"(2 - 1)/(3 - 10) = -1/7","answer":"-1/7"},{"misconception":"Does not consider the denominator when finding equivalent fractions","computation":"(2×10 - 1×3)/(3×10) = 17/30","answer":"17/30"}]},{"review_item_id":"R24","topic":"Ordering Negative Numbers","question_html":"Tom and Katie are discussing negative numbers.\u003cbr>\u003cbr>Tom says \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmo>-\u003c/mo>\u003cmn>12\u003c/mn>\u003cmo>&gt;\u003c/mo>\u003cmo>-\u003c/mo>\u003cmn>9\u003c/mn>\u003c/mrow>\u003c/math>\u003cbr>\u003cbr>Katie says \u003cmath xmlns=\"http://www.w3.org/1998/Math/MathML\" display=\"inline\">\u003cmrow>\u003cmo>-\u003c/mo>\u003cmn>0.401\u003c/mn>\u003cmo>&gt;\u003c/mo>\u003cmo>-\u003c/mo>\u003cmn>0.41\u003c/mn>\u003c/mrow>\u003c/math>\u003cbr>\u003cbr>Who is correct?","correct_answer":"OnlyKatie","candidate_a":[{"misconception":"Ignores the negative sign and compares the absolute values","computation":"12 \u003c 9","answer":"12 \u003c 9"},{"misconception":"Treats both numbers as negative","computation":"-12 \u003c -9","answer":"-12 \u003c -9"},{"misconception":"Believes all negative numbers are equal","computation":"-12 = -9","answer":"-12 = -9"}],"candidate_b":[{"misconception":"Treats negative numbers like positives, so larger absolute value means larger number, making Tom correct and Katie wrong","computation":"12>9 and 0.401\u003c0.41 = OnlyTom","answer":"OnlyTom"},{"misconception":"Applies positive-number reasoning to both, thinking both statements are true","computation":"12>9 true, 0.401>0.41 true = BothTomAndKatie","answer":"BothTomAndKatie"},{"misconception":"Misjudges the decimal comparison thinking 0.41>0.401 means Katie wrong, and correctly sees Tom wrong","computation":"-12\u003c-9 and -0.401\u003c-0.41 = NeitherIsCorrect","answer":"NeitherIsCorrect"}]}];
+    const STORAGE_KEY = "blindedDistractorReview:r1";
+    const RUBRIC_VERSION = "blinded-set-rubric-v1";
+    const ISSUE_VALUES = ["mathematically_inconsistent", "correct_answer_collision", "duplicate", "nonsense"];
+    const DIMENSIONS = [
+      {
+        key: "diagnostic_usefulness",
+        label: "Diagnostic usefulness",
+        low: "1 · no interpretable signal",
+        high: "5 · pinpoints teachable errors"
+      },
+      {
+        key: "student_plausibility",
+        label: "Realistic student plausibility",
+        low: "1 · arbitrary / giveaway",
+        high: "5 · highly believable human judgment"
+      },
+      {
+        key: "teacher_actionability",
+        label: "Clarity / teacher actionability",
+        low: "1 · unclear / unusable",
+        high: "5 · immediate next teaching step"
+      }
+    ];
+    const ISSUE_LABELS = {
+      mathematically_inconsistent: "Mathematically inconsistent",
+      correct_answer_collision: "Correct-answer collision",
+      duplicate: "Duplicate",
+      nonsense: "Nonsense"
+    };
+    let state = loadState();
+    let currentIndex = Math.min(
+      REVIEW_ITEMS.length - 1,
+      Math.max(0, Number.isInteger(state.current_index) ? state.current_index : 0)
+    );
+
+    function emptyCandidate() {
+      return {
+        diagnostic_usefulness: null,
+        student_plausibility: null,
+        teacher_actionability: null,
+        issues: [],
+        issues_reviewed: false
+      };
+    }
+
+    function emptyRating() {
+      return {
+        preference: "",
+        candidate_a: emptyCandidate(),
+        candidate_b: emptyCandidate(),
+        note: ""
+      };
+    }
+
+    function loadState() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+        return {
+          reviewer_code: typeof stored.reviewer_code === "string" ? stored.reviewer_code : "",
+          current_index: Number.isInteger(stored.current_index) ? stored.current_index : 0,
+          ratings: stored.ratings && typeof stored.ratings === "object" ? stored.ratings : {}
+        };
+      } catch (_error) {
+        return { reviewer_code: "", current_index: 0, ratings: {} };
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      const copy = document.getElementById("save-copy");
+      copy.textContent = "Saved locally";
+    }
+
+    function getRating(itemId) {
+      if (!state.ratings[itemId]) state.ratings[itemId] = emptyRating();
+      return state.ratings[itemId];
+    }
+
+    function escapeText(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+      })[char]);
+    }
+
+    function candidateMarkup(label, distractors) {
+      const lower = label.toLowerCase();
+      const cards = distractors.length
+        ? distractors.map((item, index) => `
+          <article class="distractor">
+            <div class="distractor-top">
+              <div class="distractor-num">${index + 1}</div>
+              <div class="misconception">${escapeText(item.misconception || "(No misconception supplied)")}</div>
+            </div>
+            <div class="distractor-data">
+              <div class="data-cell"><small>Computation</small><code>${escapeText(item.computation || "Not supplied")}</code></div>
+              <div class="data-cell"><small>Answer</small><code>${escapeText(item.answer || "Not supplied")}</code></div>
+            </div>
+          </article>`).join("")
+        : '<article class="distractor"><div class="distractor-top"><div class="misconception">No distractors supplied.</div></div></article>';
+      const ratingFields = DIMENSIONS.map(dimension => `
+        <fieldset>
+          <legend>${dimension.label}</legend>
+          <div class="rating-help"><span>${dimension.low}</span><span>${dimension.high}</span></div>
+          <div class="scale">
+            ${[1, 2, 3, 4, 5].map(value => `
+              <label>
+                <input type="radio" name="${lower}_${dimension.key}" value="${value}" data-candidate="${lower}" data-dimension="${dimension.key}">
+                <span>${value}</span>
+              </label>`).join("")}
+          </div>
+        </fieldset>`).join("");
+      const issueFields = ISSUE_VALUES.map(issue => `
+        <label class="check">
+          <input type="checkbox" value="${issue}" data-issue="${lower}">
+          <span>${ISSUE_LABELS[issue]}</span>
+        </label>`).join("");
+      return `
+        <section class="candidate" aria-labelledby="candidate-${lower}-title">
+          <div class="candidate-title">
+            <h2 id="candidate-${lower}-title">Candidate ${label}</h2>
+            <span>${distractors.length} distractor${distractors.length === 1 ? "" : "s"}</span>
+          </div>
+          <div class="distractor-list">${cards}</div>
+          <div class="rating-panel">${ratingFields}</div>
+          <fieldset class="issues">
+            <legend>Issue check · explicitly mark none or all that apply</legend>
+            <div class="issue-grid">
+              ${issueFields}
+              <label class="check none">
+                <input type="checkbox" value="none" data-issue-none="${lower}">
+                <span>No listed issue noticed</span>
+              </label>
+            </div>
+          </fieldset>
+        </section>`;
+    }
+
+    function render() {
+      const item = REVIEW_ITEMS[currentIndex];
+      const rating = getRating(item.review_item_id);
+      document.getElementById("item-code").textContent = item.review_item_id;
+      document.getElementById("topic").textContent = item.topic;
+      document.getElementById("question").innerHTML = item.question_html;
+      document.getElementById("correct-answer").textContent = item.correct_answer;
+      document.getElementById("candidate-grid").innerHTML =
+        candidateMarkup("A", item.candidate_a) + candidateMarkup("B", item.candidate_b);
+      document.getElementById("reviewer-code").value = state.reviewer_code;
+      document.getElementById("note").value = rating.note || "";
+      document.querySelectorAll('input[name="preference"]').forEach(input => {
+        input.checked = input.value === rating.preference;
+      });
+      for (const candidate of ["a", "b"]) {
+        const candidateRating = rating[`candidate_${candidate}`] || emptyCandidate();
+        for (const dimension of DIMENSIONS) {
+          document.querySelectorAll(`input[name="${candidate}_${dimension.key}"]`).forEach(input => {
+            input.checked = Number(input.value) === candidateRating[dimension.key];
+          });
+        }
+        document.querySelectorAll(`input[data-issue="${candidate}"]`).forEach(input => {
+          input.checked = candidateRating.issues.includes(input.value);
+        });
+        const noneInput = document.querySelector(`input[data-issue-none="${candidate}"]`);
+        noneInput.checked = candidateRating.issues_reviewed && candidateRating.issues.length === 0;
+      }
+      document.getElementById("previous").disabled = currentIndex === 0;
+      document.getElementById("next").textContent =
+        currentIndex === REVIEW_ITEMS.length - 1 ? "Finish review" : "Save & next";
+      document.getElementById("position-copy").textContent =
+        `Item ${currentIndex + 1} / ${REVIEW_ITEMS.length}`;
+      document.getElementById("validation").classList.remove("show");
+      bindItemEvents();
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function bindItemEvents() {
+      const item = REVIEW_ITEMS[currentIndex];
+      const rating = getRating(item.review_item_id);
+      document.querySelectorAll('input[name="preference"]').forEach(input => {
+        input.addEventListener("change", () => {
+          rating.preference = input.value;
+          saveState();
+          updateProgress();
+        });
+      });
+      document.querySelectorAll("input[data-dimension]").forEach(input => {
+        input.addEventListener("change", () => {
+          rating[`candidate_${input.dataset.candidate}`][input.dataset.dimension] = Number(input.value);
+          saveState();
+          updateProgress();
+        });
+      });
+      document.querySelectorAll("input[data-issue]").forEach(input => {
+        input.addEventListener("change", () => {
+          const candidate = input.dataset.issue;
+          const candidateRating = rating[`candidate_${candidate}`];
+          candidateRating.issues = Array.from(
+            document.querySelectorAll(`input[data-issue="${candidate}"]:checked`)
+          ).map(control => control.value);
+          candidateRating.issues_reviewed = true;
+          document.querySelector(`input[data-issue-none="${candidate}"]`).checked = false;
+          saveState();
+          updateProgress();
+        });
+      });
+      document.querySelectorAll("input[data-issue-none]").forEach(input => {
+        input.addEventListener("change", () => {
+          const candidate = input.dataset.issueNone;
+          const candidateRating = rating[`candidate_${candidate}`];
+          candidateRating.issues_reviewed = input.checked;
+          if (input.checked) {
+            candidateRating.issues = [];
+            document.querySelectorAll(`input[data-issue="${candidate}"]`).forEach(control => {
+              control.checked = false;
+            });
+          }
+          saveState();
+          updateProgress();
+        });
+      });
+    }
+
+    function syncFreeText() {
+      const item = REVIEW_ITEMS[currentIndex];
+      getRating(item.review_item_id).note = document.getElementById("note").value.trim();
+      state.reviewer_code = document.getElementById("reviewer-code").value.trim();
+      saveState();
+    }
+
+    function missingFields(rating) {
+      const missing = [];
+      if (!state.reviewer_code) missing.push("reviewer code");
+      if (!["A", "Tie", "B"].includes(rating.preference)) missing.push("overall preference");
+      for (const candidate of ["a", "b"]) {
+        const values = rating[`candidate_${candidate}`];
+        for (const dimension of DIMENSIONS) {
+          if (![1, 2, 3, 4, 5].includes(values[dimension.key])) {
+            missing.push(`Candidate ${candidate.toUpperCase()} ${dimension.label.toLowerCase()}`);
+          }
+        }
+        if (!values.issues_reviewed) missing.push(`Candidate ${candidate.toUpperCase()} issue check`);
+      }
+      return missing;
+    }
+
+    function isComplete(rating) {
+      return missingFields(rating).length === 0;
+    }
+
+    function validateCurrent() {
+      syncFreeText();
+      const item = REVIEW_ITEMS[currentIndex];
+      const missing = missingFields(getRating(item.review_item_id));
+      const message = document.getElementById("validation");
+      if (!missing.length) {
+        message.classList.remove("show");
+        return true;
+      }
+      message.textContent = `Complete before moving on: ${missing.join("; ")}.`;
+      message.classList.add("show");
+      message.scrollIntoView({ behavior: "smooth", block: "center" });
+      return false;
+    }
+
+    function completedCount() {
+      return REVIEW_ITEMS.filter(item => isComplete(getRating(item.review_item_id))).length;
+    }
+
+    function updateProgress() {
+      const complete = completedCount();
+      const percent = (100 * complete) / REVIEW_ITEMS.length;
+      document.getElementById("progress-copy").textContent =
+        `${complete} of ${REVIEW_ITEMS.length} complete`;
+      document.getElementById("progress-fill").style.width = `${percent}%`;
+      const ready = complete === REVIEW_ITEMS.length && Boolean(state.reviewer_code);
+      document.getElementById("download-json").disabled = !ready;
+      document.getElementById("download-csv").disabled = !ready;
+    }
+
+    function exportPayload() {
+      syncFreeText();
+      return {
+        schema_version: "blinded-ratings-v1",
+        rubric_version: RUBRIC_VERSION,
+        reviewer_code: state.reviewer_code,
+        sample_size: REVIEW_ITEMS.length,
+        completed_at: new Date().toISOString(),
+        ratings: REVIEW_ITEMS.map(item => {
+          const rating = getRating(item.review_item_id);
+          return {
+            review_item_id: item.review_item_id,
+            preference: rating.preference,
+            candidate_a: {
+              diagnostic_usefulness: rating.candidate_a.diagnostic_usefulness,
+              student_plausibility: rating.candidate_a.student_plausibility,
+              teacher_actionability: rating.candidate_a.teacher_actionability,
+              issues: [...rating.candidate_a.issues]
+            },
+            candidate_b: {
+              diagnostic_usefulness: rating.candidate_b.diagnostic_usefulness,
+              student_plausibility: rating.candidate_b.student_plausibility,
+              teacher_actionability: rating.candidate_b.teacher_actionability,
+              issues: [...rating.candidate_b.issues]
+            },
+            note: rating.note || ""
+          };
+        })
+      };
+    }
+
+    function download(name, type, content) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = name;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function safeCode() {
+      return state.reviewer_code.replace(/[^a-z0-9_-]+/gi, "-").replace(/^-|-$/g, "") || "reviewer";
+    }
+
+    function downloadJson() {
+      if (completedCount() !== REVIEW_ITEMS.length || !state.reviewer_code) return;
+      download(
+        `blinded-ratings-${safeCode()}.json`,
+        "application/json",
+        JSON.stringify(exportPayload(), null, 2) + "\n"
+      );
+    }
+
+    function csvCell(value) {
+      const text = String(value ?? "");
+      return `"${text.replace(/"/g, '""')}"`;
+    }
+
+    function downloadCsv() {
+      if (completedCount() !== REVIEW_ITEMS.length || !state.reviewer_code) return;
+      const payload = exportPayload();
+      const headers = [
+        "schema_version", "reviewer_code", "review_item_id", "preference",
+        "a_diagnostic_usefulness", "a_student_plausibility", "a_teacher_actionability", "a_issues",
+        "b_diagnostic_usefulness", "b_student_plausibility", "b_teacher_actionability", "b_issues", "note"
+      ];
+      const rows = payload.ratings.map(rating => [
+        payload.schema_version, payload.reviewer_code, rating.review_item_id, rating.preference,
+        rating.candidate_a.diagnostic_usefulness, rating.candidate_a.student_plausibility,
+        rating.candidate_a.teacher_actionability, rating.candidate_a.issues.join("|"),
+        rating.candidate_b.diagnostic_usefulness, rating.candidate_b.student_plausibility,
+        rating.candidate_b.teacher_actionability, rating.candidate_b.issues.join("|"), rating.note
+      ]);
+      const csv = [headers, ...rows].map(row => row.map(csvCell).join(",")).join("\n") + "\n";
+      download(`blinded-ratings-${safeCode()}.csv`, "text/csv", csv);
+    }
+
+    document.getElementById("reviewer-code").addEventListener("input", event => {
+      state.reviewer_code = event.target.value.trim();
+      saveState();
+      updateProgress();
+    });
+    document.getElementById("note").addEventListener("input", () => {
+      syncFreeText();
+    });
+    document.getElementById("previous").addEventListener("click", () => {
+      syncFreeText();
+      if (currentIndex > 0) {
+        currentIndex -= 1;
+        state.current_index = currentIndex;
+        saveState();
+        render();
+      }
+    });
+    document.getElementById("next").addEventListener("click", () => {
+      if (!validateCurrent()) return;
+      if (currentIndex < REVIEW_ITEMS.length - 1) {
+        currentIndex += 1;
+        state.current_index = currentIndex;
+        saveState();
+        render();
+      } else {
+        document.getElementById("review-view").classList.add("hide");
+        document.getElementById("completion").classList.add("show");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+    document.getElementById("back-to-review").addEventListener("click", () => {
+      document.getElementById("completion").classList.remove("show");
+      document.getElementById("review-view").classList.remove("hide");
+      render();
+    });
+    for (const id of ["download-json", "complete-json"]) {
+      document.getElementById(id).addEventListener("click", downloadJson);
+    }
+    for (const id of ["download-csv", "complete-csv"]) {
+      document.getElementById(id).addEventListener("click", downloadCsv);
+    }
+    window.addEventListener("beforeunload", syncFreeText);
+    render();
+  </script>
+</body>
+</html>
