@@ -1,0 +1,2132 @@
+{
+  "blind_review_scope": {
+    "excluded": 8,
+    "excluded_review_item_ids": [
+      "R01",
+      "R05",
+      "R10",
+      "R14",
+      "R15",
+      "R16",
+      "R18",
+      "R24"
+    ],
+    "excluded_source_ids": [
+      "1552",
+      "629",
+      "1184",
+      "764",
+      "136",
+      "827",
+      "204",
+      "1371"
+    ],
+    "included": 16,
+    "included_review_item_ids": [
+      "R02",
+      "R03",
+      "R04",
+      "R06",
+      "R07",
+      "R08",
+      "R09",
+      "R11",
+      "R12",
+      "R13",
+      "R17",
+      "R19",
+      "R20",
+      "R21",
+      "R22",
+      "R23"
+    ],
+    "included_source_ids": [
+      "1866",
+      "624",
+      "1720",
+      "675",
+      "875",
+      "973",
+      "531",
+      "1240",
+      "1343",
+      "1440",
+      "1659",
+      "920",
+      "1819",
+      "755",
+      "292",
+      "263"
+    ],
+    "items": [
+      {
+        "gold_answer": "OnlyKatie",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "review_item_id": "R01",
+        "source_id": "1552"
+      },
+      {
+        "gold_answer": "31",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 31
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R02",
+        "source_id": "1866"
+      },
+      {
+        "gold_answer": "6",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 6
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R03",
+        "source_id": "624"
+      },
+      {
+        "gold_answer": "42",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 42
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R04",
+        "source_id": "1720"
+      },
+      {
+        "gold_answer": "OnlyTom",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "review_item_id": "R05",
+        "source_id": "629"
+      },
+      {
+        "gold_answer": "0.4",
+        "included": true,
+        "numeric_value": {
+          "denominator": 5,
+          "numerator": 2
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "review_item_id": "R06",
+        "source_id": "675"
+      },
+      {
+        "gold_answer": "27.5",
+        "included": true,
+        "numeric_value": {
+          "denominator": 2,
+          "numerator": 55
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "review_item_id": "R07",
+        "source_id": "875"
+      },
+      {
+        "gold_answer": "0.025",
+        "included": true,
+        "numeric_value": {
+          "denominator": 40,
+          "numerator": 1
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "review_item_id": "R08",
+        "source_id": "973"
+      },
+      {
+        "gold_answer": "75",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 75
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R09",
+        "source_id": "531"
+      },
+      {
+        "gold_answer": "OnlyPaul",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "review_item_id": "R10",
+        "source_id": "1184"
+      },
+      {
+        "gold_answer": "1000",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 1000
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R11",
+        "source_id": "1240"
+      },
+      {
+        "gold_answer": "8",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 8
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R12",
+        "source_id": "1343"
+      },
+      {
+        "gold_answer": "20%",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 20
+        },
+        "reason": "numeric_percentage",
+        "representation": "percentage",
+        "review_item_id": "R13",
+        "source_id": "1440"
+      },
+      {
+        "gold_answer": "sometimestrue",
+        "included": false,
+        "numeric_value": null,
+        "reason": "yes_no_or_truth_answer",
+        "representation": null,
+        "review_item_id": "R14",
+        "source_id": "764"
+      },
+      {
+        "gold_answer": "-4and6",
+        "included": false,
+        "numeric_value": null,
+        "reason": "compound_multi_value_answer",
+        "representation": null,
+        "review_item_id": "R15",
+        "source_id": "136"
+      },
+      {
+        "gold_answer": "Neitheriscorrect",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "review_item_id": "R16",
+        "source_id": "827"
+      },
+      {
+        "gold_answer": "13/7",
+        "included": true,
+        "numeric_value": {
+          "denominator": 7,
+          "numerator": 13
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "review_item_id": "R17",
+        "source_id": "1659"
+      },
+      {
+        "gold_answer": "Twohundredandfourthousandandfifty",
+        "included": false,
+        "numeric_value": null,
+        "reason": "verbal_or_concept_answer",
+        "representation": null,
+        "review_item_id": "R18",
+        "source_id": "204"
+      },
+      {
+        "gold_answer": "100000",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 100000
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R19",
+        "source_id": "920"
+      },
+      {
+        "gold_answer": "3",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 3
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R20",
+        "source_id": "1819"
+      },
+      {
+        "gold_answer": "69.94",
+        "included": true,
+        "numeric_value": {
+          "denominator": 50,
+          "numerator": 3497
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "review_item_id": "R21",
+        "source_id": "755"
+      },
+      {
+        "gold_answer": "-2",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -2
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R22",
+        "source_id": "292"
+      },
+      {
+        "gold_answer": "17",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 17
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "review_item_id": "R23",
+        "source_id": "263"
+      },
+      {
+        "gold_answer": "OnlyKatie",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "review_item_id": "R24",
+        "source_id": "1371"
+      }
+    ],
+    "total": 24
+  },
+  "eligibility_rule": {
+    "excluded_classes": [
+      "named-person, categorical, verbal, yes/no, and truth answers",
+      "operation-choice and comparison-sign text",
+      "image-only answers",
+      "compound multi-value and ordered-label answers",
+      "Roman-numeral keys",
+      "algebraic or otherwise unparseable nonnumeric keys"
+    ],
+    "included_representations": [
+      "integer",
+      "signed integer",
+      "decimal",
+      "fraction",
+      "mixed number",
+      "percentage display magnitude",
+      "currency/measurement numeric magnitude",
+      "exact repeating decimal",
+      "bounded integer power",
+      "exact root",
+      "standard-form numeric expression"
+    ],
+    "numeric_equivalence": "Exact Fraction equality after deterministic display parsing; percent/currency/measurement suffixes retain displayed magnitude.",
+    "source_fields": [
+      "id",
+      "question",
+      "correct",
+      "topic"
+    ],
+    "uses_flags_ratings_or_winner": false,
+    "uses_model_outputs": false,
+    "version": "v8-gold-numeric-eligibility-v1"
+  },
+  "frozen_scope": {
+    "excluded": 40,
+    "excluded_ids": [
+      "0",
+      "1015",
+      "1034",
+      "1043",
+      "1102",
+      "1152",
+      "1162",
+      "1184",
+      "119",
+      "1252",
+      "136",
+      "1371",
+      "147",
+      "1488",
+      "1503",
+      "1548",
+      "1550",
+      "1552",
+      "1555",
+      "1624",
+      "1629",
+      "1703",
+      "1708",
+      "1840",
+      "204",
+      "22",
+      "298",
+      "402",
+      "411",
+      "417",
+      "481",
+      "51",
+      "541",
+      "580",
+      "629",
+      "764",
+      "770",
+      "827",
+      "958",
+      "965"
+    ],
+    "included": 100,
+    "included_ids": [
+      "1002",
+      "1032",
+      "1055",
+      "1089",
+      "1113",
+      "1117",
+      "1134",
+      "116",
+      "1174",
+      "1183",
+      "1187",
+      "1233",
+      "1240",
+      "1265",
+      "1266",
+      "1289",
+      "1295",
+      "1309",
+      "1315",
+      "1343",
+      "1345",
+      "1352",
+      "1360",
+      "1365",
+      "1385",
+      "1387",
+      "1390",
+      "1393",
+      "1396",
+      "1407",
+      "1412",
+      "1418",
+      "1431",
+      "1433",
+      "1439",
+      "1440",
+      "1507",
+      "1508",
+      "156",
+      "1562",
+      "1575",
+      "1625",
+      "1659",
+      "1661",
+      "1689",
+      "1700",
+      "1720",
+      "1728",
+      "1750",
+      "1777",
+      "18",
+      "1805",
+      "1819",
+      "1829",
+      "1842",
+      "1863",
+      "1866",
+      "191",
+      "262",
+      "263",
+      "266",
+      "275",
+      "292",
+      "351",
+      "398",
+      "493",
+      "520",
+      "531",
+      "555",
+      "568",
+      "60",
+      "602",
+      "604",
+      "61",
+      "617",
+      "624",
+      "639",
+      "675",
+      "678",
+      "708",
+      "714",
+      "721",
+      "73",
+      "730",
+      "755",
+      "762",
+      "782",
+      "786",
+      "815",
+      "818",
+      "825",
+      "826",
+      "849",
+      "851",
+      "875",
+      "882",
+      "892",
+      "920",
+      "973",
+      "981"
+    ],
+    "items": [
+      {
+        "gold_answer": "3times(2+4)-5",
+        "id": "0",
+        "included": false,
+        "numeric_value": null,
+        "reason": "operation_choice_text",
+        "representation": null,
+        "topic": "BIDMAS"
+      },
+      {
+        "gold_answer": "0.15",
+        "id": "1002",
+        "included": true,
+        "numeric_value": {
+          "denominator": 20,
+          "numerator": 3
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Converting between Fractions and Decimals"
+      },
+      {
+        "gold_answer": "sometimestrue",
+        "id": "1015",
+        "included": false,
+        "numeric_value": null,
+        "reason": "yes_no_or_truth_answer",
+        "representation": null,
+        "topic": "Multiplying and Dividing Negative Numbers"
+      },
+      {
+        "gold_answer": "17",
+        "id": "1032",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 17
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "BIDMAS"
+      },
+      {
+        "gold_answer": "![Anumberlinefrom1000to2000withthevalue1250correctlylabelledwithanarrowbetween1000andthemidpoint]()",
+        "id": "1034",
+        "included": false,
+        "numeric_value": null,
+        "reason": "image_only_answer",
+        "representation": null,
+        "topic": "Estimation"
+      },
+      {
+        "gold_answer": "><",
+        "id": "1043",
+        "included": false,
+        "numeric_value": null,
+        "reason": "operation_choice_text",
+        "representation": null,
+        "topic": "Ordering Fractions"
+      },
+      {
+        "gold_answer": "17/20",
+        "id": "1055",
+        "included": true,
+        "numeric_value": {
+          "denominator": 20,
+          "numerator": 17
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Adding and Subtracting Fractions"
+      },
+      {
+        "gold_answer": "499570",
+        "id": "1089",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 499570
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Place Value"
+      },
+      {
+        "gold_answer": "1^{text{st}}Ray2^{text{nd}}Tuna3^{text{rd}}Ling",
+        "id": "1102",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_or_ordered_text_answer",
+        "representation": null,
+        "topic": "Ordering Negative Numbers"
+      },
+      {
+        "gold_answer": "0.6",
+        "id": "1113",
+        "included": true,
+        "numeric_value": {
+          "denominator": 5,
+          "numerator": 3
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Multiplying and Dividing Negative Numbers"
+      },
+      {
+        "gold_answer": "450",
+        "id": "1117",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 450
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Percentages of an Amount"
+      },
+      {
+        "gold_answer": "-4",
+        "id": "1134",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -4
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Adding and Subtracting Negative Numbers"
+      },
+      {
+        "gold_answer": "OnlyTom",
+        "id": "1152",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "BIDMAS"
+      },
+      {
+        "gold_answer": "5/6",
+        "id": "116",
+        "included": true,
+        "numeric_value": {
+          "denominator": 6,
+          "numerator": 5
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Multiplying Fractions"
+      },
+      {
+        "gold_answer": "Nevertrue",
+        "id": "1162",
+        "included": false,
+        "numeric_value": null,
+        "reason": "yes_no_or_truth_answer",
+        "representation": null,
+        "topic": "Mental Multiplication and Division"
+      },
+      {
+        "gold_answer": "30.7%",
+        "id": "1174",
+        "included": true,
+        "numeric_value": {
+          "denominator": 10,
+          "numerator": 307
+        },
+        "reason": "numeric_percentage",
+        "representation": "percentage",
+        "topic": "Converting between Fractions and Percentages"
+      },
+      {
+        "gold_answer": "-20",
+        "id": "1183",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -20
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Multiplying and Dividing Negative Numbers"
+      },
+      {
+        "gold_answer": "OnlyPaul",
+        "id": "1184",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Mental Multiplication and Division"
+      },
+      {
+        "gold_answer": "6.2",
+        "id": "1187",
+        "included": true,
+        "numeric_value": {
+          "denominator": 5,
+          "numerator": 31
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Ordering Decimals"
+      },
+      {
+        "gold_answer": "Neitheriscorrect",
+        "id": "119",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Multiplying and Dividing Negative Numbers"
+      },
+      {
+        "gold_answer": "-5",
+        "id": "1233",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -5
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Adding and Subtracting Negative Numbers"
+      },
+      {
+        "gold_answer": "1000",
+        "id": "1240",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 1000
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Rounding to the Nearest Whole (10, 100, etc)"
+      },
+      {
+        "gold_answer": "BothTomandKatie",
+        "id": "1252",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "9mathrm{~m}^{2}",
+        "id": "1265",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 9
+        },
+        "reason": "numeric_measurement",
+        "representation": "measurement",
+        "topic": "Dividing Fractions"
+      },
+      {
+        "gold_answer": "8",
+        "id": "1266",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 8
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Multiples and Lowest Common Multiple"
+      },
+      {
+        "gold_answer": "4/7",
+        "id": "1289",
+        "included": true,
+        "numeric_value": {
+          "denominator": 7,
+          "numerator": 4
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Multiplying Fractions"
+      },
+      {
+        "gold_answer": "165%",
+        "id": "1295",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 165
+        },
+        "reason": "numeric_percentage",
+        "representation": "percentage",
+        "topic": "Percentages of an Amount"
+      },
+      {
+        "gold_answer": "1/5",
+        "id": "1309",
+        "included": true,
+        "numeric_value": {
+          "denominator": 5,
+          "numerator": 1
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Dividing Fractions"
+      },
+      {
+        "gold_answer": "8",
+        "id": "1315",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 8
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Multiplying and Dividing Negative Numbers"
+      },
+      {
+        "gold_answer": "8",
+        "id": "1343",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 8
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "BIDMAS"
+      },
+      {
+        "gold_answer": "5",
+        "id": "1345",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 5
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Adding and Subtracting Fractions"
+      },
+      {
+        "gold_answer": "0",
+        "id": "1352",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 0
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Mental Multiplication and Division"
+      },
+      {
+        "gold_answer": "-4and6",
+        "id": "136",
+        "included": false,
+        "numeric_value": null,
+        "reason": "compound_multi_value_answer",
+        "representation": null,
+        "topic": "Multiplying and Dividing Negative Numbers"
+      },
+      {
+        "gold_answer": "12/16",
+        "id": "1360",
+        "included": true,
+        "numeric_value": {
+          "denominator": 4,
+          "numerator": 3
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Equivalent Fractions"
+      },
+      {
+        "gold_answer": "75",
+        "id": "1365",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 75
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Percentages of an Amount"
+      },
+      {
+        "gold_answer": "OnlyKatie",
+        "id": "1371",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Ordering Negative Numbers"
+      },
+      {
+        "gold_answer": "2",
+        "id": "1385",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 2
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Adding and Subtracting Fractions"
+      },
+      {
+        "gold_answer": "1/7",
+        "id": "1387",
+        "included": true,
+        "numeric_value": {
+          "denominator": 7,
+          "numerator": 1
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Laws of Indices"
+      },
+      {
+        "gold_answer": "1/2",
+        "id": "1390",
+        "included": true,
+        "numeric_value": {
+          "denominator": 2,
+          "numerator": 1
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "BIDMAS"
+      },
+      {
+        "gold_answer": "-1.7times10^{5}",
+        "id": "1393",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -170000
+        },
+        "reason": "numeric_standard_form",
+        "representation": "standard_form",
+        "topic": "Standard Form"
+      },
+      {
+        "gold_answer": "60%",
+        "id": "1396",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 60
+        },
+        "reason": "numeric_percentage",
+        "representation": "percentage",
+        "topic": "Converting between Fractions and Percentages"
+      },
+      {
+        "gold_answer": "0.666ldots",
+        "id": "1407",
+        "included": true,
+        "numeric_value": {
+          "denominator": 3,
+          "numerator": 2
+        },
+        "reason": "numeric_repeating_decimal",
+        "representation": "repeating_decimal",
+        "topic": "Multiplying and Dividing with Decimals"
+      },
+      {
+        "gold_answer": "0.388",
+        "id": "1412",
+        "included": true,
+        "numeric_value": {
+          "denominator": 250,
+          "numerator": 97
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Converting between Fractions and Decimals"
+      },
+      {
+        "gold_answer": "35/6",
+        "id": "1418",
+        "included": true,
+        "numeric_value": {
+          "denominator": 6,
+          "numerator": 35
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Converting Mixed Number and Improper Fractions"
+      },
+      {
+        "gold_answer": "9",
+        "id": "1431",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 9
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Squares, Cubes, etc"
+      },
+      {
+        "gold_answer": "-13",
+        "id": "1433",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -13
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Adding and Subtracting Negative Numbers"
+      },
+      {
+        "gold_answer": "131",
+        "id": "1439",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 131
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "20%",
+        "id": "1440",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 20
+        },
+        "reason": "numeric_percentage",
+        "representation": "percentage",
+        "topic": "Converting between Fractions and Percentages"
+      },
+      {
+        "gold_answer": "![Ablueboxcontaininga\"lessthan\"symbolandanorangeboxcontaininga\"greaterthan\"symbol]()",
+        "id": "147",
+        "included": false,
+        "numeric_value": null,
+        "reason": "image_only_answer",
+        "representation": null,
+        "topic": "Ordering Decimals"
+      },
+      {
+        "gold_answer": "53times53",
+        "id": "1488",
+        "included": false,
+        "numeric_value": null,
+        "reason": "operation_choice_text",
+        "representation": null,
+        "topic": "Squares, Cubes, etc"
+      },
+      {
+        "gold_answer": "7.4608and7.4551",
+        "id": "1503",
+        "included": false,
+        "numeric_value": null,
+        "reason": "compound_multi_value_answer",
+        "representation": null,
+        "topic": "Rounding to Decimal Places"
+      },
+      {
+        "gold_answer": "24%",
+        "id": "1507",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 24
+        },
+        "reason": "numeric_percentage",
+        "representation": "percentage",
+        "topic": "Percentages of an Amount"
+      },
+      {
+        "gold_answer": "7",
+        "id": "1508",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 7
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "BIDMAS"
+      },
+      {
+        "gold_answer": "![Arectangledividedhorizontallyinto3smallerrectanglesthatareidenticaltoeachotherinsizeandshape.Thetop2rectanglesofthe3areshadedorangetheotheriswhite.]()",
+        "id": "1548",
+        "included": false,
+        "numeric_value": null,
+        "reason": "image_only_answer",
+        "representation": null,
+        "topic": "Ordering Fractions"
+      },
+      {
+        "gold_answer": "OnlyTom",
+        "id": "1550",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Squares, Cubes, etc"
+      },
+      {
+        "gold_answer": "OnlyKatie",
+        "id": "1552",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Standard Form"
+      },
+      {
+        "gold_answer": "OnlyKatie",
+        "id": "1555",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Mental Multiplication and Division"
+      },
+      {
+        "gold_answer": "61/6",
+        "id": "156",
+        "included": true,
+        "numeric_value": {
+          "denominator": 6,
+          "numerator": 61
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Converting Mixed Number and Improper Fractions"
+      },
+      {
+        "gold_answer": "56",
+        "id": "1562",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 56
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "5",
+        "id": "1575",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 5
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Square Roots, Cube Roots, etc"
+      },
+      {
+        "gold_answer": "Thirty-six",
+        "id": "1624",
+        "included": false,
+        "numeric_value": null,
+        "reason": "verbal_or_concept_answer",
+        "representation": null,
+        "topic": "Factors and Highest Common Factor"
+      },
+      {
+        "gold_answer": "3.16",
+        "id": "1625",
+        "included": true,
+        "numeric_value": {
+          "denominator": 25,
+          "numerator": 79
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Rounding to Decimal Places"
+      },
+      {
+        "gold_answer": "OnlyTom",
+        "id": "1629",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Factors and Highest Common Factor"
+      },
+      {
+        "gold_answer": "13/7",
+        "id": "1659",
+        "included": true,
+        "numeric_value": {
+          "denominator": 7,
+          "numerator": 13
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Dividing Fractions"
+      },
+      {
+        "gold_answer": "4^{12}",
+        "id": "1661",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 16777216
+        },
+        "reason": "numeric_power",
+        "representation": "power",
+        "topic": "Laws of Indices"
+      },
+      {
+        "gold_answer": "12/5",
+        "id": "1689",
+        "included": true,
+        "numeric_value": {
+          "denominator": 5,
+          "numerator": 12
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Adding and Subtracting Fractions"
+      },
+      {
+        "gold_answer": "3",
+        "id": "1700",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 3
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Multiplying and Dividing with Decimals"
+      },
+      {
+        "gold_answer": "sometimestrue",
+        "id": "1703",
+        "included": false,
+        "numeric_value": null,
+        "reason": "yes_no_or_truth_answer",
+        "representation": null,
+        "topic": "Adding and Subtracting Negative Numbers"
+      },
+      {
+        "gold_answer": "18000-2000",
+        "id": "1708",
+        "included": false,
+        "numeric_value": null,
+        "reason": "operation_choice_text",
+        "representation": null,
+        "topic": "Estimation"
+      },
+      {
+        "gold_answer": "42",
+        "id": "1720",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 42
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Multiples and Lowest Common Multiple"
+      },
+      {
+        "gold_answer": "7/10",
+        "id": "1728",
+        "included": true,
+        "numeric_value": {
+          "denominator": 10,
+          "numerator": 7
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "BIDMAS"
+      },
+      {
+        "gold_answer": "1/9",
+        "id": "1750",
+        "included": true,
+        "numeric_value": {
+          "denominator": 9,
+          "numerator": 1
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "BIDMAS"
+      },
+      {
+        "gold_answer": "18",
+        "id": "1777",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 18
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Mental Multiplication and Division"
+      },
+      {
+        "gold_answer": "-5",
+        "id": "18",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -5
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Adding and Subtracting Negative Numbers"
+      },
+      {
+        "gold_answer": "1",
+        "id": "1805",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 1
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Squares, Cubes, etc"
+      },
+      {
+        "gold_answer": "3",
+        "id": "1819",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 3
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Square Roots, Cube Roots, etc"
+      },
+      {
+        "gold_answer": "400",
+        "id": "1829",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 400
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Estimation"
+      },
+      {
+        "gold_answer": "=",
+        "id": "1840",
+        "included": false,
+        "numeric_value": null,
+        "reason": "operation_choice_text",
+        "representation": null,
+        "topic": "Ordering Fractions"
+      },
+      {
+        "gold_answer": "1/5",
+        "id": "1842",
+        "included": true,
+        "numeric_value": {
+          "denominator": 5,
+          "numerator": 1
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Dividing Fractions"
+      },
+      {
+        "gold_answer": "-3",
+        "id": "1863",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -3
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Multiplying and Dividing Negative Numbers"
+      },
+      {
+        "gold_answer": "31",
+        "id": "1866",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 31
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "BIDMAS"
+      },
+      {
+        "gold_answer": "-2.01",
+        "id": "191",
+        "included": true,
+        "numeric_value": {
+          "denominator": 100,
+          "numerator": -201
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Ordering Negative Numbers"
+      },
+      {
+        "gold_answer": "Twohundredandfourthousandandfifty",
+        "id": "204",
+        "included": false,
+        "numeric_value": null,
+        "reason": "verbal_or_concept_answer",
+        "representation": null,
+        "topic": "Place Value"
+      },
+      {
+        "gold_answer": "OnlyTom",
+        "id": "22",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "8",
+        "id": "262",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 8
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Factors and Highest Common Factor"
+      },
+      {
+        "gold_answer": "17",
+        "id": "263",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 17
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Adding and Subtracting Fractions"
+      },
+      {
+        "gold_answer": "31/3",
+        "id": "266",
+        "included": true,
+        "numeric_value": {
+          "denominator": 3,
+          "numerator": 31
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Multiplying Fractions"
+      },
+      {
+        "gold_answer": "49.99",
+        "id": "275",
+        "included": true,
+        "numeric_value": {
+          "denominator": 100,
+          "numerator": 4999
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Adding and Subtracting with Decimals"
+      },
+      {
+        "gold_answer": "-2",
+        "id": "292",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -2
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Multiplying and Dividing Negative Numbers"
+      },
+      {
+        "gold_answer": "10p^{3}q",
+        "id": "298",
+        "included": false,
+        "numeric_value": null,
+        "reason": "algebraic_or_text_answer",
+        "representation": null,
+        "topic": "Laws of Indices"
+      },
+      {
+        "gold_answer": "256",
+        "id": "351",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 256
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Squares, Cubes, etc"
+      },
+      {
+        "gold_answer": "5",
+        "id": "398",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 5
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Adding and Subtracting Negative Numbers"
+      },
+      {
+        "gold_answer": "1/61/6",
+        "id": "402",
+        "included": false,
+        "numeric_value": null,
+        "reason": "unparseable_numeric_key",
+        "representation": null,
+        "topic": "Simplifying Fractions"
+      },
+      {
+        "gold_answer": "+100then-3",
+        "id": "411",
+        "included": false,
+        "numeric_value": null,
+        "reason": "operation_choice_text",
+        "representation": null,
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "OnlyPaul",
+        "id": "417",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Squares, Cubes, etc"
+      },
+      {
+        "gold_answer": "1^{text{st}}Shark2^{text{nd}}Dolphin3^{text{rd}}Starfish",
+        "id": "481",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_or_ordered_text_answer",
+        "representation": null,
+        "topic": "Ordering Negative Numbers"
+      },
+      {
+        "gold_answer": "7/2",
+        "id": "493",
+        "included": true,
+        "numeric_value": {
+          "denominator": 2,
+          "numerator": 7
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Multiplying Fractions"
+      },
+      {
+        "gold_answer": "2400+120+42",
+        "id": "51",
+        "included": false,
+        "numeric_value": null,
+        "reason": "operation_choice_text",
+        "representation": null,
+        "topic": "Mental Multiplication and Division"
+      },
+      {
+        "gold_answer": "0.35",
+        "id": "520",
+        "included": true,
+        "numeric_value": {
+          "denominator": 20,
+          "numerator": 7
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Adding and Subtracting with Decimals"
+      },
+      {
+        "gold_answer": "75",
+        "id": "531",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 75
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Multiples and Lowest Common Multiple"
+      },
+      {
+        "gold_answer": "<",
+        "id": "541",
+        "included": false,
+        "numeric_value": null,
+        "reason": "operation_choice_text",
+        "representation": null,
+        "topic": "Ordering Fractions"
+      },
+      {
+        "gold_answer": "6mathrm{~mm}",
+        "id": "555",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 6
+        },
+        "reason": "numeric_measurement",
+        "representation": "measurement",
+        "topic": "Square Roots, Cube Roots, etc"
+      },
+      {
+        "gold_answer": "8",
+        "id": "568",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 8
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Fractions of an Amount"
+      },
+      {
+        "gold_answer": "BothTomandKatie",
+        "id": "580",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Mental Multiplication and Division"
+      },
+      {
+        "gold_answer": "31/3",
+        "id": "60",
+        "included": true,
+        "numeric_value": {
+          "denominator": 3,
+          "numerator": 31
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Converting Mixed Number and Improper Fractions"
+      },
+      {
+        "gold_answer": "18",
+        "id": "602",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 18
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Fractions of an Amount"
+      },
+      {
+        "gold_answer": "0.16",
+        "id": "604",
+        "included": true,
+        "numeric_value": {
+          "denominator": 25,
+          "numerator": 4
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Multiplying and Dividing with Decimals"
+      },
+      {
+        "gold_answer": "5/8",
+        "id": "61",
+        "included": true,
+        "numeric_value": {
+          "denominator": 8,
+          "numerator": 5
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Ordering Fractions"
+      },
+      {
+        "gold_answer": "6/4",
+        "id": "617",
+        "included": true,
+        "numeric_value": {
+          "denominator": 2,
+          "numerator": 3
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Dividing Fractions"
+      },
+      {
+        "gold_answer": "6",
+        "id": "624",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 6
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "OnlyTom",
+        "id": "629",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Converting between Fractions and Percentages"
+      },
+      {
+        "gold_answer": "637",
+        "id": "639",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 637
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "0.4",
+        "id": "675",
+        "included": true,
+        "numeric_value": {
+          "denominator": 5,
+          "numerator": 2
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Ordering Decimals"
+      },
+      {
+        "gold_answer": "554",
+        "id": "678",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 554
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "40%",
+        "id": "708",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 40
+        },
+        "reason": "numeric_percentage",
+        "representation": "percentage",
+        "topic": "Converting between Fractions and Percentages"
+      },
+      {
+        "gold_answer": "-391",
+        "id": "714",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -391
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Place Value"
+      },
+      {
+        "gold_answer": "50",
+        "id": "721",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 50
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Rounding to Significant Figures"
+      },
+      {
+        "gold_answer": "0",
+        "id": "73",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 0
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Rounding to the Nearest Whole (10, 100, etc)"
+      },
+      {
+        "gold_answer": "12",
+        "id": "730",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 12
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Percentages of an Amount"
+      },
+      {
+        "gold_answer": "69.94",
+        "id": "755",
+        "included": true,
+        "numeric_value": {
+          "denominator": 50,
+          "numerator": 3497
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Adding and Subtracting with Decimals"
+      },
+      {
+        "gold_answer": "31/10",
+        "id": "762",
+        "included": true,
+        "numeric_value": {
+          "denominator": 10,
+          "numerator": 31
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Adding and Subtracting Fractions"
+      },
+      {
+        "gold_answer": "sometimestrue",
+        "id": "764",
+        "included": false,
+        "numeric_value": null,
+        "reason": "yes_no_or_truth_answer",
+        "representation": null,
+        "topic": "Multiples and Lowest Common Multiple"
+      },
+      {
+        "gold_answer": "OnlyTom",
+        "id": "770",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Multiplying Fractions"
+      },
+      {
+        "gold_answer": "3/4",
+        "id": "782",
+        "included": true,
+        "numeric_value": {
+          "denominator": 4,
+          "numerator": 3
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Simplifying Fractions"
+      },
+      {
+        "gold_answer": "1/7",
+        "id": "786",
+        "included": true,
+        "numeric_value": {
+          "denominator": 7,
+          "numerator": 1
+        },
+        "reason": "numeric_fraction",
+        "representation": "fraction",
+        "topic": "Dividing Fractions"
+      },
+      {
+        "gold_answer": "£28",
+        "id": "815",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 28
+        },
+        "reason": "numeric_currency",
+        "representation": "currency",
+        "topic": "Percentages of an Amount"
+      },
+      {
+        "gold_answer": "0.05",
+        "id": "818",
+        "included": true,
+        "numeric_value": {
+          "denominator": 20,
+          "numerator": 1
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Fractions of an Amount"
+      },
+      {
+        "gold_answer": "4",
+        "id": "825",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 4
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Factors and Highest Common Factor"
+      },
+      {
+        "gold_answer": "470",
+        "id": "826",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 470
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Mental Multiplication and Division"
+      },
+      {
+        "gold_answer": "Neitheriscorrect",
+        "id": "827",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Simplifying Fractions"
+      },
+      {
+        "gold_answer": "249",
+        "id": "849",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 249
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Place Value"
+      },
+      {
+        "gold_answer": "7%",
+        "id": "851",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 7
+        },
+        "reason": "numeric_percentage",
+        "representation": "percentage",
+        "topic": "Converting between Decimals and Percentages"
+      },
+      {
+        "gold_answer": "27.5",
+        "id": "875",
+        "included": true,
+        "numeric_value": {
+          "denominator": 2,
+          "numerator": 55
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Rounding to Decimal Places"
+      },
+      {
+        "gold_answer": "-3",
+        "id": "882",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": -3
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Adding and Subtracting Negative Numbers"
+      },
+      {
+        "gold_answer": "168",
+        "id": "892",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 168
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "100000",
+        "id": "920",
+        "included": true,
+        "numeric_value": {
+          "denominator": 1,
+          "numerator": 100000
+        },
+        "reason": "numeric_integer",
+        "representation": "integer",
+        "topic": "Rounding to Significant Figures"
+      },
+      {
+        "gold_answer": "OnlyJo",
+        "id": "958",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Squares, Cubes, etc"
+      },
+      {
+        "gold_answer": "OnlyTom",
+        "id": "965",
+        "included": false,
+        "numeric_value": null,
+        "reason": "named_person_or_categorical_answer",
+        "representation": null,
+        "topic": "Mental Addition and Subtraction"
+      },
+      {
+        "gold_answer": "0.025",
+        "id": "973",
+        "included": true,
+        "numeric_value": {
+          "denominator": 40,
+          "numerator": 1
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Converting between Decimals and Percentages"
+      },
+      {
+        "gold_answer": "8.03",
+        "id": "981",
+        "included": true,
+        "numeric_value": {
+          "denominator": 100,
+          "numerator": 803
+        },
+        "reason": "numeric_decimal",
+        "representation": "decimal",
+        "topic": "Converting between Decimals and Percentages"
+      }
+    ],
+    "total": 140
+  },
+  "provenance": {
+    "classification_uses_model_outputs": false,
+    "source_evidence_modified": false,
+    "sources": {
+      "all_scope_benchmark": {
+        "bytes": 27768,
+        "path": "data/eval_out/benchmark_v8_final.json",
+        "sha256": "419ec4a7f9b8c3e4baef1830582b0c54225be315d0cc740d517575aa208c1368"
+      },
+      "all_scope_blind_review": {
+        "bytes": 29015,
+        "path": "data/eval_out/blind_review_v8_opus_final.json",
+        "sha256": "415ae9006c6b542c8404e95b72b9ae75d316d8836978c97bbf10e0e791c20930"
+      },
+      "all_scope_human_summary": {
+        "bytes": 14975,
+        "path": "HUMAN_REVIEW_V8_OPUS_RESULTS.md",
+        "sha256": "030d9dcbb1a42f2aef9d425045734d592ef5574532e7299b9f8dda0d76b67bc4"
+      },
+      "frozen_gold": {
+        "bytes": 52046,
+        "path": "data/processed/eval_v8_frozen.jsonl",
+        "sha256": "546c14f03707ce098146dac5e0c6e99c0a4619d6d4e32193a9fff4e3b9bfd1b1"
+      },
+      "hidden_key": {
+        "bytes": 10626,
+        "contents_included_in_outputs": false,
+        "path": "data/eval_out/OWNER_ONLY_DO_NOT_OPEN_UNTIL_REVIEW_COMPLETE.json",
+        "sha256": "746d01d96e7a7b4f63bc93304c4607a3bba6610e42c65cf24b6d0710f58e1b16"
+      },
+      "predictions_opus": {
+        "bytes": 174361,
+        "path": "predictions_opus_v8.jsonl",
+        "sha256": "b2b4680e4df2e52aa2cea2f427d4b3b2723b0e331f06d4ff1053be0e9f33778b"
+      },
+      "predictions_v8_best_of_n": {
+        "bytes": 175765,
+        "path": "predictions_v8_best_of_n.jsonl",
+        "sha256": "5ebf3b729a7a3ae8c5458fcfcf3208a5ad028113f438a5aea466bfdcaae0d5f8"
+      },
+      "predictions_v8_model_only": {
+        "bytes": 171434,
+        "path": "predictions_v8_model_only.jsonl",
+        "sha256": "a8ec2c4368555a452ed00ca00ba5a655e421730374dc07493d8a3f2a54d8aa54"
+      },
+      "review_html": {
+        "bytes": 67460,
+        "path": "human_review/final_round/review.html",
+        "sha256": "b9cf508e930ffb4d55c1545e6e0d37bbcbefcc3a5ef656309faa3fea978bb1ab"
+      },
+      "review_protocol": {
+        "bytes": 6376,
+        "path": "human_review/final_round/PROTOCOL.md",
+        "sha256": "c8855ee793760535bb3455c426c59395ab4a77337d997bce423ac96e4040c715"
+      }
+    }
+  },
+  "schema_version": "v8-numeric-scope-manifest-v1",
+  "trusted_gold_sha256": "132c89ea82826f2ee44ddc4bf2f89193ff5fe0c9a9ffd63fdb10190cd80a3554"
+}
