@@ -1,0 +1,19 @@
+{
+  "candidates": 130,
+  "failure_reasons": {
+    "answer_shape": 10,
+    "computation": 76,
+    "key_collision": 1,
+    "unsupported_procedure_mapping": 11
+  },
+  "filter_version": "v1",
+  "minimum_survivors": 20,
+  "opus_judge_used": false,
+  "procedure_registry_id": "wayline-procedures-v1",
+  "ready": true,
+  "rejected": 98,
+  "route": "deterministic_teacher_filter",
+  "student_option_frequency_claimed": false,
+  "survivors": 32,
+  "task_quality_proxy": "not_available"
+}

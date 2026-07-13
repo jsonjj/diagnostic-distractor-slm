@@ -4,7 +4,7 @@
 
 _Last updated: 2026-07-10. Repo: `/Users/jonat/Projects/diagnostic-distractor-slm` · GitHub: `https://github.com/jsonjj/diagnostic-distractor-slm` · branch `main` (HEAD `b86b2d8`)._
 
-_Status: **COMPLETE through v7.1 (the final model).** Trained, evaluated, published to Hugging Face. Only the demo video remains (owner task). Full lineage v1→v7.1 documented below._
+_Status: **v7.1 remains the shipped model. v8 is a pre-registered, one-shot 8B upgrade plan and has NOT been trained or evaluated.** See `DATASET_V8.md`, `docs/V8_BENCHMARK_PROTOCOL.md`, `docs/V8_RUNBOOK.md`, and `TABLE_V8_PLAN.md`. Full shipped lineage v1→v7.1 remains documented below._
 
 ---
 
@@ -38,7 +38,7 @@ Legacy v1–v3 targets omit `computation` (backward-compatible; `build_assistant
 ## 2. Repo, environment, how to run
 
 - **Python:** `.venv/bin/python` (deps in `requirements.txt`).
-- **Secrets in `.env`** (not committed): `TFY_BASE_URL`, `TFY_MODEL` (=`claude-sonnet-5`), `TFY_API_KEY` (TrueFoundry → Sonnet 5, the teacher + judge), `HF_TOKEN`.
+- **Secrets in `.env`** (not committed): `TFY_BASE_URL`, legacy `TFY_MODEL` (Sonnet baseline), role-specific `TFY_TEACHER_MODEL` / `TFY_JUDGE_MODEL` / `TFY_FRONTIER_MODEL`, `TFY_API_KEY`, and `HF_TOKEN`. Non-empty project `.env` values intentionally override stale inherited `TFY_*` process values.
 - **Final base model:** `unsloth/Qwen3-4B-bnb-4bit` (v7.1). Earlier versions used `Qwen3-1.7B-bnb-4bit`. QLoRA r=32/α=32, 3 epochs, effective batch 8, Unsloth. v7 needs an A100/L4 (Colab Pro); 1.7B fits a T4.
 
 **Common commands**
@@ -87,7 +87,7 @@ Legacy v1–v3 targets omit `computation` (backward-compatible; `build_assistant
 
 ## 4. Data pipeline & dataset iterations
 
-**Source:** Kaggle Eedi "Number" strand (same data as Feng 2024 / DiVERT). Filtered to all-3-labeled: **281 usable real MCQs** → 140 held-out eval (frozen, 0% leakage) + 141 real train seed. Two limits shaped everything: real data is thin (→ need synthetic) and there are no student-pick rates (→ plausibility unmeasurable directly). See `DATASET.md` for the full source/trust write-up.
+**Source:** Kaggle Eedi "Number" strand (same data as Feng 2024 / DiVERT). Filtered to all-3-labeled: **281 usable real MCQs** → 140 held-out eval (0% row leakage) + 141 real train seed. Because that 140 informed repeated v1–v7 decisions, v8 treats it as development/continuity rather than an unbiased final test and reserves a new 140-question split from previously unused Number items. Two limits shaped everything: real data is thin (→ need synthetic) and there are no student-pick rates (→ plausibility unmeasurable directly). See `DATASET.md` and `DATASET_V8.md`.
 
 **Synthetic engine:** executable "bugs" (Brown & Burton 1978) that compute each misconception's wrong answer — 100% consistent by construction. Training-only.
 

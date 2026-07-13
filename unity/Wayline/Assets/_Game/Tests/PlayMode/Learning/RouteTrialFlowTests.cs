@@ -214,6 +214,49 @@ namespace Wayline.Tests.Learning
         }
 
         [UnityTest]
+        public IEnumerator LossQuestionsUseNonVictoryCopyAndOfferNoMapBypass()
+        {
+            var controller = NewController(new ShowcaseWaylineClient(true));
+            var panel = AtlasTrialPanel.Create(
+                controller,
+                new AtlasTrialSettings(
+                    "VALUEHOLD REACH",
+                    1f,
+                    true,
+                    AtlasTrialPurpose.DefeatRecovery),
+                new RecordingQuizSpeech());
+
+            Assert.That(panel.View, Is.EqualTo(AtlasTrialView.Loading));
+            Assert.That(panel.UnavailableText.text, Does.Contain("NEXT-TRY QUESTIONS"));
+            Assert.That(
+                panel.UnavailableText.text,
+                Does.Contain("before returning to the map"));
+
+            yield return Await(controller.PrepareAsync(
+                ShowcaseData.Request(), CancellationToken.None));
+            yield return null;
+
+            var header = panel.QuestionPage
+                .GetComponentsInChildren<Text>(includeInactive: true)
+                .Single(text => text.gameObject.name == "Route label");
+            Assert.That(
+                header.text,
+                Is.EqualTo("VALUEHOLD REACH / NEXT-TRY QUESTIONS"));
+
+            panel.ShowRuntimeUnavailable();
+            yield return null;
+
+            Assert.That(panel.View, Is.EqualTo(AtlasTrialView.Unavailable));
+            Assert.That(
+                panel.UnavailableText.text,
+                Does.Contain("is not counted as a win"));
+            Assert.That(panel.RetryButton.gameObject.activeSelf, Is.True);
+            Assert.That(panel.ReturnToMapButton.gameObject.activeSelf, Is.False);
+
+            UnityEngine.Object.Destroy(panel.gameObject);
+        }
+
+        [UnityTest]
         public IEnumerator OpeningInstallsRealInputAndGatesChoicesUntilFocusIsStable()
         {
             var controller = NewController(new ShowcaseWaylineClient(true));

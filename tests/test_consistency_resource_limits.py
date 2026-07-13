@@ -1,6 +1,6 @@
 import unittest
 
-from src.consistency import eval_computation
+from src.consistency import computation_consistent, eval_computation, to_display_value
 
 
 class ComputationResourceLimitTests(unittest.TestCase):
@@ -19,6 +19,20 @@ class ComputationResourceLimitTests(unittest.TestCase):
     def test_keeps_normal_sixth_grade_exact_arithmetic(self):
         self.assertEqual(str(eval_computation("(5 + 1) / (8 + 4) = 1/2")), "1/2")
         self.assertEqual(str(eval_computation("2^5 + 4 * 3 = 44")), "44")
+
+    def test_v8_display_value_mode_handles_percentage_options(self):
+        self.assertEqual(str(to_display_value("6%")), "6")
+        self.assertIsNone(
+            computation_consistent("0.6 * 10 = 6%", "6%", "Convert 0.6")
+        )
+        self.assertTrue(
+            computation_consistent(
+                "0.6 * 10 = 6%",
+                "6%",
+                "Convert 0.6",
+                display_units=True,
+            )
+        )
 
 
 if __name__ == "__main__":

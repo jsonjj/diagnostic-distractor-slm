@@ -25,6 +25,7 @@ namespace Wayline.Flow
 
             var requiresBattle = stableState == FlowState.Combat ||
                                  stableState == FlowState.NormalTrial ||
+                                 stableState == FlowState.LossTrial ||
                                  stableState == FlowState.SealTrial ||
                                  stableState == FlowState.AssistedRoute ||
                                  stableState == FlowState.Reward;
@@ -33,7 +34,7 @@ namespace Wayline.Flow
             if (!requiresBattle && battle != null)
             {
                 throw new ArgumentException(
-                    "Title and map checkpoints cannot retain a battle identity.",
+                    "This checkpoint state cannot retain a battle identity.",
                     nameof(battle));
             }
 

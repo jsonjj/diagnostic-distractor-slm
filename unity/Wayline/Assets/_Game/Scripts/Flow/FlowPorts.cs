@@ -90,6 +90,8 @@ namespace Wayline.Flow
     {
         void PresentNormalTrial(FlowBattle battle);
 
+        void PresentLossTrial(FlowBattle battle);
+
         void PresentSealTrial(FlowBattle battle);
 
         void PresentAssistedRoute(FlowBattle battle);

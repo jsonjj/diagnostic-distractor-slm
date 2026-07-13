@@ -56,7 +56,7 @@ namespace Wayline.UI
             ConfidenceControl.HasClippedText;
 
         internal void Initialize(
-            string routeLabel,
+            string trialLabel,
             Action<int> optionSelected,
             Action<Confidence> confidenceSelected)
         {
@@ -81,7 +81,7 @@ namespace Wayline.UI
             _routeLabel = AtlasUiFactory.Text(
                 surface,
                 "Route label",
-                routeLabel + " / ROUTE TRIAL",
+                trialLabel,
                 30,
                 AtlasPalette.MeridianGold,
                 TextAnchor.MiddleLeft,

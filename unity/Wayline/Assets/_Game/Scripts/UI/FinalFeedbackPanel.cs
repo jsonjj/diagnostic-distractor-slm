@@ -152,9 +152,11 @@ namespace Wayline.UI
             return speech.ToString();
         }
 
-        internal void ShowComplete(float textScale)
+        internal void ShowComplete(float textScale, string title)
         {
-            _title.text = "ROUTE TRIAL COMPLETE";
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("A completion title is required.", nameof(title));
+            _title.text = title;
             _title.fontSize = Mathf.RoundToInt(42f * textScale);
             _visibleSectionLabels.Clear();
             for (var index = 0; index < _sectionSurfaces.Count; index++)

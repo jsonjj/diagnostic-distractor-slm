@@ -1,7 +1,7 @@
 """Teacher-generate + verify show-the-work computations for the real Eedi seed (v4).
 
 The 79 distinct-misconception real SFT records carry only {misconception, answer} per
-distractor. Here we ask the teacher (Claude Sonnet 5 via TrueFoundry) for the exact
+distractor. Here we ask the configured TrueFoundry teacher model for the exact
 arithmetic a student with each stated misconception performs on that question to reach
 that answer, then VERIFY each programmatically (parse the computation, evaluate its
 left-hand side, require it to equal the record's answer). A record is kept ONLY if all
@@ -27,7 +27,7 @@ import json
 import threading
 from concurrent.futures import ThreadPoolExecutor
 
-from .config import DATA_PROCESSED
+from .config import DATA_PROCESSED, TFY_TEACHER_MODEL
 from .consistency import computation_consistent, eval_computation, to_value
 from .prompts import SYSTEM_PROMPT, build_assistant, build_user
 
@@ -104,7 +104,13 @@ def _verify(computations, distractors, question=None):
     return out
 
 
-def _process(rec, chat, max_retries=MAX_RETRIES, harden=False):
+def _process(
+    rec,
+    chat,
+    max_retries=MAX_RETRIES,
+    harden=False,
+    model=None,
+):
     """Generate + verify computations for one real record. Returns (sft_or_None, n_calls, detail)."""
     question, correct, topic = _parse_user(rec["user"])
     distractors = json.loads(rec["assistant"]).get("distractors", [])
@@ -117,6 +123,7 @@ def _process(rec, chat, max_retries=MAX_RETRIES, harden=False):
         try:
             out = chat(
                 [{"role": "system", "content": _TEACHER_SYSTEM}, {"role": "user", "content": usr}],
+                model=model or TFY_TEACHER_MODEL,
                 max_tokens=400,
             )
         except Exception as e:  # noqa: BLE001

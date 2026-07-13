@@ -214,7 +214,7 @@ namespace Wayline.UI
             questionObject.transform.SetParent(transform, false);
             QuestionPage = questionObject.GetComponent<QuestionPage>();
             QuestionPage.Initialize(
-                _settings.WorldLabel,
+                _settings.QuestionHeader,
                 SelectOption,
                 SelectConfidence);
 
@@ -288,7 +288,7 @@ namespace Wayline.UI
             UnavailableText = AtlasUiFactory.Text(
                 root,
                 "Unavailable explanation",
-                "The route trial is unavailable. Your combat result is safe.",
+                _settings.UnavailableMessage,
                 36,
                 AtlasPalette.Limestone,
                 TextAnchor.MiddleCenter,
@@ -610,7 +610,11 @@ namespace Wayline.UI
             ReadAloudButton.gameObject.SetActive(true);
             AtlasUiFactory.SetInteractable(ReadAloudButton, true);
             PrimaryButton.gameObject.SetActive(true);
-            PrimaryLabel.text = _controller.FinalActionLabel;
+            PrimaryLabel.text =
+                _settings.RequiresCompletionBeforeMap &&
+                _controller.FinalActionLabel == "Complete route trial"
+                    ? "Return to map"
+                    : _controller.FinalActionLabel;
             PrimaryLabel.fontSize = Mathf.RoundToInt(28f * _textScale);
             AtlasUiFactory.SetInteractable(PrimaryButton, !_actionInFlight);
             MoveFocusTo(PrimaryButton);
@@ -620,7 +624,7 @@ namespace Wayline.UI
         {
             View = AtlasTrialView.Complete;
             SetMainSections(false, false, true, false);
-            FinalFeedbackPanel.ShowComplete(_textScale);
+            FinalFeedbackPanel.ShowComplete(_textScale, _settings.CompletionTitle);
             ReadAloudButton.gameObject.SetActive(false);
             PrimaryButton.gameObject.SetActive(false);
         }
@@ -629,11 +633,7 @@ namespace Wayline.UI
         {
             View = AtlasTrialView.Loading;
             SetMainSections(false, false, false, true);
-            UnavailableText.text =
-                "GENERATING VERIFIED ROUTE TRIAL\n\n" +
-                "Local Qwen is creating three diagnostic questions.\n" +
-                "Every distractor is checked before it appears.\n\n" +
-                "This can take up to one minute.";
+            UnavailableText.text = _settings.LoadingMessage;
             UnavailableText.fontSize = Mathf.RoundToInt(36f * _textScale);
             ScaleGlobalActionLabels();
             RetryButton.gameObject.SetActive(false);
@@ -646,17 +646,22 @@ namespace Wayline.UI
         {
             View = AtlasTrialView.Unavailable;
             SetMainSections(false, false, false, true);
-            UnavailableText.text =
-                "The route trial is unavailable. Your combat result is safe.";
+            UnavailableText.text = _settings.UnavailableMessage;
             UnavailableText.fontSize = Mathf.RoundToInt(36f * _textScale);
             ScaleGlobalActionLabels();
             RetryButton.gameObject.SetActive(true);
-            ReturnToMapButton.gameObject.SetActive(true);
+            ReturnToMapButton.gameObject.SetActive(
+                !_settings.RequiresCompletionBeforeMap);
             AtlasUiFactory.SetInteractable(RetryButton, !_retryInFlight);
-            AtlasUiFactory.SetInteractable(ReturnToMapButton, true);
+            AtlasUiFactory.SetInteractable(
+                ReturnToMapButton,
+                !_settings.RequiresCompletionBeforeMap);
             ReadAloudButton.gameObject.SetActive(false);
             PrimaryButton.gameObject.SetActive(false);
-            MoveFocusTo(_retryInFlight ? ReturnToMapButton : RetryButton);
+            MoveFocusTo(
+                _retryInFlight && !_settings.RequiresCompletionBeforeMap
+                    ? ReturnToMapButton
+                    : RetryButton);
         }
 
         private int FindResultIndex(FinalQuizItemResult result)
@@ -705,6 +710,19 @@ namespace Wayline.UI
 
         private void ConfigureUnavailableNavigation()
         {
+            if (_settings.RequiresCompletionBeforeMap)
+            {
+                RetryButton.navigation = new Navigation
+                {
+                    mode = Navigation.Mode.Explicit,
+                    selectOnLeft = RetryButton,
+                    selectOnRight = RetryButton,
+                    selectOnUp = RetryButton,
+                    selectOnDown = RetryButton
+                };
+                return;
+            }
+
             var retryNavigation = new Navigation
             {
                 mode = Navigation.Mode.Explicit,

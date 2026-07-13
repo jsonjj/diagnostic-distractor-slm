@@ -113,10 +113,13 @@ namespace Wayline.Tests.Flow
     internal sealed class PlayModeTrialPort : ITrialFlowPort
     {
         public List<FlowBattle> Normal { get; } = new List<FlowBattle>();
+        public List<FlowBattle> Loss { get; } = new List<FlowBattle>();
         public List<FlowBattle> Seal { get; } = new List<FlowBattle>();
         public List<FlowBattle> Assisted { get; } = new List<FlowBattle>();
 
         public void PresentNormalTrial(FlowBattle battle) => Normal.Add(battle);
+
+        public void PresentLossTrial(FlowBattle battle) => Loss.Add(battle);
 
         public void PresentSealTrial(FlowBattle battle) => Seal.Add(battle);
 

@@ -2,7 +2,7 @@
 
 Consumes prediction files (JSONL rows: {"id", "distractors":[{"misconception","answer"}]}) produced
 by base and tuned model inference. All metrics here are LOCAL and free except the optional judges
-(Claude Sonnet 5 via TrueFoundry), which are only called with --judge or --rubric.
+(the configured TrueFoundry judge model), which are only called with --judge or --rubric.
 
 Usage:
   python -m src.eval                       # local self-validation (no API)
@@ -18,7 +18,7 @@ import json
 import random
 from typing import Optional
 
-from .config import DATA_PROCESSED
+from .config import DATA_PROCESSED, TFY_JUDGE_MODEL
 from .consistency import computation_consistent, is_consistent
 from .text_utils import normalize_answer
 
@@ -128,8 +128,17 @@ def computation_consistency(preds, questions=None):
 
 
 # ---------------- consistency: judge (gated; TrueFoundry API) ----------------
-def judge_consistency(question, misconception, answer, correct) -> bool:
-    from .tfy_client import chat
+def judge_consistency(
+    question,
+    misconception,
+    answer,
+    correct,
+    *,
+    model=None,
+    chat_fn=None,
+) -> bool:
+    if chat_fn is None:
+        from .tfy_client import chat as chat_fn
 
     sys = "You are a strict mathematics grader. Reply with only YES or NO."
     usr = (
@@ -138,7 +147,11 @@ def judge_consistency(question, misconception, answer, correct) -> bool:
         "Is the student's answer exactly the value someone making that specific misconception "
         "would compute for this question? Reply YES or NO."
     )
-    out = chat([{"role": "system", "content": sys}, {"role": "user", "content": usr}], max_tokens=5)
+    out = chat_fn(
+        [{"role": "system", "content": sys}, {"role": "user", "content": usr}],
+        model=model or TFY_JUDGE_MODEL,
+        max_tokens=5,
+    )
     return out.strip().upper().startswith("Y")
 
 
@@ -155,9 +168,18 @@ _JUDGE2_SYSTEM = (
 )
 
 
-def judge_consistency_cot(question, misconception, answer, correct) -> Optional[bool]:
+def judge_consistency_cot(
+    question,
+    misconception,
+    answer,
+    correct,
+    *,
+    model=None,
+    chat_fn=None,
+) -> Optional[bool]:
     """Solve-first consistency judge. Returns True (VALID), False (INVALID), or None on parse fail."""
-    from .tfy_client import chat
+    if chat_fn is None:
+        from .tfy_client import chat as chat_fn
 
     usr = (
         f"Question: {question}\nCorrect answer: {correct}\n"
@@ -171,8 +193,9 @@ def judge_consistency_cot(question, misconception, answer, correct) -> Optional[
         '"valid": true|false}  '
         "where valid is true iff error_value equals the student's answer."
     )
-    out = chat(
+    out = chat_fn(
         [{"role": "system", "content": _JUDGE2_SYSTEM}, {"role": "user", "content": usr}],
+        model=model or TFY_JUDGE_MODEL,
         max_tokens=120,
     )
     obj = _extract_json_obj(out)
@@ -192,10 +215,17 @@ _PERSONA_SYSTEM = (
 )
 
 
-def judge_plausibility_persona(question, distractor_answer, correct) -> Optional[bool]:
+def judge_plausibility_persona(
+    question,
+    distractor_answer,
+    correct,
+    *,
+    model=None,
+    chat_fn=None,
+) -> Optional[bool]:
     """Would a confused student find this option tempting? True/False, or None on parse fail. PROXY."""
-    from .tfy_client import chat
-    import random as _r
+    if chat_fn is None:
+        from .tfy_client import chat as chat_fn
 
     # Present the two options in a stable but non-trivial order (avoid always-first-correct bias).
     opts = [("A", distractor_answer), ("B", correct)]
@@ -206,8 +236,9 @@ def judge_plausibility_persona(question, distractor_answer, correct) -> Optional
         "Option A a tempting, believable answer you might confidently choose? "
         'Reply with ONLY: {"tempting": true|false}.'
     )
-    out = chat(
+    out = chat_fn(
         [{"role": "system", "content": _PERSONA_SYSTEM}, {"role": "user", "content": usr}],
+        model=model or TFY_JUDGE_MODEL,
         max_tokens=30,
     )
     obj = _extract_json_obj(out)
@@ -248,7 +279,14 @@ def _extract_json_obj(text):
         return None
 
 
-def judge_rubric(question, correct, distractors):
+def judge_rubric(
+    question,
+    correct,
+    distractors,
+    *,
+    model=None,
+    chat_fn=None,
+):
     """Score one item on the four Appendix-A dimensions via the frontier judge.
 
     Returns {dim: int in 0..2 for dim in RUBRIC_DIMS} or None if the reply can't be parsed.
@@ -258,7 +296,8 @@ def judge_rubric(question, correct, distractors):
     rather than true adversarial robustness; a real robustness number needs a dedicated adversarial /
     perturbed input set (stretch goal), not this clean eval.
     """
-    from .tfy_client import chat
+    if chat_fn is None:
+        from .tfy_client import chat as chat_fn
 
     payload = json.dumps(
         [{"misconception": d.get("misconception", ""), "answer": d.get("answer", "")} for d in distractors],
@@ -280,8 +319,9 @@ def judge_rubric(question, correct, distractors):
         f"DISTRACTORS (JSON): {payload}\n\n"
         'Return ONLY compact JSON exactly like: {"spec_adherence":0,"robustness":0,"task_quality":0,"consistency":0}'
     )
-    out = chat(
+    out = chat_fn(
         [{"role": "system", "content": _RUBRIC_SYSTEM}, {"role": "user", "content": usr}],
+        model=model or TFY_JUDGE_MODEL,
         max_tokens=200,
     )
     obj = _extract_json_obj(out)

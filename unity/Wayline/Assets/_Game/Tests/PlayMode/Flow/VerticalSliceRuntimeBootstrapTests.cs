@@ -96,6 +96,105 @@ namespace Wayline.Tests.Flow
         }
 
         [UnityTest]
+        public IEnumerator CombatDefeatEntersQuestionsBeforeMapWithoutRecordingVictory()
+        {
+            CreateRestoredBootstrap();
+            _slice.EnterMapButton.onClick.Invoke();
+            _slice.StartBattleButton.onClick.Invoke();
+            _runner.RunAutomatically = false;
+            _runner.SetCommandSources(
+                new IdleCommandSource(),
+                new AggressiveCommandSource());
+            for (var frame = 0;
+                 frame < 1000 && _runner.State.Result == CombatResult.InProgress;
+                 frame++)
+            {
+                _runner.AdvanceFrame(1.0 / 60.0);
+            }
+
+            Assert.That(_runner.State.Result, Is.EqualTo(CombatResult.EnemyWon));
+            InvokeBootstrapUpdate();
+
+            Assert.That(_slice.Flow.State, Is.EqualTo(FlowState.LossTrial));
+            Assert.That(_slice.Flow.LastCheckpoint.CombatVictoryPreserved, Is.False);
+            Assert.That(_slice.Profile.CombatVictoryBattleIds, Is.Empty);
+            Assert.That(_slice.Profile.CompletedBattleIds, Is.Empty);
+            Assert.That(_slice.Profile.RewardedBattleIds, Is.Empty);
+            yield return WaitFor(() =>
+                _slice.TrialController != null &&
+                _slice.TrialController.State == QuizState.Answering);
+            Assert.That(_slice.Flow.State, Is.EqualTo(FlowState.LossTrial));
+            Assert.That(_slice.TrialPanel, Is.Not.Null);
+            Assert.That(_slice.RewardButton.gameObject.activeInHierarchy, Is.False);
+        }
+
+        [UnityTest]
+        public IEnumerator ExistingLossTrialResumesQuestionsWithoutCombatVictory()
+        {
+            var profile = CreateProfile();
+            var battle = new FlowBattle("valuehold", "valuehold-scout");
+            new RuntimeSessionStore(_sessionPath).Save(
+                profile,
+                LossTrialCheckpoint(battle));
+
+            CreateRestoredBootstrap();
+            yield return WaitFor(() =>
+                _slice.TrialController != null &&
+                _slice.TrialController.State == QuizState.Answering);
+
+            Assert.That(_slice.Flow.State, Is.EqualTo(FlowState.LossTrial));
+            Assert.That(_slice.Flow.LastCheckpoint.Battle, Is.EqualTo(battle));
+            Assert.That(_slice.Flow.LastCheckpoint.CombatVictoryPreserved, Is.False);
+            Assert.That(_slice.Profile.CombatVictoryBattleIds, Is.Empty);
+            Assert.That(_slice.Profile.CompletedBattleIds, Is.Empty);
+            Assert.That(_slice.Profile.RewardedBattleIds, Is.Empty);
+            Assert.That(_runner.SerializeSnapshot(), Is.EqualTo(_combatBeforeRestore));
+
+            var persisted = new RuntimeSessionStore(_sessionPath).Load();
+            Assert.That(persisted.Checkpoint.StableState, Is.EqualTo(FlowState.LossTrial));
+            Assert.That(persisted.Checkpoint.Battle, Is.EqualTo(battle));
+            Assert.That(persisted.Profile.CombatVictoryBattleIds, Is.Empty);
+        }
+
+        [UnityTest]
+        public IEnumerator CompletedLossQuestionsReturnToRematchWithoutProgressionOrRewards()
+        {
+            var profile = CreateProfile();
+            var battle = new FlowBattle("valuehold", "valuehold-scout");
+            new RuntimeSessionStore(_sessionPath).Save(
+                profile,
+                LossTrialCheckpoint(battle));
+            CreateRestoredBootstrap();
+            yield return WaitFor(() =>
+                _slice.TrialController != null &&
+                _slice.TrialController.State == QuizState.Answering);
+
+            CompleteStandardTrialController(_slice.TrialController);
+            Assert.That(_slice.TrialController.State, Is.EqualTo(QuizState.Complete));
+            InvokeBootstrapUpdate();
+
+            Assert.That(_slice.Flow.State, Is.EqualTo(FlowState.Map));
+            Assert.That(_slice.Battle, Is.EqualTo(battle));
+            Assert.That(_slice.StartBattleButton.gameObject.activeInHierarchy, Is.True);
+            Assert.That(_slice.RewardButton.gameObject.activeInHierarchy, Is.False);
+            Assert.That(_slice.Profile.CombatVictoryBattleIds, Is.Empty);
+            Assert.That(_slice.Profile.CompletedBattleIds, Is.Empty);
+            Assert.That(_slice.Profile.ClearedWorldIds, Is.Empty);
+            Assert.That(_slice.Profile.RewardedBattleIds, Is.Empty);
+            Assert.That(_slice.Profile.RouteMarks, Is.Zero);
+            Assert.That(_slice.Profile.Focus, Is.Zero);
+
+            var persisted = new RuntimeSessionStore(_sessionPath).Load();
+            Assert.That(persisted.Checkpoint.StableState, Is.EqualTo(FlowState.Map));
+            Assert.That(persisted.Checkpoint.Battle, Is.Null);
+            Assert.That(persisted.Checkpoint.CommittedTrialIds, Is.Empty);
+            Assert.That(persisted.Checkpoint.CommittedRewardIds, Is.Empty);
+            Assert.That(persisted.Profile.CombatVictoryBattleIds, Is.Empty);
+            Assert.That(persisted.Profile.CompletedBattleIds, Is.Empty);
+            Assert.That(persisted.Profile.RewardedBattleIds, Is.Empty);
+        }
+
+        [UnityTest]
         public IEnumerator RewardResumePresentsSavedRewardWithoutReapplyingTrialMutation()
         {
             var profile = CreateProfile();
@@ -616,6 +715,18 @@ namespace Wayline.Tests.Flow
             controller.AcknowledgeWrongCount();
             while (controller.State == QuizState.Revealed)
                 controller.AdvanceFinalFeedback();
+        }
+
+        private static FlowCheckpoint LossTrialCheckpoint(FlowBattle battle)
+        {
+            return new FlowCheckpoint(
+                FlowState.LossTrial,
+                battle,
+                combatVictoryPreserved: false,
+                committedTrialIds: Array.Empty<string>(),
+                committedRewardIds: Array.Empty<string>(),
+                rewardSourceCompletionId: null,
+                rewardAuthorityReceiptId: null);
         }
 
         private static IEnumerator WaitFor(Func<bool> condition)

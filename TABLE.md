@@ -1,5 +1,8 @@
 # Final Results Table — Base vs v1 vs v6 (1.7B) vs v7.1 (4B) vs Sonnet 5
 
+> Historical shipped table. The pre-registered v8 GDR/Good@3 benchmark and
+> explicit `NOT YET RUN` Opus/v8 columns are in `TABLE_V8_PLAN.md`.
+
 _140-item held-out eval. Consistency = one-shot judge (calibrated: 90% reliable on numeric,
 50% on non-numeric). v7.1 = Qwen3-4B, real-format-augmented data, distinct-label reals.
 🎯 = thesis axis · 🧹 = usable-MCQ · 🥈 = bonus/flawed-proxy._

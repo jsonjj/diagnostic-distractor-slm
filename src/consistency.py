@@ -36,6 +36,19 @@ def to_value(s) -> Optional[Fraction]:
         return None
 
 
+def to_display_value(s) -> Optional[Fraction]:
+    """Parse a displayed numeric option, treating a trailing % as a unit.
+
+    For distractor-generation consistency, ``6%`` is compared to a computation
+    ending in the displayed coefficient ``6``. This does not redefine 6% as the
+    mathematical quantity 6; it only supports exact option-text verification.
+    """
+    normalized = normalize_answer(s)
+    if normalized.endswith("%"):
+        normalized = normalized[:-1]
+    return to_value(normalized)
+
+
 def expected_answer(family: str, operands: dict, misconception_id: str) -> Optional[Fraction]:
     mc = REGISTRY.get(misconception_id)
     if mc is None or mc.family != family:
@@ -306,7 +319,13 @@ def _leaves_grounded(computation, question) -> bool:
     return False
 
 
-def computation_consistent(computation, answer, question=None) -> Optional[bool]:
+def computation_consistent(
+    computation,
+    answer,
+    question=None,
+    *,
+    display_units: bool = False,
+) -> Optional[bool]:
     """True/False if the computation's LHS evaluates to `answer`; None if unparseable.
 
     Used by (a) the real-data verifier (quality filter) and (b) the eval harness'
@@ -322,7 +341,7 @@ def computation_consistent(computation, answer, question=None) -> Optional[bool]
     lhs = eval_computation(computation)
     if lhs is None:
         return None
-    ans = to_value(answer)
+    ans = to_display_value(answer) if display_units else to_value(answer)
     if ans is None:
         return None
     if question is None:

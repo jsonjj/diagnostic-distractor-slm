@@ -46,6 +46,81 @@ namespace Wayline.Tests.Flow
         }
 
         [Test]
+        public void DefeatRequiresQuestionsForEveryBattleAndCompletesWithoutVictoryProgress()
+        {
+            var battles = new[] { "valuehold", "decimara", "fracture" }
+                .SelectMany(worldId => new[]
+                {
+                    "scout",
+                    "rival",
+                    "warden",
+                    "lieutenant",
+                    "boss"
+                }.Select(tier => new FlowBattle(
+                    worldId,
+                    worldId + "-" + tier)))
+                .ToArray();
+
+            foreach (var battle in battles)
+            {
+                var sharedLog = new List<string>();
+                var combat = new RecordingCombatPort(sharedLog);
+                var trial = new RecordingTrialPort(sharedLog);
+                var campaign = new RecordingCampaignPort(sharedLog);
+                var controller = new VerticalSliceFlowController(combat, trial, campaign);
+                controller.EnterMap();
+                controller.StartCombat(battle);
+                sharedLog.Clear();
+
+                var applied = controller.ResolveCombat(FlowCombatOutcome.Defeat);
+                var duplicate = controller.ResolveCombat(FlowCombatOutcome.Defeat);
+
+                Assert.That(applied, Is.True, battle.BattleId);
+                Assert.That(duplicate, Is.False, battle.BattleId);
+                Assert.That(controller.State, Is.EqualTo(FlowState.LossTrial), battle.BattleId);
+                Assert.That(controller.LastCheckpoint.Battle, Is.EqualTo(battle), battle.BattleId);
+                Assert.That(controller.LastCheckpoint.CombatVictoryPreserved, Is.False);
+                Assert.That(campaign.PresentMapCount, Is.EqualTo(1), battle.BattleId);
+                Assert.That(campaign.PreservedVictories, Is.Empty, battle.BattleId);
+                Assert.That(campaign.CommittedTrials, Is.Empty, battle.BattleId);
+                Assert.That(campaign.PresentedRewards, Is.Empty, battle.BattleId);
+                Assert.That(campaign.CommittedRewards, Is.Empty, battle.BattleId);
+                Assert.That(trial.Loss, Is.EqualTo(new[] { battle }), battle.BattleId);
+
+                Assert.That(controller.CompleteLossTrial(), Is.True, battle.BattleId);
+                Assert.That(controller.CompleteLossTrial(), Is.False, battle.BattleId);
+                Assert.That(controller.State, Is.EqualTo(FlowState.Map), battle.BattleId);
+                Assert.That(controller.LastCheckpoint.Battle, Is.Null, battle.BattleId);
+                Assert.That(campaign.PresentMapCount, Is.EqualTo(2), battle.BattleId);
+                Assert.That(campaign.PreservedVictories, Is.Empty, battle.BattleId);
+                Assert.That(campaign.CommittedTrials, Is.Empty, battle.BattleId);
+                Assert.That(campaign.PresentedRewards, Is.Empty, battle.BattleId);
+                Assert.That(campaign.CommittedRewards, Is.Empty, battle.BattleId);
+            }
+        }
+
+        [Test]
+        public void LossQuestionsCannotReturnToMapWhenLearningIsUnavailable()
+        {
+            var fixture = FlowFixture.InCombat();
+            fixture.Controller.ResolveCombat(FlowCombatOutcome.Defeat);
+            fixture.Controller.SuspendTrial("runtime_unavailable");
+
+            Assert.That(
+                () => fixture.Controller.ReturnToMapFromUnavailable(),
+                Throws.InvalidOperationException);
+            Assert.That(fixture.Controller.State, Is.EqualTo(FlowState.Unavailable));
+            Assert.That(fixture.Controller.HasPendingTrial, Is.True);
+            Assert.That(fixture.Campaign.PresentMapCount, Is.EqualTo(1));
+
+            fixture.Controller.RetryUnavailable();
+
+            Assert.That(fixture.Controller.State, Is.EqualTo(FlowState.LossTrial));
+            Assert.That(fixture.Controller.HasPendingTrial, Is.False);
+            Assert.That(fixture.Trial.Loss, Has.Count.EqualTo(2));
+        }
+
+        [Test]
         public void TrialFailureCanReturnToMapAndResumeWithoutLosingVictory()
         {
             var fixture = FlowFixture.InNormalTrial();
@@ -200,6 +275,7 @@ namespace Wayline.Tests.Flow
                 FlowState.Map,
                 FlowState.Combat,
                 FlowState.NormalTrial,
+                FlowState.LossTrial,
                 FlowState.SealTrial,
                 FlowState.AssistedRoute
             })
@@ -402,6 +478,7 @@ namespace Wayline.Tests.Flow
         public RecordingTrialPort(IList<string> log) => _log = log;
 
         public List<FlowBattle> Normal { get; } = new List<FlowBattle>();
+        public List<FlowBattle> Loss { get; } = new List<FlowBattle>();
         public List<FlowBattle> Seal { get; } = new List<FlowBattle>();
         public List<FlowBattle> Assisted { get; } = new List<FlowBattle>();
 
@@ -409,6 +486,12 @@ namespace Wayline.Tests.Flow
         {
             Normal.Add(battle);
             _log.Add("trial:normal");
+        }
+
+        public void PresentLossTrial(FlowBattle battle)
+        {
+            Loss.Add(battle);
+            _log.Add("trial:loss");
         }
 
         public void PresentSealTrial(FlowBattle battle)

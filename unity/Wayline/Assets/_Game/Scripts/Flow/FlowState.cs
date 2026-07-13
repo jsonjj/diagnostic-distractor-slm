@@ -9,7 +9,8 @@ namespace Wayline.Flow
         SealTrial = 4,
         AssistedRoute = 5,
         Reward = 6,
-        Unavailable = 7
+        Unavailable = 7,
+        LossTrial = 8
     }
 
     public enum FlowCombatOutcome

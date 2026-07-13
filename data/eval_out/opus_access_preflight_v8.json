@@ -1,0 +1,20 @@
+{
+  "schema_version": "truefoundry-opus-access-preflight-v1",
+  "base_url": "https://tfy-eu.promptlens.trilogy.com",
+  "model": "anthropic-primary/claude-opus-4-8",
+  "credential_source": "dotenv",
+  "headers_exact": true,
+  "stream_ok": true,
+  "nonstream_ok": true,
+  "repository_client_ok": true,
+  "max_tokens_per_probe": 8,
+  "secret_logged": false,
+  "previous_stale_token_result": {
+    "status": 403,
+    "error_type": "AuthorizationError",
+    "error_code": "403",
+    "message": "User was not authorized to access anthropic-primary/claude-opus-4-8 or model did not exist for that credential scope."
+  },
+  "root_cause": "A stale inherited TFY_API_KEY overrode the rotated project .env token; python-dotenv was also absent and that failure was silently ignored.",
+  "client_fix": "Project .env values now take precedence over inherited process values, and a missing python-dotenv fails closed when .env exists."
+}

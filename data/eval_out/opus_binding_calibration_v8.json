@@ -1,0 +1,35 @@
+{
+  "acceptance_thresholds": {
+    "maximum_false_positive_rate": 0.1,
+    "minimum_agreement": 0.8
+  },
+  "accepted": false,
+  "agreement": 0.775,
+  "brier": 0.18118694394915053,
+  "cache": {
+    "api_calls": 0,
+    "cache_path": "data/eval_out/opus_numeric_calibration_responses_v8.jsonl",
+    "completed_cached": 80,
+    "failed": 0,
+    "requested": 80,
+    "resumed": 80
+  },
+  "calibration_evaluation": "leave-one-out",
+  "calibration_id": "opus-4-8-numeric-binding-engine80-v1",
+  "ece": 0.013708206686930065,
+  "false_negative_rate": 0.3,
+  "false_positive_rate": 0.15,
+  "fn": 12,
+  "fp": 6,
+  "ground_truth": "buggy-procedure engine, balanced hard negatives",
+  "model": "anthropic-primary/claude-opus-4-8",
+  "n": 80,
+  "p_valid_given_no": 0.2708333333333333,
+  "p_valid_given_yes": 0.8055555555555556,
+  "schema_version": "binary-verdict-calibration-v1",
+  "scope": "numeric misconception-answer binding",
+  "smoothing": "Beta(1,1) within verdict groups",
+  "target": "misconception_answer_consistency",
+  "tn": 34,
+  "tp": 28
+}

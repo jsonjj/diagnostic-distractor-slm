@@ -1,5 +1,9 @@
 # Brainlift — Diagnostic Distractor SLM
 
+> This is the shipped v1–v7.1 thesis record. The untrained v8 effort uses a
+> new sealed benchmark and pre-registered GDR/Good@3 protocol; see
+> `docs/V8_BENCHMARK_PROTOCOL.md`. No Opus/v8 superiority claim has been measured.
+
 ## Behavior Spec (the falsifiable contract)
 
 > Given a middle-school "Number" MCQ (question + correct answer + topic), the model outputs

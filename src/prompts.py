@@ -17,6 +17,8 @@ from __future__ import annotations
 import json
 from typing import Dict, List
 
+from .confidence import PAIR_TARGET, validated_confidence
+
 # --- v4 system prompt: show-the-work targets (misconception -> computation -> answer) ---
 SYSTEM_PROMPT = (
     "You are an expert middle-school mathematics assessment writer. Given a "
@@ -92,13 +94,20 @@ def parse_distractors(text: str) -> List[Dict]:
         obj = json.loads(text[start : end + 1])
         out = []
         for d in obj.get("distractors", []):
-            out.append(
-                {
-                    "misconception": str(d.get("misconception", "")).strip(),
-                    "computation": str(d.get("computation", "")).strip(),
-                    "answer": str(d.get("answer", "")).strip(),
-                }
+            item = {
+                "misconception": str(d.get("misconception", "")).strip(),
+                "computation": str(d.get("computation", "")).strip(),
+                "answer": str(d.get("answer", "")).strip(),
+            }
+            # Confidence is post-hoc metadata, never a model self-report. Preserve it
+            # only when it names a valid external calibration artifact.
+            confidence = validated_confidence(
+                d.get("confidence"),
+                expected_target=PAIR_TARGET,
             )
+            if confidence is not None:
+                item["confidence"] = confidence
+            out.append(item)
         return out
     except Exception:
         return []

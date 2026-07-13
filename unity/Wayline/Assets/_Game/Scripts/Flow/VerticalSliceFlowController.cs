@@ -81,8 +81,8 @@ namespace Wayline.Flow
             if (outcome == FlowCombatOutcome.Defeat)
             {
                 TransitionStable(
-                    FlowState.Map,
-                    null,
+                    FlowState.LossTrial,
+                    battle,
                     combatVictoryPreserved: false,
                     rewardSourceCompletionId: null,
                     rewardAuthorityReceiptId: null);
@@ -97,6 +97,20 @@ namespace Wayline.Flow
                 FlowState.NormalTrial,
                 battle,
                 combatVictoryPreserved: true,
+                rewardSourceCompletionId: null,
+                rewardAuthorityReceiptId: null);
+            return true;
+        }
+
+        public bool CompleteLossTrial()
+        {
+            if (State != FlowState.LossTrial)
+                return false;
+
+            TransitionStable(
+                FlowState.Map,
+                null,
+                combatVictoryPreserved: false,
                 rewardSourceCompletionId: null,
                 rewardAuthorityReceiptId: null);
             return true;
@@ -127,6 +141,11 @@ namespace Wayline.Flow
         {
             if (State != FlowState.Unavailable || _pendingCheckpoint == null)
                 throw new InvalidOperationException("There is no suspended trial to leave.");
+            if (_pendingCheckpoint.StableState == FlowState.LossTrial)
+            {
+                throw new InvalidOperationException(
+                    "Loss questions must be completed before returning to the map.");
+            }
 
             State = FlowState.Map;
             _campaign.PresentMap();
@@ -257,6 +276,7 @@ namespace Wayline.Flow
         private static bool IsTrialState(FlowState state)
         {
             return state == FlowState.NormalTrial ||
+                   state == FlowState.LossTrial ||
                    state == FlowState.SealTrial ||
                    state == FlowState.AssistedRoute;
         }
@@ -363,6 +383,9 @@ namespace Wayline.Flow
                     return;
                 case FlowState.NormalTrial:
                     _trial.PresentNormalTrial(checkpoint.Battle);
+                    return;
+                case FlowState.LossTrial:
+                    _trial.PresentLossTrial(checkpoint.Battle);
                     return;
                 case FlowState.SealTrial:
                     _trial.PresentSealTrial(checkpoint.Battle);

@@ -35,6 +35,7 @@ namespace Wayline.Tests.Flow
         [TestCase(FlowState.Title)]
         [TestCase(FlowState.Map)]
         [TestCase(FlowState.NormalTrial)]
+        [TestCase(FlowState.LossTrial)]
         [TestCase(FlowState.SealTrial)]
         [TestCase(FlowState.AssistedRoute)]
         [TestCase(FlowState.Reward)]
@@ -275,10 +276,14 @@ namespace Wayline.Tests.Flow
         {
             var hasBattle = state != FlowState.Title && state != FlowState.Map;
             var isReward = state == FlowState.Reward;
+            var hasPreservedVictory = state == FlowState.NormalTrial ||
+                                      state == FlowState.SealTrial ||
+                                      state == FlowState.AssistedRoute ||
+                                      isReward;
             return new FlowCheckpoint(
                 state,
                 hasBattle ? new FlowBattle("valuehold", "valuehold-scout") : null,
-                combatVictoryPreserved: hasBattle,
+                combatVictoryPreserved: hasPreservedVictory,
                 committedTrialIds: isReward
                     ? new[] { "completion-001", "completion-002" }
                     : new[] { "completion-001" },

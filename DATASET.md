@@ -3,6 +3,10 @@
 > This is the complete account of the training data: where it came from, why it can be trusted,
 > every change made across versions and why, and how each version performed. The **raw data**
 > lives in `data/processed/*.jsonl` (one JSON object per line); this file is the guided tour.
+>
+> **v8 note (2026-07-12):** this document remains the shipped v1–v7.1 lineage.
+> The untrained one-shot v8 data plan, unused-question split, no-pick-rate audit,
+> and generated artifact hashes are in `DATASET_V8.md`. No v8 result exists yet.
 
 ---
 
@@ -21,8 +25,9 @@ DiVERT / Fernandez et al. 2024, both from UMass ML4Ed). Two synthetic-data sourc
 ### Why the source is trustworthy
 - **Real, expert-authored labels.** The misconception tags are written by Eedi's content team
   (their core business is misconception diagnosis), not scraped or LLM-guessed.
-- **Real student validation.** Eedi's items are answered by thousands of real students; the wrong
-  options are ones students actually pick, not hypothetical.
+- **Real platform context, but no local pick evidence.** Eedi reports that its diagnostic items
+  are used by real students. This Kaggle release contains expert-written options/labels but no
+  response logs, so it does not prove how often (or whether) each individual option was selected.
 - **Peer-reviewed provenance.** The exact dataset underpins published NAACL/EMNLP 2024 work, so its
   suitability for this task is externally established.
 - **Frozen, leakage-free eval.** 140 real MCQs are split off once as a held-out test set and

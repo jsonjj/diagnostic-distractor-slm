@@ -242,6 +242,15 @@ namespace Wayline.Flow.Unity
                 return;
             }
 
+            if (Flow.State == FlowState.LossTrial &&
+                !_trialCommitted &&
+                TrialController != null &&
+                TrialController.State == QuizState.Complete)
+            {
+                _trialCommitted = Flow.CompleteLossTrial();
+                return;
+            }
+
             if (Flow.State == FlowState.AssistedRoute &&
                 !_trialCommitted &&
                 AssistedController?.FinalResult != null)
@@ -267,12 +276,29 @@ namespace Wayline.Flow.Unity
 
         public void PresentNormalTrial(FlowBattle battle)
         {
-            BeginStandardTrial(battle, FlowTrialStage.Normal, LearningBattleTier.Route1);
+            BeginStandardTrial(
+                battle,
+                FlowTrialStage.Normal,
+                LearningBattleTier.Route1,
+                AtlasTrialPurpose.RouteProgression);
+        }
+
+        public void PresentLossTrial(FlowBattle battle)
+        {
+            BeginStandardTrial(
+                battle,
+                null,
+                LearningBattleTier.Route1,
+                AtlasTrialPurpose.DefeatRecovery);
         }
 
         public void PresentSealTrial(FlowBattle battle)
         {
-            BeginStandardTrial(battle, FlowTrialStage.Seal, LearningBattleTier.SealTrial);
+            BeginStandardTrial(
+                battle,
+                FlowTrialStage.Seal,
+                LearningBattleTier.SealTrial,
+                AtlasTrialPurpose.RouteProgression);
         }
 
         public void PresentAssistedRoute(FlowBattle battle)
@@ -540,8 +566,9 @@ namespace Wayline.Flow.Unity
 
         private void BeginStandardTrial(
             FlowBattle battle,
-            FlowTrialStage stage,
-            LearningBattleTier tier)
+            FlowTrialStage? stage,
+            LearningBattleTier tier,
+            AtlasTrialPurpose purpose)
         {
             if (battle == null)
                 throw new ArgumentNullException(nameof(battle));
@@ -555,7 +582,11 @@ namespace Wayline.Flow.Unity
             TrialController = new QuizController(_quizClient, NextRequestId);
             TrialPanel = AtlasTrialPanel.Create(
                 TrialController,
-                new AtlasTrialSettings(TrialTitleFor(battle), textScale, reducedMotion),
+                new AtlasTrialSettings(
+                    TrialTitleFor(battle),
+                    textScale,
+                    reducedMotion,
+                    purpose),
                 new SilentQuizSpeech());
             TrialPanel.RetryRequested += RetryStandardTrial;
             TrialPanel.ReturnToMapRequested += ReturnFromUnavailable;
@@ -572,7 +603,8 @@ namespace Wayline.Flow.Unity
 
         private async void RetryStandardTrial()
         {
-            if (TrialController == null || ActiveTrialStage == null)
+            if (TrialController == null ||
+                (ActiveTrialStage == null && Flow.State != FlowState.LossTrial))
                 return;
             try
             {

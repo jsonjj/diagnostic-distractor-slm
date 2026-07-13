@@ -17,6 +17,7 @@ import json
 
 from .prompts import SYSTEM_PROMPT, build_user, parse_distractors
 from .consistency import computation_consistent
+from .confidence import ensure_confidence_schema
 
 BASE = "unsloth/Qwen3-4B-bnb-4bit"
 ADAPTER = "j2ampn/qwen3-4b-distractor-lora-v7"
@@ -39,13 +40,22 @@ def generate(model, tok, question, correct, topic):
 
 
 def show(txt, question):
-    ds = parse_distractors(txt)
+    ds = ensure_confidence_schema(
+        {"distractors": parse_distractors(txt)}
+    )["distractors"]
     if not ds:
         print("  (no parseable JSON)\n  raw:", txt[:300]); return
     for d in ds:
-        cons = computation_consistent(d.get("computation", ""), d.get("answer", ""), question)
+        cons = computation_consistent(
+            d.get("computation", ""),
+            d.get("answer", ""),
+            question,
+            display_units=True,
+        )
         mark = "✓" if cons is True else ("·" if cons is None else "✗")
-        print(f"  {mark} {d.get('answer',''):<10} | {d.get('misconception','')[:55]} | {d.get('computation','')}")
+        confidence = d["confidence"]
+        print(f"  {mark} {d.get('answer',''):<10} | {d.get('misconception','')[:55]} | "
+              f"{d.get('computation','')} | confidence={confidence['level']}:{confidence['probability']}")
     print("  (✓ = computation grounded+consistent, ✗ = fails, · = no checkable computation)")
 
 

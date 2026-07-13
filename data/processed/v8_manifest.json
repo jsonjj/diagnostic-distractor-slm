@@ -1,0 +1,178 @@
+{
+  "artifacts": {
+    "frozen_benchmark": {
+      "path": "data/processed/eval_v8_frozen.jsonl",
+      "rows": 140,
+      "sha256": "546c14f03707ce098146dac5e0c6e99c0a4619d6d4e32193a9fff4e3b9bfd1b1"
+    },
+    "opus_teacher": {
+      "path": "data/processed/real_train_seed_v8_opus.jsonl",
+      "rows": 32,
+      "sha256": "c251fe77584a6e0c4c1686181c5cc4117fb457e8bd28b2e38a52909cb76d6516"
+    },
+    "synthetic_train": {
+      "path": "data/processed/synth_train_v8.jsonl",
+      "rows": 3260,
+      "sha256": "4374953a06f344880111759422dedf1a2a8cb0be8fefbb4a995dfa7c71966a2d"
+    },
+    "teacher_pool": {
+      "path": "data/processed/v8_teacher_pool.jsonl",
+      "rows": 130,
+      "sha256": "66f4b9a7c5c01c78b64f6d9cd50594e32089f3236107e58c17188a128ca181ba"
+    },
+    "train": {
+      "path": "data/processed/train_v8.jsonl",
+      "rows": 3572,
+      "sha256": "babe071e310a389b8a0fb2d3a5b6414f1275129f3cad8c15be5ff175e098a5ad"
+    }
+  },
+  "binding_confidence_scope": "numeric_programmatic_only",
+  "confidence_is_training_target": false,
+  "deterministic_teacher_filter_ready": true,
+  "evidence": {
+    "teacher_filter_report": {
+      "path": "data/processed/v8_teacher_filter_report.json",
+      "sha256": "4a9bce58cef3a6e91fd2677ed0d5d4d275b0fe92ce5ea9b2c395301037333b3b"
+    }
+  },
+  "frozen_benchmark_topic_counts": {
+    "Adding and Subtracting Fractions": 6,
+    "Adding and Subtracting Negative Numbers": 7,
+    "Adding and Subtracting with Decimals": 3,
+    "BIDMAS": 9,
+    "Converting Mixed Number and Improper Fractions": 3,
+    "Converting between Decimals and Percentages": 3,
+    "Converting between Fractions and Decimals": 2,
+    "Converting between Fractions and Percentages": 5,
+    "Dividing Fractions": 6,
+    "Equivalent Fractions": 1,
+    "Estimation": 3,
+    "Factors and Highest Common Factor": 4,
+    "Fractions of an Amount": 3,
+    "Laws of Indices": 3,
+    "Mental Addition and Subtraction": 10,
+    "Mental Multiplication and Division": 8,
+    "Multiples and Lowest Common Multiple": 4,
+    "Multiplying Fractions": 5,
+    "Multiplying and Dividing Negative Numbers": 8,
+    "Multiplying and Dividing with Decimals": 3,
+    "Ordering Decimals": 3,
+    "Ordering Fractions": 5,
+    "Ordering Negative Numbers": 4,
+    "Percentages of an Amount": 6,
+    "Place Value": 4,
+    "Rounding to Decimal Places": 3,
+    "Rounding to Significant Figures": 2,
+    "Rounding to the Nearest Whole (10, 100, etc)": 2,
+    "Simplifying Fractions": 3,
+    "Square Roots, Cube Roots, etc": 3,
+    "Squares, Cubes, etc": 7,
+    "Standard Form": 2
+  },
+  "legacy_fully_labeled_number_ids": 281,
+  "minimum_deterministic_teacher_survivors": 20,
+  "nonnumeric_binding_confidence_ready": false,
+  "numeric_binding_confidence_ready": false,
+  "opus_access_ready": true,
+  "opus_judge_ready": false,
+  "opus_nonnumeric_calibration_ready": false,
+  "opus_numeric_calibration_ready": false,
+  "opus_teacher_records": 32,
+  "partition_seed": 808,
+  "real_repeat": 4,
+  "real_unique_verified_records": 78,
+  "schema_version": "diagnostic-distractor-v8-data-v1",
+  "student_option_counts_available": false,
+  "style_seed": 89,
+  "synthetic": {
+    "family_counts": {
+      "convert_dec_pct": 81,
+      "dec_addsub": 81,
+      "decimal_mul": 81,
+      "fraction_add": 180,
+      "fraction_div_int": 180,
+      "fraction_mul": 180,
+      "hcf": 88,
+      "indices": 64,
+      "mental_add": 180,
+      "mental_mult": 63,
+      "neg_add": 180,
+      "order_of_ops": 180,
+      "percent_of": 162,
+      "place_value": 180,
+      "round_dp": 180
+    },
+    "styled_records": 1073,
+    "targeted_family_counts": {
+      "equivalent_fraction_v8": 100,
+      "fraction_division_v8": 100,
+      "fraction_to_decimal_v8": 100,
+      "fraction_to_percentage_v8": 100,
+      "lcm_v8": 100,
+      "mixed_to_improper_v8": 100,
+      "negative_multiplication_v8": 100,
+      "percentage_increase_v8": 100,
+      "round_significant_figures_v8": 100,
+      "simplifying_fraction_v8": 100,
+      "square_root_v8": 100,
+      "standard_form_v8": 100
+    },
+    "targeted_per_family": 100,
+    "targeted_records": 1200
+  },
+  "synthetic_family_balance": {
+    "max": 180,
+    "min": 63,
+    "ratio": 2.857142857142857
+  },
+  "synthetic_seed": 83,
+  "task_quality_proxy_ready": false,
+  "teacher_acceptance_route": "deterministic_teacher_filter",
+  "teacher_pool_topic_counts": {
+    "Adding and Subtracting Fractions": 7,
+    "Adding and Subtracting Negative Numbers": 8,
+    "Adding and Subtracting with Decimals": 4,
+    "BIDMAS": 9,
+    "Converting Mixed Number and Improper Fractions": 1,
+    "Converting between Decimals and Percentages": 3,
+    "Converting between Fractions and Decimals": 3,
+    "Converting between Fractions and Percentages": 6,
+    "Dividing Fractions": 2,
+    "Equivalent Fractions": 1,
+    "Estimation": 5,
+    "Factors and Highest Common Factor": 4,
+    "Fractions of an Amount": 5,
+    "Laws of Indices": 2,
+    "Mental Addition and Subtraction": 4,
+    "Mental Multiplication and Division": 11,
+    "Multiples and Lowest Common Multiple": 1,
+    "Multiplying Fractions": 3,
+    "Multiplying and Dividing Negative Numbers": 7,
+    "Multiplying and Dividing with Decimals": 3,
+    "Ordering Decimals": 2,
+    "Ordering Fractions": 3,
+    "Ordering Negative Numbers": 3,
+    "Percentages of an Amount": 7,
+    "Place Value": 5,
+    "Rounding to Decimal Places": 4,
+    "Rounding to Significant Figures": 4,
+    "Rounding to the Nearest Whole (10, 100, etc)": 3,
+    "Simplifying Fractions": 2,
+    "Square Roots, Cube Roots, etc": 5,
+    "Squares, Cubes, etc": 3
+  },
+  "training_ready": true,
+  "training_source_counts": {
+    "eedi_real": 184,
+    "opus_distilled_real_question": 128,
+    "synthetic": 2060,
+    "synthetic_v8_targeted": 1200
+  },
+  "unused_number_candidates": 270,
+  "validation": {
+    "pair_consistency": 1.0,
+    "pairs": 10716,
+    "records": 3572,
+    "verified_pairs": 10716
+  }
+}
