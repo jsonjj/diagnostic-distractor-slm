@@ -6,8 +6,28 @@
 - **v8 verifier-guided best-of-N:** NOT DEMONSTRATED for the registered win rule for the same reason. Verifier-guided best-of-N is a system result, not model-only performance.
 - Deterministic hard-gate paired deltas and relative error-rate reductions are reported below, but they do not substitute for GDR.
 - For every selected primary quality metric, the ≥40% relative error-rate reduction target is NOT DEMONSTRATED because the required binding/quality judgments are unavailable.
+- **Exploratory blinded human result:** Opus wins the usable 1–5 rating evidence on the 24-item, one-reviewer sample: 4.50 overall versus 3.49 for v8 best-of-N, Opus minus v8 +1.01 points [bootstrap 95% CI +0.54, +1.50]. This is a set-level human judgment, not GDR and not a model-only comparison.
+- The recorded preference field nominally favors v8 best-of-N 13–11, but every response is `B`; eight selected-B items have a lower three-rating total, and several notes conflict with the B choice. The raw count is preserved but is not treated as credible preference evidence.
 
-Student plausibility and diagnostic quality are **UNAVAILABLE**. No student option-pick frequencies exist, and the registered Opus judge calibration was rejected.
+Observed student plausibility and the registered diagnostic-quality/GDR metrics remain **UNAVAILABLE**. No student option-pick frequencies exist, and the registered Opus judge calibration was rejected. The blinded reviewer’s plausibility rating is exploratory human judgment only.
+
+## Blinded human review: v8 best-of-N vs Opus
+
+- Exact sample: `n = 24` paired questions; one anonymous reviewer (`reviewer_code = 1`).
+- Deterministic stratified pack: three questions from each of eight predeclared Number families and one item from each lower/middle/upper metadata-complexity band per family. Sample seed `20260713`; independent A/B-order seed `20260714`; selection did not use candidate outputs.
+- Completion/integrity: JSON and CSV exports match exactly after normalization; 24/24 review IDs and source IDs are unique; every required preference, rating, and issue check is complete; the sealed HTML/key package reproduces from the frozen inputs and its SHA-256 matches. The unsigned exports cannot provide cryptographic proof against manual editing.
+- Data-quality warning: A `0`, Tie `0`, B `24`. B’s rating total is higher on 10 items, equal on 6, and lower on 8. Preference status is **REVIEW REQUIRED**.
+- Raw recorded vote: v8 best-of-N 13/24 (54.2%; decisive Wilson 95% CI 35.1%–72.1%), Opus 11/24 (45.8%; 27.9%–64.9%), ties 0. Raw vote difference: +2 votes / +8.3 percentage points for v8. No relative preference ratio is claimed.
+- Diagnostic usefulness (mean; median): v8 3.83; 4.00, Opus 4.46; 5.00. Opus minus v8 +0.63 [paired question-bootstrap 95% CI +0.21, +1.08].
+- Realistic student plausibility: v8 2.83; 2.50, Opus 4.54; 5.00. Opus minus v8 +1.71 [+0.96, +2.46].
+- Teacher clarity/actionability: v8 3.79; 4.00, Opus 4.50; 5.00. Opus minus v8 +0.71 [+0.29, +1.13].
+- Overall 1–5 mean, averaging all three dimensions equally within every item and then all 24 items equally: v8 3.49 (median across 72 ratings 4.00), Opus 4.50 (median 5.00). Opus minus v8 +1.01 [+0.54, +1.50], equal to 25.3% of the four-point scale span. This is not an “error reduction.”
+- Any reviewer issue flag: v8 12/24 (50.0%; Wilson 95% CI 31.4%–68.6%), Opus 2/24 (8.3%; 2.3%–25.8%). By category, v8/Opus: mathematically inconsistent 0/0; correct-answer collision 0/1; duplicate 2/0; nonsense 10/1.
+- Inter-rater reliability is **UNAVAILABLE** with one reviewer. Human GDR and Good@3 also remain unavailable because the rubric scores complete sets, not every distractor against every registered gate.
+- Full item-level unblinding and cross-evaluation interpretation: `HUMAN_REVIEW_V8_OPUS_RESULTS.md`.
+- Machine-readable result with provenance hashes: `data/eval_out/blind_review_v8_opus_final.json`. The hidden source key itself is not copied into that result.
+
+**Integrated verdict:** deterministic hard gates favor verifier-guided v8 best-of-N, and model-only v8 carries most of the computation-consistency gain. In this one-reviewer blind sample, however, Opus clearly wins the internally coherent rating and issue evidence. The nominal v8 preference count is compromised by a systematic all-B response pattern. Neither evidence stream establishes the registered GDR win rule or a publishable holistic superiority claim.
 
 ## Training and artifact handoff
 
@@ -26,8 +46,9 @@ Student plausibility and diagnostic quality are **UNAVAILABLE**. No student opti
 
 ## Verification
 
-- 149 full Python tests passed.
-- 46 v8-specific tests passed.
+- Original deterministic benchmark run: 149 full Python tests and 46 v8-specific tests passed.
+- Post-unblinding run: 158 full Python tests and 9 focused blinded-review/scorer tests passed.
+- The updated comparison canvas reports no TypeScript errors.
 - Frozen data manifest verified: `True`.
 - Unity was not run.
 

@@ -383,6 +383,62 @@ class BlindedReviewScoringTests(unittest.TestCase):
             "UNAVAILABLE",
         )
 
+    def test_scoring_reports_medians_overall_ratings_and_item_audit(self):
+        result = score_reviews(
+            [self.ratings],
+            self.key,
+            bootstrap_samples=200,
+            seed=29,
+        )
+
+        small = result["systems"]["system_small"]
+        large = result["systems"]["system_large"]
+        self.assertEqual(
+            small["ratings"]["diagnostic_usefulness"]["median"],
+            4.5,
+        )
+        self.assertEqual(small["overall_rating"]["mean"], 4.5)
+        self.assertEqual(small["overall_rating"]["median"], 4.5)
+        self.assertEqual(small["overall_rating"]["n_items"], 2)
+        self.assertEqual(small["overall_rating"]["n_dimension_ratings"], 6)
+        self.assertAlmostEqual(large["overall_rating"]["mean"], 16 / 6)
+        self.assertIn("overall", result["paired_differences"])
+        self.assertAlmostEqual(
+            result["paired_differences"]["overall"]["mean_difference"],
+            (16 / 6) - 4.5,
+        )
+
+        first_item = result["item_results"][0]
+        self.assertEqual(first_item["review_item_id"], "R01")
+        self.assertEqual(first_item["source_id"], "q1")
+        self.assertEqual(first_item["blind_preference"], "A")
+        self.assertEqual(first_item["selected_source"], "system_small")
+        self.assertEqual(
+            first_item["systems"]["system_small"]["diagnostic_usefulness"],
+            5,
+        )
+        self.assertEqual(
+            first_item["preference_rating_direction"],
+            "selected_higher",
+        )
+
+        audit = result["response_consistency_audit"]
+        self.assertEqual(
+            audit["blind_preference_counts"],
+            {"A": 1, "Tie": 0, "B": 1},
+        )
+        self.assertFalse(audit["all_preferences_same_blind_label"])
+        self.assertEqual(
+            audit["preference_rating_direction_counts"],
+            {
+                "selected_higher": 2,
+                "selected_equal": 0,
+                "selected_lower": 0,
+                "tie": 0,
+            },
+        )
+        self.assertEqual(audit["status"], "OK")
+
     def test_multiple_reviewers_report_inter_rater_agreement(self):
         second = json.loads(json.dumps(self.ratings))
         second["reviewer_code"] = "reviewer-2"

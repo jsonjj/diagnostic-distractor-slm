@@ -9,7 +9,7 @@ import math
 import random
 from collections import Counter, defaultdict
 from pathlib import Path
-from statistics import fmean
+from statistics import fmean, median
 from typing import Sequence
 
 
@@ -508,9 +508,12 @@ def score_reviews(
         source: Counter() for source in sources
     }
     differences: dict[str, dict[str, list[float]]] = {
-        dimension: defaultdict(list) for dimension in DIMENSIONS
+        dimension: defaultdict(list) for dimension in (*DIMENSIONS, "overall")
     }
     preference_score_differences: dict[str, list[float]] = defaultdict(list)
+    blind_preference_counts: Counter[str] = Counter()
+    preference_rating_direction_counts: Counter[str] = Counter()
+    item_results: list[dict] = []
     first_source, second_source = sources
 
     for reviewer in reviewer_codes:
@@ -518,6 +521,8 @@ def score_reviews(
             rating = ratings_by_reviewer[reviewer][item_id]
             key_row = key_by_item[item_id]
             preferred = _preferred_source(rating, key_row)
+            blind_preference_counts[rating["preference"]] += 1
+            item_systems = {}
             for source in sources:
                 if preferred is None:
                     preference_counts[source]["ties"] += 1
@@ -526,6 +531,10 @@ def score_reviews(
                 else:
                     preference_counts[source]["losses"] += 1
                 candidate = _system_candidate(rating, key_row, source)
+                item_systems[source] = {
+                    dimension: int(candidate[dimension])
+                    for dimension in DIMENSIONS
+                } | {"issues": list(candidate["issues"])}
                 for dimension in DIMENSIONS:
                     rating_values[source][dimension].append(
                         float(candidate[dimension])
@@ -550,6 +559,13 @@ def score_reviews(
                     float(first_candidate[dimension])
                     - float(second_candidate[dimension])
                 )
+            differences["overall"][item_id].append(
+                fmean(
+                    float(first_candidate[dimension])
+                    - float(second_candidate[dimension])
+                    for dimension in DIMENSIONS
+                )
+            )
             first_preference_score = (
                 0.5
                 if preferred is None
@@ -558,12 +574,51 @@ def score_reviews(
             preference_score_differences[item_id].append(
                 2 * first_preference_score - 1
             )
+            if preferred is None:
+                preference_rating_direction = "tie"
+            else:
+                other_source = next(
+                    source for source in sources if source != preferred
+                )
+                selected_total = sum(
+                    item_systems[preferred][dimension] for dimension in DIMENSIONS
+                )
+                other_total = sum(
+                    item_systems[other_source][dimension] for dimension in DIMENSIONS
+                )
+                if selected_total > other_total:
+                    preference_rating_direction = "selected_higher"
+                elif selected_total < other_total:
+                    preference_rating_direction = "selected_lower"
+                else:
+                    preference_rating_direction = "selected_equal"
+            preference_rating_direction_counts[preference_rating_direction] += 1
+            item_results.append(
+                {
+                    "reviewer_code": reviewer,
+                    "review_item_id": item_id,
+                    "source_id": str(key_row.get("source_id", "")),
+                    "topic": str(key_row.get("topic", "")),
+                    "review_family": str(key_row.get("review_family", "")),
+                    "challenge_band": str(key_row.get("challenge_band", "")),
+                    "blind_preference": rating["preference"],
+                    "selected_source": preferred,
+                    "preference_rating_direction": preference_rating_direction,
+                    "systems": item_systems,
+                    "note": rating["note"],
+                }
+            )
 
     total_ratings = len(reviewer_codes) * len(expected_ids)
     systems = {}
     for source in sources:
         counts = preference_counts[source]
         decisive = counts["wins"] + counts["losses"]
+        all_rating_values = [
+            value
+            for dimension in DIMENSIONS
+            for value in rating_values[source][dimension]
+        ]
         systems[source] = {
             "preference": {
                 "wins": counts["wins"],
@@ -596,10 +651,22 @@ def score_reviews(
             "ratings": {
                 dimension: {
                     "mean": fmean(rating_values[source][dimension]),
+                    "median": median(rating_values[source][dimension]),
                     "n": len(rating_values[source][dimension]),
                     "scale": "1-5",
                 }
                 for dimension in DIMENSIONS
+            },
+            "overall_rating": {
+                "mean": fmean(all_rating_values),
+                "median": median(all_rating_values),
+                "n_items": total_ratings,
+                "n_dimension_ratings": len(all_rating_values),
+                "scale": "1-5",
+                "averaging_method": (
+                    "Arithmetic mean across all three dimension ratings and "
+                    "all reviewed items; every item-dimension is equally weighted."
+                ),
             },
             "issues": {
                 issue: {
@@ -617,7 +684,7 @@ def score_reviews(
         }
 
     paired_differences = {}
-    for index, dimension in enumerate(DIMENSIONS):
+    for index, dimension in enumerate((*DIMENSIONS, "overall")):
         summary = _bootstrap_summary(
             differences[dimension],
             samples=bootstrap_samples,
@@ -630,6 +697,11 @@ def score_reviews(
             "method": summary["method"],
             "bootstrap_samples": summary["bootstrap_samples"],
         }
+        if dimension == "overall":
+            paired_differences[dimension]["averaging_method"] = (
+                "Within each reviewed item, average the three paired rating "
+                "differences; then average equally across items."
+            )
     preference_summary = _bootstrap_summary(
         preference_score_differences,
         samples=bootstrap_samples,
@@ -646,6 +718,14 @@ def score_reviews(
         "This set-level rubric does not score every emitted distractor against "
         "all registered GDR gates. Issue flags are candidate-level and cannot "
         "be converted into pair-level all-gates pass/fail judgments."
+    )
+    all_preferences_same_blind_label = (
+        sum(
+            blind_preference_counts[label] > 0
+            for label in ("A", "Tie", "B")
+        )
+        == 1
+        and total_ratings > 1
     )
     return {
         "schema_version": "unblinded-human-review-results-v1",
@@ -666,6 +746,34 @@ def score_reviews(
             "method": preference_summary["method"],
         },
         "paired_differences": paired_differences,
+        "item_results": item_results,
+        "response_consistency_audit": {
+            "blind_preference_counts": {
+                label: blind_preference_counts[label]
+                for label in ("A", "Tie", "B")
+            },
+            "all_preferences_same_blind_label": (
+                all_preferences_same_blind_label
+            ),
+            "preference_rating_direction_counts": {
+                label: preference_rating_direction_counts[label]
+                for label in (
+                    "selected_higher",
+                    "selected_equal",
+                    "selected_lower",
+                    "tie",
+                )
+            },
+            "status": (
+                "REVIEW_REQUIRED"
+                if all_preferences_same_blind_label
+                else "OK"
+            ),
+            "note": (
+                "This mechanical audit flags response patterns for manual "
+                "inspection; it does not prove reviewer intent or tampering."
+            ),
+        },
         "human_gdr_proxy": {
             "status": "UNAVAILABLE",
             "note": unavailable_note,

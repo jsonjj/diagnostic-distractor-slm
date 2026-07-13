@@ -1,0 +1,997 @@
+{
+  "claim_limit": "One reviewer is exploratory. A publishable comparative claim requires at least two independent reviewers, agreement reporting, and adjudication of disagreements.",
+  "provenance": {
+    "benchmark_source": {
+      "filename": "data/eval_out/benchmark_v8_final.json",
+      "sha256": "419ec4a7f9b8c3e4baef1830582b0c54225be315d0cc740d517575aa208c1368"
+    },
+    "canonical_ratings_export": {
+      "bytes": 10859,
+      "completed_at": "2026-07-13T20:25:31.916Z",
+      "filename": "blinded-ratings-1.json",
+      "sha256": "ec73f317fe50b88f5bde1776cb86ba509410b95c33275df3c2b7af716d7b87e5"
+    },
+    "hidden_key": {
+      "contents_included": false,
+      "filename": "data/eval_out/OWNER_ONLY_DO_NOT_OPEN_UNTIL_REVIEW_COMPLETE.json",
+      "sha256": "746d01d96e7a7b4f63bc93304c4607a3bba6610e42c65cf24b6d0710f58e1b16"
+    },
+    "integrity_note": "The JSON and CSV normalize to identical rating records and the sealed pack reproduces from frozen sources. The exports are unsigned, so these checks detect structural mismatch but cannot cryptographically prove reviewer intent or absence of manual editing.",
+    "matching_backup_export": {
+      "bytes": 2485,
+      "canonical_fields_match": true,
+      "filename": "blinded-ratings-1.csv",
+      "sha256": "615c5eb070b74097336c1f077196e22d05aa270e3ad6522797d23295a02fbda3"
+    },
+    "review_pack": {
+      "all_pairs_match": true,
+      "candidate_order_reproduces": true,
+      "filename": "human_review/final_round/review.html",
+      "public_artifact_is_blind": true,
+      "public_artifact_is_offline": true,
+      "sha256": "b9cf508e930ffb4d55c1545e6e0d37bbcbefcc3a5ef656309faa3fea978bb1ab"
+    },
+    "source_artifacts": [
+      {
+        "filename": "data/processed/eval_v8_frozen.jsonl",
+        "sha256": "546c14f03707ce098146dac5e0c6e99c0a4619d6d4e32193a9fff4e3b9bfd1b1"
+      },
+      {
+        "filename": "predictions_v8_best_of_n.jsonl",
+        "sha256": "5ebf3b729a7a3ae8c5458fcfcf3208a5ad028113f438a5aea466bfdcaae0d5f8"
+      },
+      {
+        "filename": "predictions_opus_v8.jsonl",
+        "sha256": "b2b4680e4df2e52aa2cea2f427d4b3b2723b0e331f06d4ff1053be0e9f33778b"
+      }
+    ]
+  },
+  "design": {
+    "bootstrap_samples": 10000,
+    "bootstrap_seed": 20260713,
+    "items": 24,
+    "reviewer_codes": [
+      "1"
+    ],
+    "reviewers": 1,
+    "source_order": [
+      "v8_best_of_n",
+      "opus"
+    ]
+  },
+  "good_at_3_proxy": {
+    "note": "This set-level rubric does not score every emitted distractor against all registered GDR gates. Issue flags are candidate-level and cannot be converted into pair-level all-gates pass/fail judgments.",
+    "status": "UNAVAILABLE"
+  },
+  "human_gdr_proxy": {
+    "note": "This set-level rubric does not score every emitted distractor against all registered GDR gates. Issue flags are candidate-level and cannot be converted into pair-level all-gates pass/fail judgments.",
+    "status": "UNAVAILABLE"
+  },
+  "inter_rater_agreement": {
+    "note": "At least two independent reviewers are required.",
+    "reviewers": 1,
+    "status": "UNAVAILABLE"
+  },
+  "item_results": [
+    {
+      "blind_preference": "B",
+      "challenge_band": "upper",
+      "note": "B shows a bunch of numbers and numeric answers but the question is asking for who was correct.",
+      "preference_rating_direction": "selected_lower",
+      "review_family": "rounding, estimation & standard form",
+      "review_item_id": "R01",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "1552",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 4,
+          "issues": [
+            "correct_answer_collision"
+          ],
+          "student_plausibility": 3,
+          "teacher_actionability": 4
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 1,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 1
+        }
+      },
+      "topic": "Standard Form"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "upper",
+      "note": "A has much less plausible answers.",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "order, powers & roots",
+      "review_item_id": "R02",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "1866",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 3,
+          "teacher_actionability": 4
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 4
+        }
+      },
+      "topic": "BIDMAS"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "middle",
+      "note": "The question is asking for the digit, not the value.",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "whole-number operations & place value",
+      "review_item_id": "R03",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "624",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 4,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 4,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 2,
+          "teacher_actionability": 4
+        }
+      },
+      "topic": "Mental Addition and Subtraction"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "lower",
+      "note": "A has more plausible results.",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "factors & multiples",
+      "review_item_id": "R04",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "1720",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 4,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 3,
+          "teacher_actionability": 4
+        }
+      },
+      "topic": "Multiples and Lowest Common Multiple"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "upper",
+      "note": "It is asking for who was right, not what numerical value.",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "percentages & proportional conversion",
+      "review_item_id": "R05",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "629",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 4,
+          "teacher_actionability": 4
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 3,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 3
+        }
+      },
+      "topic": "Converting between Fractions and Percentages"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "upper",
+      "note": "B has a bit of a duplicate with 2 answer that are almost the same.",
+      "preference_rating_direction": "selected_equal",
+      "review_family": "decimals",
+      "review_item_id": "R06",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "675",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 4
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 4,
+          "issues": [
+            "duplicate"
+          ],
+          "student_plausibility": 5,
+          "teacher_actionability": 4
+        }
+      },
+      "topic": "Ordering Decimals"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "middle",
+      "note": "",
+      "preference_rating_direction": "selected_equal",
+      "review_family": "decimals",
+      "review_item_id": "R07",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "875",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        }
+      },
+      "topic": "Rounding to Decimal Places"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "middle",
+      "note": "",
+      "preference_rating_direction": "selected_equal",
+      "review_family": "percentages & proportional conversion",
+      "review_item_id": "R08",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "973",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        }
+      },
+      "topic": "Converting between Decimals and Percentages"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "upper",
+      "note": "A tiny bit more plausible",
+      "preference_rating_direction": "selected_lower",
+      "review_family": "factors & multiples",
+      "review_item_id": "R09",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "531",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 4,
+          "teacher_actionability": 5
+        }
+      },
+      "topic": "Multiples and Lowest Common Multiple"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "upper",
+      "note": "",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "whole-number operations & place value",
+      "review_item_id": "R10",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "1184",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 4
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 4,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 4
+        }
+      },
+      "topic": "Mental Multiplication and Division"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "lower",
+      "note": "",
+      "preference_rating_direction": "selected_equal",
+      "review_family": "rounding, estimation & standard form",
+      "review_item_id": "R11",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "1240",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        }
+      },
+      "topic": "Rounding to the Nearest Whole (10, 100, etc)"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "middle",
+      "note": "A little more plausible",
+      "preference_rating_direction": "selected_lower",
+      "review_family": "order, powers & roots",
+      "review_item_id": "R12",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "1343",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 4,
+          "teacher_actionability": 4
+        }
+      },
+      "topic": "BIDMAS"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "lower",
+      "note": "",
+      "preference_rating_direction": "selected_lower",
+      "review_family": "percentages & proportional conversion",
+      "review_item_id": "R13",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "1440",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 3,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 3
+        }
+      },
+      "topic": "Converting between Fractions and Percentages"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "middle",
+      "note": "",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "factors & multiples",
+      "review_item_id": "R14",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "764",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 3,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 3
+        }
+      },
+      "topic": "Multiples and Lowest Common Multiple"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "lower",
+      "note": "",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "negative numbers",
+      "review_item_id": "R15",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "136",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 3,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 3
+        }
+      },
+      "topic": "Multiplying and Dividing Negative Numbers"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "upper",
+      "note": "",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "fractions",
+      "review_item_id": "R16",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "827",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 3,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 3
+        }
+      },
+      "topic": "Simplifying Fractions"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "middle",
+      "note": "",
+      "preference_rating_direction": "selected_equal",
+      "review_family": "fractions",
+      "review_item_id": "R17",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "1659",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 4
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 4
+        }
+      },
+      "topic": "Dividing Fractions"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "lower",
+      "note": "",
+      "preference_rating_direction": "selected_lower",
+      "review_family": "whole-number operations & place value",
+      "review_item_id": "R18",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "204",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 3,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 3
+        }
+      },
+      "topic": "Place Value"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "middle",
+      "note": "A supplied nothing. B was bad. theyre both terrible.",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "rounding, estimation & standard form",
+      "review_item_id": "R19",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "920",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 1,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 1
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 3,
+          "issues": [
+            "duplicate"
+          ],
+          "student_plausibility": 2,
+          "teacher_actionability": 3
+        }
+      },
+      "topic": "Rounding to Significant Figures"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "lower",
+      "note": "A is more plausible",
+      "preference_rating_direction": "selected_lower",
+      "review_family": "order, powers & roots",
+      "review_item_id": "R20",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "1819",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 4
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 4,
+          "teacher_actionability": 4
+        }
+      },
+      "topic": "Square Roots, Cube Roots, etc"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "lower",
+      "note": "",
+      "preference_rating_direction": "selected_equal",
+      "review_family": "decimals",
+      "review_item_id": "R21",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "755",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        }
+      },
+      "topic": "Adding and Subtracting with Decimals"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "middle",
+      "note": "A is a bit more plausible.",
+      "preference_rating_direction": "selected_lower",
+      "review_family": "negative numbers",
+      "review_item_id": "R22",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "292",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 4,
+          "teacher_actionability": 5
+        }
+      },
+      "topic": "Multiplying and Dividing Negative Numbers"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "lower",
+      "note": "",
+      "preference_rating_direction": "selected_lower",
+      "review_family": "fractions",
+      "review_item_id": "R23",
+      "reviewer_code": "1",
+      "selected_source": "v8_best_of_n",
+      "source_id": "263",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 4
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 4,
+          "issues": [],
+          "student_plausibility": 1,
+          "teacher_actionability": 4
+        }
+      },
+      "topic": "Adding and Subtracting Fractions"
+    },
+    {
+      "blind_preference": "B",
+      "challenge_band": "upper",
+      "note": "",
+      "preference_rating_direction": "selected_higher",
+      "review_family": "negative numbers",
+      "review_item_id": "R24",
+      "reviewer_code": "1",
+      "selected_source": "opus",
+      "source_id": "1371",
+      "systems": {
+        "opus": {
+          "diagnostic_usefulness": 5,
+          "issues": [],
+          "student_plausibility": 5,
+          "teacher_actionability": 5
+        },
+        "v8_best_of_n": {
+          "diagnostic_usefulness": 3,
+          "issues": [
+            "nonsense"
+          ],
+          "student_plausibility": 1,
+          "teacher_actionability": 3
+        }
+      },
+      "topic": "Ordering Negative Numbers"
+    }
+  ],
+  "paired_differences": {
+    "diagnostic_usefulness": {
+      "bootstrap_ci95": [
+        -1.0833333333333333,
+        -0.20833333333333334
+      ],
+      "bootstrap_samples": 10000,
+      "contrast": "v8_best_of_n minus opus",
+      "mean_difference": -0.625,
+      "method": "question-cluster bootstrap"
+    },
+    "overall": {
+      "averaging_method": "Within each reviewed item, average the three paired rating differences; then average equally across items.",
+      "bootstrap_ci95": [
+        -1.5,
+        -0.5416666666666666
+      ],
+      "bootstrap_samples": 10000,
+      "contrast": "v8_best_of_n minus opus",
+      "mean_difference": -1.0138888888888888,
+      "method": "question-cluster bootstrap"
+    },
+    "student_plausibility": {
+      "bootstrap_ci95": [
+        -2.4583333333333335,
+        -0.9583333333333334
+      ],
+      "bootstrap_samples": 10000,
+      "contrast": "v8_best_of_n minus opus",
+      "mean_difference": -1.7083333333333333,
+      "method": "question-cluster bootstrap"
+    },
+    "teacher_actionability": {
+      "bootstrap_ci95": [
+        -1.1260416666666657,
+        -0.2916666666666667
+      ],
+      "bootstrap_samples": 10000,
+      "contrast": "v8_best_of_n minus opus",
+      "mean_difference": -0.7083333333333334,
+      "method": "question-cluster bootstrap"
+    }
+  },
+  "preference_contrast": {
+    "bootstrap_ci95": [
+      -0.3333333333333333,
+      0.5
+    ],
+    "contrast": "v8_best_of_n minus opus",
+    "mean_net_preference": 0.08333333333333333,
+    "method": "question-cluster bootstrap",
+    "scale": "-1 = all prefer second; 0 = balanced/tied; +1 = all prefer first"
+  },
+  "response_consistency_audit": {
+    "all_preferences_same_blind_label": true,
+    "blind_preference_counts": {
+      "A": 0,
+      "B": 24,
+      "Tie": 0
+    },
+    "note": "This mechanical audit flags response patterns for manual inspection; it does not prove reviewer intent or tampering.",
+    "preference_rating_direction_counts": {
+      "selected_equal": 6,
+      "selected_higher": 10,
+      "selected_lower": 8,
+      "tie": 0
+    },
+    "status": "REVIEW_REQUIRED"
+  },
+  "schema_version": "unblinded-human-review-results-v1",
+  "systems": {
+    "opus": {
+      "issues": {
+        "any": {
+          "count": 2,
+          "rate_pct": 8.333333333333334,
+          "wilson_ci95": [
+            2.3158815297043307,
+            25.848802193210684
+          ]
+        },
+        "correct_answer_collision": {
+          "count": 1,
+          "rate_pct": 4.166666666666667,
+          "wilson_ci95": [
+            0.7393456165505768,
+            20.24180647865594
+          ]
+        },
+        "duplicate": {
+          "count": 0,
+          "rate_pct": 0.0,
+          "wilson_ci95": [
+            1.3877787807814457e-15,
+            13.797620467498017
+          ]
+        },
+        "mathematically_inconsistent": {
+          "count": 0,
+          "rate_pct": 0.0,
+          "wilson_ci95": [
+            1.3877787807814457e-15,
+            13.797620467498017
+          ]
+        },
+        "nonsense": {
+          "count": 1,
+          "rate_pct": 4.166666666666667,
+          "wilson_ci95": [
+            0.7393456165505768,
+            20.24180647865594
+          ]
+        }
+      },
+      "overall_rating": {
+        "averaging_method": "Arithmetic mean across all three dimension ratings and all reviewed items; every item-dimension is equally weighted.",
+        "mean": 4.5,
+        "median": 5.0,
+        "n_dimension_ratings": 72,
+        "n_items": 24,
+        "scale": "1-5"
+      },
+      "preference": {
+        "decisive_win_rate_pct": 45.833333333333336,
+        "decisive_win_rate_wilson_ci95": [
+          27.891333731210988,
+          64.9251346410805
+        ],
+        "loss_rate_pct": 54.166666666666664,
+        "loss_rate_wilson_ci95": [
+          35.07486535891948,
+          72.108666268789
+        ],
+        "losses": 13,
+        "tie_rate_pct": 0.0,
+        "tie_rate_wilson_ci95": [
+          1.3877787807814457e-15,
+          13.797620467498017
+        ],
+        "ties": 0,
+        "total": 24,
+        "win_rate_pct": 45.833333333333336,
+        "win_rate_wilson_ci95": [
+          27.891333731210988,
+          64.9251346410805
+        ],
+        "wins": 11
+      },
+      "ratings": {
+        "diagnostic_usefulness": {
+          "mean": 4.458333333333333,
+          "median": 5.0,
+          "n": 24,
+          "scale": "1-5"
+        },
+        "student_plausibility": {
+          "mean": 4.541666666666667,
+          "median": 5.0,
+          "n": 24,
+          "scale": "1-5"
+        },
+        "teacher_actionability": {
+          "mean": 4.5,
+          "median": 5.0,
+          "n": 24,
+          "scale": "1-5"
+        }
+      }
+    },
+    "v8_best_of_n": {
+      "issues": {
+        "any": {
+          "count": 12,
+          "rate_pct": 50.0,
+          "wilson_ci95": [
+            31.42742581957335,
+            68.57257418042664
+          ]
+        },
+        "correct_answer_collision": {
+          "count": 0,
+          "rate_pct": 0.0,
+          "wilson_ci95": [
+            1.3877787807814457e-15,
+            13.797620467498017
+          ]
+        },
+        "duplicate": {
+          "count": 2,
+          "rate_pct": 8.333333333333334,
+          "wilson_ci95": [
+            2.3158815297043307,
+            25.848802193210684
+          ]
+        },
+        "mathematically_inconsistent": {
+          "count": 0,
+          "rate_pct": 0.0,
+          "wilson_ci95": [
+            1.3877787807814457e-15,
+            13.797620467498017
+          ]
+        },
+        "nonsense": {
+          "count": 10,
+          "rate_pct": 41.666666666666664,
+          "wilson_ci95": [
+            24.467602609811763,
+            61.16533413477124
+          ]
+        }
+      },
+      "overall_rating": {
+        "averaging_method": "Arithmetic mean across all three dimension ratings and all reviewed items; every item-dimension is equally weighted.",
+        "mean": 3.486111111111111,
+        "median": 4.0,
+        "n_dimension_ratings": 72,
+        "n_items": 24,
+        "scale": "1-5"
+      },
+      "preference": {
+        "decisive_win_rate_pct": 54.166666666666664,
+        "decisive_win_rate_wilson_ci95": [
+          35.07486535891948,
+          72.108666268789
+        ],
+        "loss_rate_pct": 45.833333333333336,
+        "loss_rate_wilson_ci95": [
+          27.891333731210988,
+          64.9251346410805
+        ],
+        "losses": 11,
+        "tie_rate_pct": 0.0,
+        "tie_rate_wilson_ci95": [
+          1.3877787807814457e-15,
+          13.797620467498017
+        ],
+        "ties": 0,
+        "total": 24,
+        "win_rate_pct": 54.166666666666664,
+        "win_rate_wilson_ci95": [
+          35.07486535891948,
+          72.108666268789
+        ],
+        "wins": 13
+      },
+      "ratings": {
+        "diagnostic_usefulness": {
+          "mean": 3.8333333333333335,
+          "median": 4.0,
+          "n": 24,
+          "scale": "1-5"
+        },
+        "student_plausibility": {
+          "mean": 2.8333333333333335,
+          "median": 2.5,
+          "n": 24,
+          "scale": "1-5"
+        },
+        "teacher_actionability": {
+          "mean": 3.7916666666666665,
+          "median": 4.0,
+          "n": 24,
+          "scale": "1-5"
+        }
+      }
+    }
+  }
+}
