@@ -1,3 +1,4 @@
+import ast
 import json
 from pathlib import Path
 import re
@@ -22,6 +23,130 @@ class V8TrainingNotebookTests(unittest.TestCase):
         cls.code = "\n".join(
             "".join(cell["source"]) for cell in cls.code_cells
         )
+
+    def _stage_source(self, stage):
+        return next(
+            "".join(cell["source"])
+            for cell in self.code_cells
+            if stage in "".join(cell["source"])
+        )
+
+    def _generation_harness(self):
+        class FakeDevice:
+            type = "cuda"
+            index = 0
+
+        class FakeInputs:
+            shape = (1, 2)
+
+            def to(self, _device):
+                return self
+
+        class FakeTokenizer:
+            def apply_chat_template(self, *_args, **_kwargs):
+                return FakeInputs()
+
+            def decode(self, tokens, **_kwargs):
+                return ",".join(str(token) for token in tokens)
+
+        class FakeGenerator:
+            def __init__(self):
+                self.seed = None
+
+            def manual_seed(self, seed):
+                self.seed = seed
+                return self
+
+        class FakeTorch:
+            def __init__(self):
+                self.state = 777
+                self.manual_seed_calls = []
+                self.cuda_seed_calls = []
+                self.fork_calls = []
+                self.random = self.FakeRandom(self)
+                self.cuda = self.FakeCuda(self)
+
+            class FakeRandom:
+                def __init__(self, owner):
+                    self.owner = owner
+
+                def fork_rng(self, *, devices):
+                    owner = self.owner
+
+                    class ForkedRng:
+                        def __enter__(self):
+                            self.previous_state = owner.state
+                            owner.fork_calls.append(tuple(devices))
+
+                        def __exit__(self, _exc_type, _exc, _traceback):
+                            owner.state = self.previous_state
+
+                    return ForkedRng()
+
+            class FakeCuda:
+                def __init__(self, owner):
+                    self.owner = owner
+
+                def is_available(self):
+                    return True
+
+                def device_count(self):
+                    return 1
+
+                def current_device(self):
+                    return 0
+
+                def manual_seed_all(self, seed):
+                    self.owner.cuda_seed_calls.append(seed)
+                    self.owner.state = seed
+
+            def manual_seed(self, seed):
+                self.manual_seed_calls.append(seed)
+                self.state = seed
+
+            def Generator(self, **_kwargs):
+                return FakeGenerator()
+
+            def device(self, value):
+                return value
+
+        fake_torch = FakeTorch()
+
+        class FakeModel:
+            device = FakeDevice()
+
+            def __init__(self):
+                self.calls = []
+
+            def generate(self, **kwargs):
+                self.calls.append(dict(kwargs))
+                seed = (
+                    kwargs["generator"].seed
+                    if "generator" in kwargs
+                    else fake_torch.state
+                )
+                return [[10, 11, seed]]
+
+        source = self._stage_source("# STAGE: base-litmus")
+        tree = ast.parse(source)
+        function = next(
+            node
+            for node in tree.body
+            if isinstance(node, ast.FunctionDef) and node.name == "generate_text"
+        )
+        namespace = {
+            "SYSTEM_PROMPT": "system",
+            "build_user": lambda question, correct, topic: (
+                f"{question}|{correct}|{topic}"
+            ),
+            "tokenizer": FakeTokenizer(),
+            "torch": fake_torch,
+        }
+        module = ast.fix_missing_locations(
+            ast.Module(body=[function], type_ignores=[])
+        )
+        exec(compile(module, str(NOTEBOOK), "exec"), namespace)
+        return namespace["generate_text"], fake_torch, FakeModel()
 
     def test_notebook_is_clean_gpu_workflow_with_ordered_gates(self):
         self.assertEqual(self.notebook["nbformat"], 4)
@@ -57,6 +182,55 @@ class V8TrainingNotebookTests(unittest.TestCase):
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, self.code)
+
+    def test_sampled_generation_uses_forked_global_rng(self):
+        generate_text, fake_torch, model = self._generation_harness()
+        question = {
+            "question": "What is 2 + 2?",
+            "correct": "4",
+            "topic": "addition",
+        }
+
+        first = generate_text(model, question, sample=True, seed=101)
+        repeated = generate_text(model, question, sample=True, seed=101)
+        distinct = generate_text(model, question, sample=True, seed=102)
+
+        self.assertEqual(first, repeated)
+        self.assertNotEqual(first, distinct)
+        self.assertEqual(fake_torch.state, 777)
+        self.assertEqual(fake_torch.manual_seed_calls, [101, 101, 102])
+        self.assertEqual(fake_torch.cuda_seed_calls, [101, 101, 102])
+        self.assertEqual(fake_torch.fork_calls, [(0,), (0,), (0,)])
+        for call in model.calls:
+            self.assertNotIn("generator", call)
+            self.assertTrue(call["do_sample"])
+            self.assertEqual(call["temperature"], 0.7)
+            self.assertEqual(call["top_p"], 0.9)
+
+        best_of_n = self._stage_source("# STAGE: best-of-n")
+        self.assertIn(
+            "100000 + item_index * BEST_OF_N + sample_index",
+            best_of_n,
+        )
+
+    def test_greedy_generation_does_not_touch_rng_or_sampling_kwargs(self):
+        generate_text, fake_torch, model = self._generation_harness()
+        question = {
+            "question": "What is 2 + 2?",
+            "correct": "4",
+            "topic": "addition",
+        }
+
+        generate_text(model, question, sample=False, seed=999)
+
+        self.assertEqual(fake_torch.state, 777)
+        self.assertEqual(fake_torch.manual_seed_calls, [])
+        self.assertEqual(fake_torch.cuda_seed_calls, [])
+        self.assertEqual(fake_torch.fork_calls, [])
+        self.assertFalse(model.calls[0]["do_sample"])
+        self.assertNotIn("generator", model.calls[0])
+        self.assertNotIn("temperature", model.calls[0])
+        self.assertNotIn("top_p", model.calls[0])
 
     def test_verifies_manifest_and_never_fits_on_final_benchmark(self):
         for marker in (
