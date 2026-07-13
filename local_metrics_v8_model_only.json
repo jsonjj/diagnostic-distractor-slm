@@ -1,0 +1,137 @@
+{
+  "confidence_brier": {
+    "ci95": null,
+    "denominator": null,
+    "direction": "lower_is_better",
+    "method": "out-of-fold binding calibration artifact",
+    "numerator": null,
+    "score": null,
+    "status": "NOT YET RUN"
+  },
+  "confidence_ece": {
+    "ci95": null,
+    "denominator": null,
+    "direction": "lower_is_better",
+    "method": "out-of-fold binding calibration artifact",
+    "numerator": null,
+    "score": null,
+    "status": "NOT YET RUN"
+  },
+  "diagnostic_quality_proxy": {
+    "ci95": null,
+    "denominator": null,
+    "direction": "higher_is_better",
+    "method": "strict expert/Opus plausibility proxy",
+    "note": "No option-pick counts are available.",
+    "numerator": null,
+    "score": null,
+    "status": "NOT YET RUN"
+  },
+  "distinct_answers": {
+    "ci95": [
+      73.39444131557813,
+      86.39360637601507
+    ],
+    "denominator": 140,
+    "direction": "higher_is_better",
+    "method": "deterministic local gate",
+    "numerator": 113,
+    "score": 80.71428571428571,
+    "status": "MEASURED"
+  },
+  "distinct_misconceptions": {
+    "ci95": [
+      97.3293799630587,
+      99.99999999999999
+    ],
+    "denominator": 140,
+    "direction": "higher_is_better",
+    "method": "deterministic local gate",
+    "numerator": 140,
+    "score": 100.0,
+    "status": "MEASURED"
+  },
+  "good_at_3": {
+    "ci95": null,
+    "denominator": null,
+    "direction": "higher_is_better",
+    "method": "all-three all-gates item metric",
+    "note": "Requires complete binding and strict plausibility-proxy verdicts.",
+    "numerator": null,
+    "score": null,
+    "status": "NOT YET RUN"
+  },
+  "good_distractor_rate": {
+    "ci95": null,
+    "denominator": null,
+    "direction": "higher_is_better",
+    "method": "all-gates pair metric",
+    "note": "Requires complete binding and strict plausibility-proxy verdicts.",
+    "numerator": null,
+    "score": null,
+    "status": "NOT YET RUN"
+  },
+  "hardened_computation_validity": {
+    "ci95": [
+      73.33333333333333,
+      84.52380952380952
+    ],
+    "denominator": 420,
+    "direction": "higher_is_better",
+    "method": "exact arithmetic + question grounding; not a binding verdict",
+    "numerator": 333,
+    "score": 79.28571428571429,
+    "status": "MEASURED"
+  },
+  "none_equals_key": {
+    "ci95": [
+      89.12967078209392,
+      97.07635147090092
+    ],
+    "denominator": 140,
+    "direction": "higher_is_better",
+    "method": "deterministic local gate",
+    "numerator": 132,
+    "score": 94.28571428571429,
+    "status": "MEASURED"
+  },
+  "nonnumeric_binding_consistency": {
+    "ci95": null,
+    "denominator": null,
+    "direction": "higher_is_better",
+    "method": "verdict_sidecar",
+    "numerator": null,
+    "score": null,
+    "status": "NOT YET RUN"
+  },
+  "numeric_binding_consistency": {
+    "ci95": null,
+    "denominator": null,
+    "direction": "higher_is_better",
+    "method": "verdict_sidecar",
+    "numerator": null,
+    "score": null,
+    "status": "NOT YET RUN"
+  },
+  "selective_gdr_at_80pct_coverage": {
+    "ci95": null,
+    "denominator": null,
+    "direction": "higher_is_better",
+    "method": "post-hoc calibration",
+    "numerator": null,
+    "score": null,
+    "status": "NOT YET RUN"
+  },
+  "valid_exactly_3_json": {
+    "ci95": [
+      97.3293799630587,
+      99.99999999999999
+    ],
+    "denominator": 140,
+    "direction": "higher_is_better",
+    "method": "deterministic local gate",
+    "numerator": 140,
+    "score": 100.0,
+    "status": "MEASURED"
+  }
+}

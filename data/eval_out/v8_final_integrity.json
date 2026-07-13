@@ -1,0 +1,13 @@
+{
+  "adapter_zip_integrity": true,
+  "best_of_n_complete": true,
+  "download_copies_match": true,
+  "final_json_sha256": "419ec4a7f9b8c3e4baef1830582b0c54225be315d0cc740d517575aa208c1368",
+  "final_markdown_sha256": "388b9d28267d9fc25aeef4bb885816b9764dfa94cba3c43c7475b0aa19b4ae9e",
+  "frozen_coverage_complete": true,
+  "full_python_tests_passed": 149,
+  "manifest_artifacts_verified": 5,
+  "ok": true,
+  "prediction_rows_each": 140,
+  "v8_python_tests_passed": 46
+}

@@ -1,0 +1,8 @@
+{
+  "model": "anthropic-primary/claude-opus-4-8",
+  "requests": 140,
+  "max_output_tokens_per_request": 512,
+  "max_output_tokens_total": 71680,
+  "generation_route": "frontier_generation",
+  "dollar_cost": "consult TrueFoundry account pricing; no repository rate is assumed"
+}

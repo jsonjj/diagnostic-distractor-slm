@@ -1,0 +1,14 @@
+{
+  "base_model": "unsloth/Qwen3-8B-bnb-4bit",
+  "base_revision": "1deaf68f694c40dbce295da300851729d759b21a",
+  "best_checkpoint": "outputs_v8/checkpoint-403",
+  "best_eval_loss": 0.051324423402547836,
+  "epochs_planned": 3,
+  "frozen_sha256": "546c14f03707ce098146dac5e0c6e99c0a4619d6d4e32193a9fff4e3b9bfd1b1",
+  "learning_rate": 0.00015,
+  "lora_alpha": 32,
+  "lora_r": 32,
+  "schema_version": "diagnostic-distractor-v8-training-v1",
+  "seed": 42,
+  "train_sha256": "babe071e310a389b8a0fb2d3a5b6414f1275129f3cad8c15be5ff175e098a5ad"
+}

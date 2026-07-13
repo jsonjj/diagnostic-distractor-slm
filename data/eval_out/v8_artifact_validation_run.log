@@ -1,0 +1,131 @@
+{
+  "adapter": {
+    "hf_repo_id": "j2ampn/qwen3-8b-distractor-lora-v8",
+    "hf_url": "https://huggingface.co/j2ampn/qwen3-8b-distractor-lora-v8",
+    "local_folder": null,
+    "local_zip": "/Users/jonat/Downloads/qwen3-8b-distractor-lora-v8.zip",
+    "local_zip_evidence": {
+      "bytes": 325882649,
+      "path": "/Users/jonat/Downloads/qwen3-8b-distractor-lora-v8.zip",
+      "sha256": "e00dcb7653e9baa19fb103bbe0712b419fccb281724b487847de7f03a960c7fb"
+    },
+    "remote_verified": false,
+    "required_entries_present": true,
+    "zip_integrity": true
+  },
+  "copied": {
+    "local_metrics_v8_best_of_n.json": {
+      "bytes": 3489,
+      "path": "local_metrics_v8_best_of_n.json",
+      "sha256": "50e4f61501ba25b11b3f1d77b7f863267ae882adde09780244c212a1b9040deb"
+    },
+    "local_metrics_v8_model_only.json": {
+      "bytes": 3491,
+      "path": "local_metrics_v8_model_only.json",
+      "sha256": "dcd8e9b5dc8467a926a6fb1937fe784657083cf40ba545352c19068846a9a9ba"
+    },
+    "predictions_v8_best_of_n.jsonl": {
+      "bytes": 175765,
+      "path": "predictions_v8_best_of_n.jsonl",
+      "sha256": "5ebf3b729a7a3ae8c5458fcfcf3208a5ad028113f438a5aea466bfdcaae0d5f8"
+    },
+    "predictions_v8_model_only.jsonl": {
+      "bytes": 171434,
+      "path": "predictions_v8_model_only.jsonl",
+      "sha256": "a8ec2c4368555a452ed00ca00ba5a655e421730374dc07493d8a3f2a54d8aa54"
+    },
+    "qwen3-8b-distractor-lora-v8.zip": {
+      "bytes": 325882649,
+      "path": "qwen3-8b-distractor-lora-v8.zip",
+      "sha256": "e00dcb7653e9baa19fb103bbe0712b419fccb281724b487847de7f03a960c7fb"
+    },
+    "v8_training_receipt.json": {
+      "bytes": 537,
+      "path": "v8_training_receipt.json",
+      "sha256": "a88a1ca6dae5611ee64e34f7ecb236a17c82809f1a4f053c5daaa701c7e00571"
+    }
+  },
+  "copies_match_downloads": true,
+  "failures": [],
+  "files": {
+    "local_metrics_v8_best_of_n.json": {
+      "bytes": 3489,
+      "path": "/Users/jonat/Downloads/local_metrics_v8_best_of_n.json",
+      "sha256": "50e4f61501ba25b11b3f1d77b7f863267ae882adde09780244c212a1b9040deb"
+    },
+    "local_metrics_v8_model_only.json": {
+      "bytes": 3491,
+      "path": "/Users/jonat/Downloads/local_metrics_v8_model_only.json",
+      "sha256": "dcd8e9b5dc8467a926a6fb1937fe784657083cf40ba545352c19068846a9a9ba"
+    },
+    "predictions_v8_best_of_n.jsonl": {
+      "bytes": 175765,
+      "path": "/Users/jonat/Downloads/predictions_v8_best_of_n.jsonl",
+      "sha256": "5ebf3b729a7a3ae8c5458fcfcf3208a5ad028113f438a5aea466bfdcaae0d5f8"
+    },
+    "predictions_v8_model_only.jsonl": {
+      "bytes": 171434,
+      "path": "/Users/jonat/Downloads/predictions_v8_model_only.jsonl",
+      "sha256": "a8ec2c4368555a452ed00ca00ba5a655e421730374dc07493d8a3f2a54d8aa54"
+    },
+    "v8_training_receipt.json": {
+      "bytes": 537,
+      "path": "/Users/jonat/Downloads/v8_training_receipt.json",
+      "sha256": "a88a1ca6dae5611ee64e34f7ecb236a17c82809f1a4f053c5daaa701c7e00571"
+    }
+  },
+  "frozen": {
+    "canonical_sha256": "546c14f03707ce098146dac5e0c6e99c0a4619d6d4e32193a9fff4e3b9bfd1b1",
+    "rows": 140,
+    "unique_ids": 140
+  },
+  "local_metrics_reproduced": {
+    "best_of_n": true,
+    "model_only": true
+  },
+  "ok": true,
+  "receipt": {
+    "best_checkpoint": "outputs_v8/checkpoint-403",
+    "best_eval_loss": 0.051324423402547836,
+    "checks": {
+      "base_model": true,
+      "base_revision": true,
+      "checkpoint_present": true,
+      "eval_loss_present": true,
+      "frozen_hash": true,
+      "manifest_frozen_hash": true,
+      "manifest_frozen_rows": true,
+      "manifest_train_hash": true,
+      "manifest_train_rows": true,
+      "schema": true,
+      "seed": true,
+      "train_hash": true
+    }
+  },
+  "tracks": {
+    "best_of_n": {
+      "best_of_n": 4,
+      "best_of_n_metadata_valid": true,
+      "complete": true,
+      "ids_match_frozen_in_order": true,
+      "inference_track_valid": true,
+      "rows": 140,
+      "schema_exactly_three": true,
+      "unique_ids": 140
+    },
+    "model_only": {
+      "best_of_n": null,
+      "best_of_n_metadata_valid": true,
+      "complete": true,
+      "ids_match_frozen_in_order": true,
+      "inference_track_valid": true,
+      "rows": 140,
+      "schema_exactly_three": true,
+      "unique_ids": 140
+    }
+  },
+  "train": {
+    "canonical_sha256": "babe071e310a389b8a0fb2d3a5b6414f1275129f3cad8c15be5ff175e098a5ad",
+    "rows": 3572
+  }
+}
