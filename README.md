@@ -1,6 +1,50 @@
 # Diagnostic Distractor SLM
 
+We built and evaluated a Qwen-based SLM that generates misconception-linked middle-school math distractors, published v7.1 on Hugging Face, and integrated its verified learning workflow into an original Unity game prototype.
+
 Fine-tune a small open model (final: Qwen3-4B, QLoRA) to generate diagnostic distractors for middle-school "Number" math MCQs: three wrong answers, each tagged to a distinct named student misconception and numerically consistent with it, so a selected option creates a hypothesis to probe and can inform reteaching.
+
+## Released model
+
+**[Download Qwen3-4B Diagnostic Distractor LoRA v7.1 on Hugging Face](https://huggingface.co/j2ampn/qwen3-4b-distractor-lora-v7)**
+
+v7.1 is the shipped model: a QLoRA adapter for Qwen3-4B trained on
+`data/processed/train_v7.jsonl`. The later v8 8B experiment was trained and evaluated
+locally, but it did not demonstrate its preregistered overall win and is neither a
+verified replacement nor a published release. See [`TABLE.md`](TABLE.md) for the shipped
+evaluation and [`TABLE_V8_RESULTS.md`](TABLE_V8_RESULTS.md) plus
+[`TABLE_V8_NUMERIC_RESULTS.md`](TABLE_V8_NUMERIC_RESULTS.md) for the research follow-up.
+
+### v7.1 headline results
+
+The final evaluation uses the frozen 140-question Eedi Number holdout.
+
+| Metric | Base Qwen3-4B | v7.1 |
+|---|---:|---:|
+| Judged numeric consistency | ~0% | **60.4%** |
+| Distinct misconceptions | 91.4% | **94.3%** |
+| Exactly three distractors | 97.1% | **98.6%** |
+| Appendix-A spec adherence (0–2) | 0.50 | **1.07** |
+| Appendix-A robustness (0–2) | 0.35 | **0.77** |
+
+The consistency judge was calibrated at 90% agreement on clean numeric cases but only
+about 50% on non-numeric cases, so numeric and full-set results are reported separately.
+The shipped model improves substantially over the base while remaining below frontier
+model consistency; raw generations require deterministic validation before learner use.
+
+## Quick demo (no GPU or API)
+
+The committed predictions make the base-versus-tuned behavior reproducible locally:
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python -m src.demo --tuned predictions_tuned_v7.jsonl
+```
+
+For training or live GPU inference, open
+[`notebooks/train_qwen3_distractor.ipynb`](notebooks/train_qwen3_distractor.ipynb) in
+Google Colab and use the released Hugging Face adapter above.
 
 ## Wayline: The Broken Meridian
 
@@ -80,6 +124,10 @@ fiction, mechanics, quiz cadence, or release scope. See [`GAME_DESIGN.md`](GAME_
 - `docs/wayline/` - authoritative game, runtime, privacy, art, and release specifications
 
 ## Setup
-1. `cp .env.example .env` and fill in `TFY_API_KEY` (and `HF_TOKEN` for Day 5).
-2. `pip install -r requirements.txt` (local data-gen + eval).
-3. Training deps install inside the Colab notebook (Unsloth).
+
+1. Copy `.env.example` to `.env` and add `TFY_API_KEY` only for optional judged
+   evaluations. Never commit credentials.
+2. Install `requirements.txt` for local data generation, deterministic evaluation, and
+   the offline demo.
+3. Install training dependencies inside the Colab notebook (Unsloth). Supply a
+   Hugging Face token only if the notebook needs authenticated Hub access.

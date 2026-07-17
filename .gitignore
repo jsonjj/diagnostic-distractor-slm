@@ -19,6 +19,7 @@ merged/
 outputs/
 *.gguf
 wandb/
+/qwen3-8b-distractor-lora-v8.zip
 
 # Wayline packaged runtime and local learner state
 /.venv-live/
@@ -54,5 +55,12 @@ wandb/
 /glitch_rally_generation_run_v1.json
 /data/game/work/
 
+# Private owner-only holdout unblinding material (never publish).
+/data/eval_out/OWNER_ONLY_DO_NOT_OPEN_UNTIL_REVIEW_COMPLETE.json
+
 # OS
 .DS_Store
+
+# Local AI/editor configuration
+/.cursor/
+/.claude/settings.local.json
